@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerMove : MonoBehaviour
 {
     private Vector2 inputVec;
-    private Vector2 lastMoveDirection; // 마지막으로 이동한 방향
+    private Vector2 lastMoveDir; // 마지막으로 이동한 방향
     private Transform footTf;
     private bool isGround;
     [SerializeField] private float moveSpeed;
@@ -21,19 +21,20 @@ public class PlayerMove : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         groundMask = LayerMask.GetMask("Ground");
         footTf = transform.GetChild(0).GetComponent<Transform>();
-        lastMoveDirection = Vector2.right;
+        lastMoveDir = Vector2.right;
     }
 
     private void FixedUpdate()
     {
         CheckGround();
+
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
         rb.velocity = moveVelocity;
 
         // 플레이어가 이동한 방향을 기록
         if (inputVec != Vector2.zero)
         {
-            lastMoveDirection = inputVec.normalized;
+            lastMoveDir = inputVec.normalized;
         }
 
         DebugLine();
@@ -41,11 +42,26 @@ public class PlayerMove : MonoBehaviour
 
     void OnMove(InputValue value)
     {
+        float x = Mathf.Abs(transform.localScale.x);
+        float y = Mathf.Abs(transform.localScale.y);
+
         inputVec = value.Get<Vector2>();
+
+        // InputVec의 값에 따른 플레이어 방향 전환
+        if (inputVec.x < 0)
+        {
+            transform.localScale = new Vector2(-x, y);
+        }
+        else if (inputVec.x > 0)
+        {
+            transform.localScale = new Vector2(x, y);
+        }
+        else {  }
     }
 
     void OnJump(InputValue value)
     {
+        //TODO: DoubleJump
         if (isGround)
         {
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
@@ -54,8 +70,9 @@ public class PlayerMove : MonoBehaviour
 
     void OnDash(InputValue value)
     {
-        rb.AddForce(lastMoveDirection * dashForce, ForceMode2D.Impulse);
-        Debug.Log(lastMoveDirection);
+        //TODO: Dash
+        rb.AddForce(lastMoveDir * dashForce, ForceMode2D.Impulse);
+        Debug.Log(lastMoveDir);
     }
 
     private void CheckGround()
@@ -73,5 +90,6 @@ public class PlayerMove : MonoBehaviour
     private void DebugLine()
     {
         Debug.DrawRay(footTf.position, Vector2.down * .1f, Color.red);
+        Debug.DrawRay(transform.position, Vector2.right * 1f, Color.blue);
     }
 }
