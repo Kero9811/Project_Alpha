@@ -90,6 +90,5 @@ public class PlayerMove : MonoBehaviour
     private void DebugLine()
     {
         Debug.DrawRay(footTf.position, Vector2.down * .1f, Color.red);
-        Debug.DrawRay(transform.position, Vector2.right * 1f, Color.blue);
     }
 }
