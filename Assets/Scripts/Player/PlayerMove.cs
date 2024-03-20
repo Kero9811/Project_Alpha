@@ -16,12 +16,14 @@ public class PlayerMove : MonoBehaviour
 
     private Rigidbody2D rb;
 
+    private bool isDash; // 상태머신 적용 전 임시 사용
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         groundMask = LayerMask.GetMask("Ground");
         footTf = transform.GetChild(0).GetComponent<Transform>();
-        lastMoveDir = Vector2.right;
+        lastMoveDir = transform.right;
     }
 
     private void FixedUpdate()
@@ -71,8 +73,30 @@ public class PlayerMove : MonoBehaviour
     void OnDash(InputValue value)
     {
         //TODO: Dash
-        rb.AddForce(lastMoveDir * dashForce, ForceMode2D.Impulse);
-        Debug.Log(lastMoveDir);
+        StartCoroutine(Dash());
+    }
+
+    IEnumerator Dash()
+    {
+        float dashTime = 0f;
+        isDash = true;
+
+        while (isDash)
+        {
+            dashTime += Time.deltaTime;
+
+            //if (lastMoveDir == Vector2.zero) lastMoveDir = Vector2.right;
+            rb.velocity = 
+                new Vector2(lastMoveDir.x * (moveSpeed * 5f), rb.velocity.y);
+            print(rb.velocity);
+
+            if (dashTime >= .5f)
+            {
+                dashTime = 0;
+                isDash = false;
+            }
+            yield return null;
+        }
     }
 
     private void CheckGround()
