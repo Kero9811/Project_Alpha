@@ -5,18 +5,28 @@ using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
+    [Header("Player Moving Value")]
+
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpPower;
+    [SerializeField] private float dashPower = 24f;
+
     private Vector2 inputVec;
     private Vector2 lastMoveDir; // 마지막으로 이동한 방향
     private Transform footTf;
+
     private bool isGround;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpPower;
-    [SerializeField] private float dashForce;
-    [SerializeField] private LayerMask groundMask;
+    private LayerMask groundMask;
+
+
+    private bool canDash = true; // 상태머신 적용 전 임시 사용
+    private bool isDashing;
+    private float dashingTime = .2f;
+    private float dashCD = 1f;
+
+    private bool canDoubleJump = false;
 
     private Rigidbody2D rb;
-
-    private bool isDash; // 상태머신 적용 전 임시 사용
 
     private void Awake()
     {
@@ -29,6 +39,8 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGround();
+
+        if(isDashing) { return; }
 
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
         rb.velocity = moveVelocity;
@@ -44,6 +56,8 @@ public class PlayerMove : MonoBehaviour
 
     void OnMove(InputValue value)
     {
+        if (isDashing) { return; }
+
         float x = Mathf.Abs(transform.localScale.x);
         float y = Mathf.Abs(transform.localScale.y);
 
@@ -66,37 +80,38 @@ public class PlayerMove : MonoBehaviour
         //TODO: DoubleJump
         if (isGround)
         {
+            canDoubleJump = true;
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
+        else if(!isGround && canDoubleJump)
+        {
+            canDoubleJump = false;
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        }
+        else { }
     }
 
     void OnDash(InputValue value)
     {
-        //TODO: Dash
-        StartCoroutine(Dash());
+        if (canDash)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
     IEnumerator Dash()
     {
-        float dashTime = 0f;
-        isDash = true;
-
-        while (isDash)
-        {
-            dashTime += Time.deltaTime;
-
-            //if (lastMoveDir == Vector2.zero) lastMoveDir = Vector2.right;
-            rb.velocity = 
-                new Vector2(lastMoveDir.x * (moveSpeed * 5f), rb.velocity.y);
-            print(rb.velocity);
-
-            if (dashTime >= .5f)
-            {
-                dashTime = 0;
-                isDash = false;
-            }
-            yield return null;
-        }
+        canDash = false;
+        isDashing = true;
+        float originGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(transform.localScale.x * dashPower, 0f);
+        yield return new WaitForSeconds(dashingTime);
+        rb.gravityScale = originGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashCD);
+        canDash = true;
     }
 
     private void CheckGround()
