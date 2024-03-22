@@ -15,7 +15,7 @@ public class PlayerMove : MonoBehaviour
     private Vector2 lastMoveDir; // 마지막으로 이동한 방향
     private Transform footTf;
 
-    private bool isGround;
+    public bool isGround;
     private LayerMask groundMask;
 
 
