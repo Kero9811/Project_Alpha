@@ -77,7 +77,6 @@ public class PlayerMove : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        //TODO: DoubleJump
         if (isGround)
         {
             canDoubleJump = true;

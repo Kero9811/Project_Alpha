@@ -49,15 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "MultiTap",
-                    "type": "Button",
-                    "id": "760dd3d8-0873-43f8-8775-68b70d5e0597",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "MultiTap",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -141,7 +132,7 @@
                 {
                     "name": "modifier",
                     "id": "c8ddee92-5d46-4864-b021-7407f5d15aa3",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -159,17 +150,6 @@
                     "action": "GroundSmash",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "c253f21d-a329-451c-8a12-72c45bbff010",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "MultiTap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }

@@ -9,11 +9,6 @@ public class GroundSmash : MonoBehaviour
 
     void OnGroundSmash(InputValue value)
     {
-        print("Test");
-    }
 
-    void OnMultiTap(InputValue value)
-    {
-        print("Test2");
     }
 }
