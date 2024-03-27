@@ -12,14 +12,13 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float dashPower = 24f;
 
     private Vector2 inputVec;
-    private Vector2 lastMoveDir; // 마지막으로 이동한 방향
     private Transform footTf;
 
     public bool isGround;
     private LayerMask groundMask;
 
 
-    private bool canDash = true; // 상태머신 적용 전 임시 사용
+    private bool canDash = true;
     private bool isDashing;
     private float dashingTime = .2f;
     private float dashCD = 1f;
@@ -27,13 +26,14 @@ public class PlayerMove : MonoBehaviour
     private bool canDoubleJump = false;
 
     private Rigidbody2D rb;
+    Player player;
 
     private void Awake()
     {
+        player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
         groundMask = LayerMask.GetMask("Ground");
         footTf = transform.GetChild(0).GetComponent<Transform>();
-        lastMoveDir = transform.right;
     }
 
     private void FixedUpdate()
@@ -45,23 +45,25 @@ public class PlayerMove : MonoBehaviour
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
         rb.velocity = moveVelocity;
 
-        // 플레이어가 이동한 방향을 기록
-        if (inputVec != Vector2.zero)
-        {
-            lastMoveDir = inputVec.normalized;
-        }
-
         DebugLine();
     }
 
     void OnMove(InputValue value)
     {
-        if (isDashing) { return; }
+        if (player.CurState == PlayerState.DASH ||
+            player.CurState == PlayerState.CHARGEHEAL ||
+            player.CurState == PlayerState.GROUNDSMASH ||
+            player.CurState == PlayerState.DEAD) { return; }
 
         float x = Mathf.Abs(transform.localScale.x);
         float y = Mathf.Abs(transform.localScale.y);
 
         inputVec = value.Get<Vector2>();
+
+        if(rb.velocity.y == 0)
+        {
+            player.SetCurState(PlayerState.MOVE);
+        }
 
         // InputVec의 값에 따른 플레이어 방향 전환
         if (inputVec.x < 0)
@@ -77,15 +79,22 @@ public class PlayerMove : MonoBehaviour
 
     void OnJump(InputValue value)
     {
+        if(player.CurState == PlayerState.DASH ||
+           player.CurState == PlayerState.GROUNDSMASH || 
+           player.CurState == PlayerState.CHARGEHEAL ||
+           player.CurState == PlayerState.DEAD) { return; }
+
         if (isGround)
         {
             canDoubleJump = true;
+            player.SetCurState(PlayerState.JUMP);
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
         else if(!isGround && canDoubleJump)
         {
             canDoubleJump = false;
             rb.velocity = new Vector2(rb.velocity.x, 0);
+            player.SetCurState(PlayerState.JUMP);
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
         else { }
@@ -103,10 +112,13 @@ public class PlayerMove : MonoBehaviour
     {
         canDash = false;
         isDashing = true;
+        player.SetCurState(PlayerState.DASH);
         float originGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(transform.localScale.x * dashPower, 0f);
         yield return new WaitForSeconds(dashingTime);
+        player.SetCurState(PlayerState.IDLE);
+        rb.velocity = Vector2.zero;
         rb.gravityScale = originGravity;
         isDashing = false;
         yield return new WaitForSeconds(dashCD);
@@ -118,11 +130,29 @@ public class PlayerMove : MonoBehaviour
         if (Physics2D.Raycast(footTf.position, Vector2.down, .1f, groundMask))
         {
             isGround = true;
+
+            if(player.CurState == PlayerState.DASH || 
+               player.CurState == PlayerState.CHARGEHEAL) { return; }
+
+            if (rb.velocity == Vector2.zero && inputVec == Vector2.zero)
+            {
+                player.SetCurState(PlayerState.IDLE);
+            }
+            else if (rb.velocity.y == 0 && inputVec != Vector2.zero)
+            {
+                player.SetCurState(PlayerState.MOVE);
+            }
+            else { }
         }
         else
         {
             isGround = false;
         }
+    }
+
+    public void StopMove()
+    {
+        inputVec = Vector2.zero;
     }
 
     private void DebugLine()

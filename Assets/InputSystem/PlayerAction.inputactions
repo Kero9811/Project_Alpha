@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChargeHeal",
+                    "type": "Button",
+                    "id": "70bc737e-60c6-47bd-8ade-89c424fc8297",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -150,6 +159,17 @@
                     "action": "GroundSmash",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "bca61908-de2a-480d-9f36-b09f7d633fb6",
+                    "path": "<Keyboard>/v",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "ChargeHeal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
