@@ -22,6 +22,8 @@ public class PlayerSkill : MonoBehaviour
     PlayerMove playerMove;
     Player player;
 
+    bool hasShot = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -41,7 +43,20 @@ public class PlayerSkill : MonoBehaviour
 
     void OnChargeHeal(InputValue value)
     {
-        if(!canChargerHeal)
+
+
+
+        FocusHeal();
+    }
+
+    void OnShot(InputValue value)
+    {
+        print("Test");
+    }
+
+    private void FocusHeal()
+    {
+        if (!canChargerHeal)
         {
             return; //TODO:테스트를 위해 true로 해놓았음 마나 추가하고 수정 필요
         }
@@ -104,7 +119,7 @@ public class PlayerSkill : MonoBehaviour
             {
                 print("Heal");
 
-                if(player.CurHp == player.MaxHp /*|| 마나 다 씀*/)
+                if (player.CurHp == player.MaxHp /*|| 마나 다 씀*/)
                 {
                     heal = true;
                 }
