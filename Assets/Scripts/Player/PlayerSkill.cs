@@ -8,7 +8,6 @@ public class PlayerSkill : MonoBehaviour
     #region 그라운드 스매쉬
     private float fallSpeed = 15f;
     private bool canGrandSmash = true;
-    private bool isSmashing;
     private float smashCD = 1f;
     private bool blockLoop = false; // 스매싱 무한 루프 방지
     #endregion
@@ -22,8 +21,6 @@ public class PlayerSkill : MonoBehaviour
     PlayerMove playerMove;
     Player player;
 
-    bool hasShot = false;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -31,27 +28,35 @@ public class PlayerSkill : MonoBehaviour
         player = GetComponent<Player>();
     }
 
-    void OnGroundSmash(InputValue value)
+    public void GroundSmash(InputAction.CallbackContext context)
     {
         // TODO: 이 스킬을 해금하였다면 사용가능
-        if (canGrandSmash)
+        if (!playerMove.isGround && canGrandSmash && context.started)
         {
             print("Smash");
             StartCoroutine(Smash());
         }
     }
 
-    void OnChargeHeal(InputValue value)
+    public void SpellOrHeal(InputAction.CallbackContext context)
     {
+        bool canUse = true;
 
+        if (player.CurState == PlayerState.GROUNDSMASH ||
+            player.CurState == PlayerState.ATTACK ||
+            player.CurState == PlayerState.DASH ||
+            player.CurState == PlayerState.DEAD) { return; }
 
+        if (player.CurState == PlayerState.JUMP) { canUse = false; }
 
-        FocusHeal();
-    }
-
-    void OnShot(InputValue value)
-    {
-        print("Test");
+        if (context.duration < .5f && context.canceled)
+        {
+            print("Shot");
+        }
+        else if (context.duration > 1f && (context.performed || context.canceled) && canUse)
+        {
+            FocusHeal();
+        }
     }
 
     private void FocusHeal()
@@ -78,7 +83,6 @@ public class PlayerSkill : MonoBehaviour
     {
         float curTime = 0f;
         canGrandSmash = false;
-        isSmashing = true;
         player.SetCurState(PlayerState.GROUNDSMASH);
         float originGravity = rb.gravityScale;
         rb.gravityScale = 0f;
@@ -95,7 +99,6 @@ public class PlayerSkill : MonoBehaviour
             yield return null;
         }
         rb.gravityScale = originGravity;
-        isSmashing = false;
         player.SetCurState(PlayerState.IDLE);
         yield return new WaitForSeconds(smashCD);
         canGrandSmash = true;
@@ -115,17 +118,17 @@ public class PlayerSkill : MonoBehaviour
         {
             curTime += Time.deltaTime;
 
-            if (curTime > 2f)
+            if (curTime > 1f)
             {
                 print("Heal");
 
-                if (player.CurHp == player.MaxHp /*|| 마나 다 씀*/)
+                if (player.CurHp == player.MaxHp /*test code */ && heal/*|| 마나 다 씀*/)
                 {
                     heal = true;
                 }
                 else
                 {
-                    curTime = 1.5f;
+                    curTime = .2f;
                 }
             }
             yield return null;

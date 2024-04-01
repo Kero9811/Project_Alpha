@@ -40,7 +40,7 @@ public class PlayerMove : MonoBehaviour
     {
         CheckGround();
 
-        if(isDashing) { return; }
+        if (isDashing) { return; }
 
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
         rb.velocity = moveVelocity;
@@ -48,7 +48,7 @@ public class PlayerMove : MonoBehaviour
         DebugLine();
     }
 
-    void OnMove(InputValue value)
+    public void Move(InputAction.CallbackContext context)
     {
         if (player.CurState == PlayerState.DASH ||
             player.CurState == PlayerState.CHARGEHEAL ||
@@ -58,9 +58,10 @@ public class PlayerMove : MonoBehaviour
         float x = Mathf.Abs(transform.localScale.x);
         float y = Mathf.Abs(transform.localScale.y);
 
-        inputVec = value.Get<Vector2>();
+        //inputVec = value.Get<Vector2>();
+        inputVec = context.ReadValue<Vector2>();
 
-        if(rb.velocity.y == 0)
+        if (rb.velocity.y == 0)
         {
             player.SetCurState(PlayerState.MOVE);
         }
@@ -74,23 +75,23 @@ public class PlayerMove : MonoBehaviour
         {
             transform.localScale = new Vector2(x, y);
         }
-        else {  }
+        else { }
     }
 
-    void OnJump(InputValue value)
+    public void Jump(InputAction.CallbackContext context)
     {
-        if(player.CurState == PlayerState.DASH ||
-           player.CurState == PlayerState.GROUNDSMASH || 
+        if (player.CurState == PlayerState.DASH ||
+           player.CurState == PlayerState.GROUNDSMASH ||
            player.CurState == PlayerState.CHARGEHEAL ||
            player.CurState == PlayerState.DEAD) { return; }
 
-        if (isGround)
+        if (isGround && context.started)
         {
             canDoubleJump = true;
             player.SetCurState(PlayerState.JUMP);
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
-        else if(!isGround && canDoubleJump)
+        else if (!isGround && canDoubleJump && context.started)
         {
             canDoubleJump = false;
             rb.velocity = new Vector2(rb.velocity.x, 0);
@@ -100,9 +101,9 @@ public class PlayerMove : MonoBehaviour
         else { }
     }
 
-    void OnDash(InputValue value)
+    public void Dash(InputAction.CallbackContext context)
     {
-        if (canDash)
+        if (canDash && context.started)
         {
             StartCoroutine(Dash());
         }
@@ -110,6 +111,7 @@ public class PlayerMove : MonoBehaviour
 
     IEnumerator Dash()
     {
+        PlayerState state = player.CurState;
         canDash = false;
         isDashing = true;
         player.SetCurState(PlayerState.DASH);
@@ -117,7 +119,7 @@ public class PlayerMove : MonoBehaviour
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(transform.localScale.x * dashPower, 0f);
         yield return new WaitForSeconds(dashingTime);
-        player.SetCurState(PlayerState.IDLE);
+        player.SetCurState(state);
         rb.velocity = Vector2.zero;
         rb.gravityScale = originGravity;
         isDashing = false;
@@ -131,7 +133,7 @@ public class PlayerMove : MonoBehaviour
         {
             isGround = true;
 
-            if(player.CurState == PlayerState.DASH || 
+            if (player.CurState == PlayerState.DASH ||
                player.CurState == PlayerState.CHARGEHEAL) { return; }
 
             if (rb.velocity == Vector2.zero && inputVec == Vector2.zero)

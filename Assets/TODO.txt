@@ -1,5 +1,27 @@
 TODO:
 
 - Callback
-- InputSystem Hold and Tap
 - wallJump
+- Attack State 설정 제대로
+
+
+
+
+
+
+
+
+
+
+
+
+
+● 플레이어
+● 스킬
+● 몬스터
+● 보스
+● 맵
+● 인벤토리
+● NPC
+● 컷씬
+● 데이터 저장

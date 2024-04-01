@@ -51,21 +51,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChargeHeal",
-                    "type": "Button",
-                    "id": "70bc737e-60c6-47bd-8ade-89c424fc8297",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Shot",
+                    "name": "SpellOrHeal",
                     "type": "Button",
                     "id": "89f692f0-63d8-4718-a5ce-22ff60c2173c",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap,Hold(duration=1)",
+                    "interactions": "Hold(duration=1)",
                     "initialStateCheck": false
                 }
             ],
@@ -137,7 +128,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "DownArrow + F",
+                    "name": "DownArrow + A",
                     "id": "e5af1861-ca7f-4b58-b84a-9d23138eabb3",
                     "path": "OneModifier",
                     "interactions": "",
@@ -171,23 +162,12 @@
                 },
                 {
                     "name": "",
-                    "id": "bca61908-de2a-480d-9f36-b09f7d633fb6",
-                    "path": "<Keyboard>/v",
-                    "interactions": "Press(behavior=2)",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "ChargeHeal",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "8713516e-991b-4538-a779-98d145a2abd5",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "PC",
-                    "action": "Shot",
+                    "action": "SpellOrHeal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
