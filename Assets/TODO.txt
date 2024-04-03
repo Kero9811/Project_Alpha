@@ -2,6 +2,7 @@ TODO:
 
 - Callback
 - wallJump
+- swimming
 - Attack State 설정 제대로
 
 

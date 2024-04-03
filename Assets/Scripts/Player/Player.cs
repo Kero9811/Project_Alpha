@@ -10,7 +10,7 @@ public enum PlayerState
     MOVE,
     DASH,
     JUMP,
-    FALL,
+    SWIMMING,
     ATTACK,
     HIT,
     GROUNDSMASH,

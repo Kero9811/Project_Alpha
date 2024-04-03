@@ -28,7 +28,7 @@ public class PlayerSkill : MonoBehaviour
         player = GetComponent<Player>();
     }
 
-    public void GroundSmash(InputAction.CallbackContext context)
+    private void GroundSmash(InputAction.CallbackContext context)
     {
         // TODO: 이 스킬을 해금하였다면 사용가능
         if (!playerMove.isGround && canGrandSmash && context.started)
@@ -38,7 +38,7 @@ public class PlayerSkill : MonoBehaviour
         }
     }
 
-    public void SpellOrHeal(InputAction.CallbackContext context)
+    private void SpellOrHeal(InputAction.CallbackContext context)
     {
         bool canUse = true;
 

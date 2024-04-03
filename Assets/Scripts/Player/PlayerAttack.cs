@@ -32,7 +32,7 @@ public class PlayerAttack : MonoBehaviour
         attackCD -= Time.deltaTime;
     }
 
-    public void Attack(InputAction.CallbackContext context)
+    private void Attack(InputAction.CallbackContext context)
     {
         // 어택 판정 생성
         if (context.started && attackCD <= 0)

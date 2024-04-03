@@ -48,7 +48,7 @@ public class PlayerMove : MonoBehaviour
         DebugLine();
     }
 
-    public void Move(InputAction.CallbackContext context)
+    private void Move(InputAction.CallbackContext context)
     {
         if (player.CurState == PlayerState.DASH ||
             player.CurState == PlayerState.CHARGEHEAL ||
@@ -78,12 +78,18 @@ public class PlayerMove : MonoBehaviour
         else { }
     }
 
-    public void Jump(InputAction.CallbackContext context)
+    private void Jump(InputAction.CallbackContext context)
     {
         if (player.CurState == PlayerState.DASH ||
            player.CurState == PlayerState.GROUNDSMASH ||
            player.CurState == PlayerState.CHARGEHEAL ||
            player.CurState == PlayerState.DEAD) { return; }
+
+        if (player.CurState == PlayerState.SWIMMING)
+        {
+            // 수영 시 할 행동
+            return;
+        }
 
         if (isGround && context.started)
         {
@@ -101,7 +107,7 @@ public class PlayerMove : MonoBehaviour
         else { }
     }
 
-    public void Dash(InputAction.CallbackContext context)
+    private void Dash(InputAction.CallbackContext context)
     {
         if (canDash && context.started)
         {
