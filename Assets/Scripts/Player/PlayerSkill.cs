@@ -18,12 +18,14 @@ public class PlayerSkill : MonoBehaviour
     #endregion
 
     Rigidbody2D rb;
+    Animator anim;
     PlayerMove playerMove;
     Player player;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = transform.Find("Renderer").GetComponent<Animator>();
         playerMove = GetComponent<PlayerMove>();
         player = GetComponent<Player>();
     }
@@ -52,6 +54,7 @@ public class PlayerSkill : MonoBehaviour
         if (context.duration < .5f && context.canceled)
         {
             print("Shot");
+            anim.SetTrigger("Shot"); // test¿ë
         }
         else if (context.duration > 1f && (context.performed || context.canceled) && canUse)
         {
@@ -73,6 +76,7 @@ public class PlayerSkill : MonoBehaviour
         else
         {
             print("StopCharge");
+            anim.SetBool("isChargeHeal", false);
             player.SetCurState(PlayerState.IDLE);
             StopCoroutine(chargeHealCoroutine);
             chargeHealCoroutine = null;
@@ -87,6 +91,7 @@ public class PlayerSkill : MonoBehaviour
         float originGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         playerMove.StopMove();
+        anim.SetTrigger("GroundSlam");
         while (!(playerMove.isGround || blockLoop))
         {
             rb.velocity = new Vector2(0f, Vector2.down.y * fallSpeed);
@@ -95,11 +100,11 @@ public class PlayerSkill : MonoBehaviour
             {
                 blockLoop = true;
             }
-
             yield return null;
         }
         rb.gravityScale = originGravity;
-        player.SetCurState(PlayerState.IDLE);
+        //player.SetCurState(PlayerState.IDLE);
+        anim.speed = 1f;
         yield return new WaitForSeconds(smashCD);
         canGrandSmash = true;
         blockLoop = false;
@@ -111,6 +116,8 @@ public class PlayerSkill : MonoBehaviour
         float curTime = 0f;
         bool heal = false;
         player.SetCurState(PlayerState.CHARGEHEAL);
+
+        anim.SetBool("isChargeHeal", true);
 
         print("StartHeal");
 

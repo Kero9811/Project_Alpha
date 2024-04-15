@@ -1,9 +1,7 @@
 TODO:
 
-- Callback
+- player effect
 - wallJump
-- swimming
-- Attack State 설정 제대로
 
 
 
