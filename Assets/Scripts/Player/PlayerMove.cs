@@ -13,11 +13,10 @@ public class PlayerMove : MonoBehaviour
 
     private Vector2 inputVec;
     private Transform footTf;
-    private Transform rightTf;
-    private Transform leftTf;
+    private Transform frontTf;
 
     [HideInInspector] public bool isGround;
-    [HideInInspector] public bool isWall;
+    private bool isWall;
     private LayerMask groundMask;
 
 
@@ -28,9 +27,8 @@ public class PlayerMove : MonoBehaviour
     private bool canDoubleJump = false;
 
     private bool canWallSlide = true;
-    private bool canWallJump = true;
     private float wallSlideSpeed = 2f;
-    private float wallJumpPower = 7f;
+    private float wallJumpPower = 5f;
 
     private Rigidbody2D rb;
     private Player player;
@@ -44,8 +42,7 @@ public class PlayerMove : MonoBehaviour
 
         groundMask = LayerMask.GetMask("Ground");
         footTf = transform.Find("Foot").GetComponent<Transform>();
-        rightTf = transform.Find("Right").GetComponent<Transform>();
-        leftTf = transform.Find("Left").GetComponent<Transform>();
+        frontTf = transform.Find("Front").GetComponent<Transform>();
     }
 
     private void FixedUpdate()
@@ -53,31 +50,29 @@ public class PlayerMove : MonoBehaviour
         CheckGround();
         CheckWall();
 
-        if (player.CurState == PlayerState.DASH ||
-            player.CurState == PlayerState.GROUNDSMASH) { return; }
+        if (player.CurState == PlayerState.Dash ||
+            player.CurState == PlayerState.GroundSmash ||
+            player.CurState == PlayerState.WallJump) { return; }
 
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
         rb.velocity = moveVelocity;
 
         anim.SetInteger("Move", (int)player.CurState);
-
-        DebugLine();
     }
 
     private void Move(InputAction.CallbackContext context)
     {
-        if (player.CurState == PlayerState.DASH ||
-            player.CurState == PlayerState.CHARGEHEAL ||
-            player.CurState == PlayerState.GROUNDSMASH ||
-            player.CurState == PlayerState.WallSlide ||
-            player.CurState == PlayerState.DEAD) { return; }
+        if (player.CurState == PlayerState.Dash ||
+            player.CurState == PlayerState.ChargeHeal ||
+            player.CurState == PlayerState.GroundSmash ||
+            player.CurState == PlayerState.Dead) { return; }
 
         float x = Mathf.Abs(transform.localScale.x);
         float y = Mathf.Abs(transform.localScale.y);
 
         if (rb.velocity.y == 0)
         {
-            player.SetCurState(PlayerState.MOVE);
+            player.SetCurState(PlayerState.Move);
         }
 
         // InputVec의 값에 따른 플레이어 방향 전환
@@ -91,36 +86,41 @@ public class PlayerMove : MonoBehaviour
         }
         else { }
 
-        // isGround가 아니고 벽에 붙은 상태로 해당 방향으로 이동을 시도하면
-        // wallSlide 상태에서 이동키로 벗어날 경우 수치 재조정 추가
-        if (isWall && !isGround)
+        if (isWall && !isGround && canWallSlide)
         {
+            anim.SetBool("isWallSlide", true);
             player.SetCurState(PlayerState.WallSlide);
             rb.gravityScale = 0f;
             rb.velocity = Vector2.zero;
             _ = StartCoroutine(WallSlideCoroutine());
         }
-
         inputVec = context.ReadValue<Vector2>();
     }
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (player.CurState == PlayerState.DASH ||
-           player.CurState == PlayerState.GROUNDSMASH ||
-           player.CurState == PlayerState.CHARGEHEAL ||
-           player.CurState == PlayerState.DEAD) { return; }
+        if (player.CurState == PlayerState.Dash ||
+           player.CurState == PlayerState.GroundSmash ||
+           player.CurState == PlayerState.ChargeHeal ||
+           player.CurState == PlayerState.Dead) { return; }
 
-        if (player.CurState == PlayerState.WallSlide)
+        if (player.CurState == PlayerState.WallSlide && context.started)
         {
             // 벽에 붙어 있을 시 할 행동
+            StopCoroutine(WallSlideCoroutine());
+            anim.SetTrigger("WallJump");
+            rb.velocity = Vector2.zero;
+            rb.gravityScale = 1.5f;
+            player.SetCurState(PlayerState.WallJump);
+            rb.AddForce(-frontTf.transform.up * wallJumpPower + Vector3.up * jumpPower, ForceMode2D.Impulse);
+            Invoke("AnimParamChange", .5f);
             return;
         }
 
         if (isGround && context.started)
         {
             canDoubleJump = true;
-            player.SetCurState(PlayerState.JUMP);
+            player.SetCurState(PlayerState.Jump);
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             anim.SetTrigger("Jump");
         }
@@ -128,7 +128,7 @@ public class PlayerMove : MonoBehaviour
         {
             canDoubleJump = false;
             rb.velocity = new Vector2(rb.velocity.x, 0);
-            player.SetCurState(PlayerState.JUMP);
+            player.SetCurState(PlayerState.Jump);
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             anim.SetTrigger("DoubleJump");
         }
@@ -137,12 +137,13 @@ public class PlayerMove : MonoBehaviour
 
     private void Dash(InputAction.CallbackContext context)
     {
-        if (player.CurState == PlayerState.GROUNDSMASH ||
-            player.CurState == PlayerState.DEAD) { return; }
+        if (player.CurState == PlayerState.GroundSmash ||
+            player.CurState == PlayerState.WallSlide || 
+            player.CurState == PlayerState.Dead) { return; }
 
         if (canDash && context.started)
         {
-            StartCoroutine(Dash());
+            _ = StartCoroutine(Dash());
         }
     }
 
@@ -151,7 +152,7 @@ public class PlayerMove : MonoBehaviour
         anim.SetBool("isDashing", true);
         PlayerState state = player.CurState;
         canDash = false;
-        player.SetCurState(PlayerState.DASH);
+        player.SetCurState(PlayerState.Dash);
         float originGravity = rb.gravityScale;
         rb.gravityScale = 0f;
         rb.velocity = new Vector2(transform.localScale.x * dashPower, 0f);
@@ -171,18 +172,18 @@ public class PlayerMove : MonoBehaviour
             isGround = true;
             anim.SetBool("isGround", isGround);
 
-            if (player.CurState == PlayerState.DASH ||
-               player.CurState == PlayerState.CHARGEHEAL ||
-               player.CurState == PlayerState.GROUNDSMASH ||
+            if (player.CurState == PlayerState.Dash ||
+               player.CurState == PlayerState.ChargeHeal ||
+               player.CurState == PlayerState.GroundSmash ||
                player.CurState == PlayerState.WallSlide) { return; }
 
             if (rb.velocity == Vector2.zero && inputVec == Vector2.zero)
             {
-                player.SetCurState(PlayerState.IDLE);
+                player.SetCurState(PlayerState.Idle);
             }
             else if (rb.velocity.y == 0 && inputVec != Vector2.zero)
             {
-                player.SetCurState(PlayerState.MOVE);
+                player.SetCurState(PlayerState.Move);
             }
             else { }
         }
@@ -195,18 +196,7 @@ public class PlayerMove : MonoBehaviour
 
     private void CheckWall()
     {
-        if (Physics2D.Raycast(rightTf.position, Vector2.right, .5f, groundMask))
-        {
-            isWall = true;
-        }
-        else if (Physics2D.Raycast(leftTf.position, Vector2.left, .5f, groundMask))
-        {
-            isWall = true;
-        }
-        else
-        {
-            isWall= false;
-        }
+        isWall = Physics2D.Raycast(frontTf.position, frontTf.transform.up, .2f, groundMask) ? true : false;
     }
 
     IEnumerator WallSlideCoroutine()
@@ -217,7 +207,15 @@ public class PlayerMove : MonoBehaviour
             rb.velocity = Vector2.down * wallSlideSpeed;
             if (isGround)
             {
-                player.SetCurState(PlayerState.IDLE);
+                anim.SetBool("isWallSlide", false);
+                player.SetCurState(PlayerState.Idle);
+                rb.gravityScale = 1.5f;
+                break;
+            }
+            else if (!isGround && !isWall)
+            {
+                anim.SetBool("isWallSlide", false);
+                player.SetCurState(PlayerState.Jump);
                 rb.gravityScale = 1.5f;
                 break;
             }
@@ -228,6 +226,12 @@ public class PlayerMove : MonoBehaviour
     public void StopMove()
     {
         inputVec = Vector2.zero;
+    }
+
+    private void AnimParamChange()
+    {
+        anim.SetBool("isWallSlide", false);
+        player.SetCurState(PlayerState.Jump);
     }
 
     private void DebugLine()

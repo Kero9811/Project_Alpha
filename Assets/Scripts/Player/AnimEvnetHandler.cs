@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimatorHandler : MonoBehaviour
+public class AnimEvnetHandler : MonoBehaviour
 {
     Animator anim;
     Player player;
@@ -21,6 +21,6 @@ public class AnimatorHandler : MonoBehaviour
 
     private void SetStateToIdle()
     {
-        player.SetCurState(PlayerState.IDLE);
+        player.SetCurState(PlayerState.Idle);
     }
 }

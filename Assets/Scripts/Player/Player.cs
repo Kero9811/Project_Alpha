@@ -6,25 +6,26 @@ using UnityEngine;
 [Serializable]
 public enum PlayerState
 {
-    IDLE,
-    MOVE,
-    DASH,
-    JUMP,
+    Idle,
+    Move,
+    Dash,
+    Jump,
     WallSlide,
-    ATTACK,
-    HIT,
-    GROUNDSMASH,
-    CHARGEHEAL,
-    DEAD
+    WallJump,
+    Attack,
+    Hit,
+    GroundSmash,
+    ChargeHeal,
+    Dead
 }
 
 public class Player : MonoBehaviour
 {
     #region 플레이어 스탯 및 상태
+    private int maxHp = 100;
     private int curHp;
-    private int maxHp;
+    private int maxMp = 100;
     private int curMp;
-    private int maxMp;
     private int curGold;
     private int maxGold;
     private PlayerState curState;
@@ -46,11 +47,58 @@ public class Player : MonoBehaviour
     public PlayerSkill P_Skill => p_Skill;
     #endregion
 
+    Animator anim;
+
     private void Awake()
     {
         p_Move = GetComponent<PlayerMove>();
         p_Attack = GetComponent<PlayerAttack>();
         p_Skill = GetComponent<PlayerSkill>();
+
+        anim = transform.Find("Renderer").GetComponent<Animator>();
+
+        // 추후 세이브 데이터에서 가져오는걸로 변경
+        curHp = maxHp;
+        curMp = maxMp;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        curHp -= damage;
+
+        if (curHp <= 0)
+        {
+            curHp = 0;
+            Die();
+        }
+    }
+
+    public bool UseMp(int cost)
+    {
+        if (curMp < cost)
+        {
+            Debug.Log("마나 부족");
+            return false;
+        }
+
+        curMp -= cost;
+        UIManager.Instance.m_Handler.OnChangeMp();
+        return true;
+    }
+
+    public void Heal(int value)
+    {
+        curHp += value;
+
+        if (curHp >= maxHp)
+        {
+            curHp = maxHp;
+        }
+    }
+
+    private void Die()
+    {
+        anim.SetTrigger("Dead");
     }
 
     public void SetCurState(PlayerState state)

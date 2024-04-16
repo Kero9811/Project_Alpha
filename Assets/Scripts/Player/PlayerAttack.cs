@@ -23,7 +23,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Awake()
     {
-        attackPos = transform.Find("Right").transform;
+        attackPos = transform.Find("Front").transform;
         player = GetComponent<Player>();
     }
 
@@ -37,9 +37,15 @@ public class PlayerAttack : MonoBehaviour
         // 어택 판정 생성
         if (context.started && attackCD <= 0)
         {
-            player.SetCurState(PlayerState.ATTACK);
+            player.SetCurState(PlayerState.Attack);
             print("Attack");
             attackCD = delay;
+            
+            if (true /*몬스터가 맞으면*/)
+            {
+                // 마나가 조금 차오른다
+                UIManager.Instance.m_Handler.OnChangeMp();
+            }
         }
     }
 }
