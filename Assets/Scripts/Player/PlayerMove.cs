@@ -26,7 +26,7 @@ public class PlayerMove : MonoBehaviour
 
     private bool canDoubleJump = false;
 
-    private bool canWallSlide = true;
+    private bool canWallSlide = false;
     private float wallSlideSpeed = 2f;
     private float wallJumpPower = 5f;
 
@@ -58,6 +58,7 @@ public class PlayerMove : MonoBehaviour
         rb.velocity = moveVelocity;
 
         anim.SetInteger("Move", (int)player.CurState);
+        print((int)player.CurState);
     }
 
     private void Move(InputAction.CallbackContext context)
@@ -65,6 +66,7 @@ public class PlayerMove : MonoBehaviour
         if (player.CurState == PlayerState.Dash ||
             player.CurState == PlayerState.ChargeHeal ||
             player.CurState == PlayerState.GroundSmash ||
+            player.CurState == PlayerState.LookAt ||
             player.CurState == PlayerState.Dead) { return; }
 
         float x = Mathf.Abs(transform.localScale.x);
@@ -100,6 +102,7 @@ public class PlayerMove : MonoBehaviour
     private void Jump(InputAction.CallbackContext context)
     {
         if (player.CurState == PlayerState.Dash ||
+           player.CurState == PlayerState.LookAt ||
            player.CurState == PlayerState.GroundSmash ||
            player.CurState == PlayerState.ChargeHeal ||
            player.CurState == PlayerState.Dead) { return; }
@@ -135,10 +138,29 @@ public class PlayerMove : MonoBehaviour
         else { }
     }
 
+    private void LookUp(InputAction.CallbackContext context)
+    {
+        if (player.CurState != PlayerState.Idle &&
+            player.CurState != PlayerState.LookAt) { return; }
+
+
+        if (context.duration > 1f && context.performed)
+        {
+            player.SetCurState(PlayerState.LookAt);
+            anim.SetBool("isLookUp", true);
+        }
+        else if (context.duration > 1f && context.canceled)
+        {
+            player.SetCurState(PlayerState.Idle);
+            anim.SetBool("isLookUp", false);
+        }
+    }
+
     private void Dash(InputAction.CallbackContext context)
     {
         if (player.CurState == PlayerState.GroundSmash ||
-            player.CurState == PlayerState.WallSlide || 
+            player.CurState == PlayerState.WallSlide ||
+            player.CurState == PlayerState.LookAt ||
             player.CurState == PlayerState.Dead) { return; }
 
         if (canDash && context.started)
@@ -175,7 +197,9 @@ public class PlayerMove : MonoBehaviour
             if (player.CurState == PlayerState.Dash ||
                player.CurState == PlayerState.ChargeHeal ||
                player.CurState == PlayerState.GroundSmash ||
-               player.CurState == PlayerState.WallSlide) { return; }
+               player.CurState == PlayerState.WallSlide ||
+               player.CurState == PlayerState.LookAt ||
+               player.CurState == PlayerState.Dead) { return; }
 
             if (rb.velocity == Vector2.zero && inputVec == Vector2.zero)
             {
@@ -199,11 +223,11 @@ public class PlayerMove : MonoBehaviour
         isWall = Physics2D.Raycast(frontTf.position, frontTf.transform.up, .2f, groundMask) ? true : false;
     }
 
+    #region 벽타기 코루틴
     IEnumerator WallSlideCoroutine()
     {
         while (player.CurState == PlayerState.WallSlide)
         {
-            // 일정한 속도로 천천히 내려감
             rb.velocity = Vector2.down * wallSlideSpeed;
             if (isGround)
             {
@@ -222,6 +246,7 @@ public class PlayerMove : MonoBehaviour
             yield return null;
         }
     }
+    #endregion
 
     public void StopMove()
     {
@@ -232,6 +257,11 @@ public class PlayerMove : MonoBehaviour
     {
         anim.SetBool("isWallSlide", false);
         player.SetCurState(PlayerState.Jump);
+    }
+
+    public void UnlockWallSlide()
+    {
+        canWallSlide = true;
     }
 
     private void DebugLine()

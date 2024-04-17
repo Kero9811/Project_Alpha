@@ -14,15 +14,18 @@ public class PlayerSkill : MonoBehaviour
     #endregion
 
     #region 차지힐
-    private bool canChargerHeal = true;
+    private bool canChargerHeal = false;
     Coroutine chargeHealCoroutine = null;
+    private int healMp = 30;
     #endregion
 
+    #region 각종 변수
     Rigidbody2D rb;
     Animator anim;
     PlayerMove playerMove;
     Player player;
     CinemachineImpulseSource c_Source;
+    #endregion
 
     private void Awake()
     {
@@ -50,10 +53,11 @@ public class PlayerSkill : MonoBehaviour
         bool canUse = true;
 
         if (player.CurState == PlayerState.GroundSmash ||
-            player.CurState == PlayerState.Attack ||
             player.CurState == PlayerState.Dash ||
+            player.CurState == PlayerState.LookAt ||
             player.CurState == PlayerState.Dead) { return; }
 
+        // 공중에서 마법은 가능하고 힐 차징은 안되도록
         if (player.CurState == PlayerState.Jump) { canUse = false; }
 
         if (context.duration < .5f && context.canceled)
@@ -63,6 +67,15 @@ public class PlayerSkill : MonoBehaviour
         }
         else if (context.duration > 1f && (context.performed || context.canceled) && canUse)
         {
+            if (player.CurMp >= healMp && player.CurHp != player.MaxHp)
+            {
+                canChargerHeal = true;
+            }
+            else
+            {
+                canChargerHeal = false;
+            }
+
             FocusHeal();
         }
     }
@@ -71,7 +84,7 @@ public class PlayerSkill : MonoBehaviour
     {
         if (!canChargerHeal)
         {
-            return; //TODO:테스트를 위해 true로 해놓았음 마나 추가하고 수정 필요
+            return;
         }
 
         if (chargeHealCoroutine == null)
@@ -80,7 +93,7 @@ public class PlayerSkill : MonoBehaviour
         }
         else
         {
-            print("StopCharge");
+            // 나중에 하던 도중에 맞으면 차이 끊기고 상태 변경 Idle로 안되게 변경
             anim.SetBool("isChargeHeal", false);
             player.SetCurState(PlayerState.Idle);
             StopCoroutine(chargeHealCoroutine);
@@ -88,6 +101,7 @@ public class PlayerSkill : MonoBehaviour
         }
     }
 
+    #region 그라운드 스매쉬 코루틴
     IEnumerator Smash()
     {
         float curTime = 0f;
@@ -114,8 +128,9 @@ public class PlayerSkill : MonoBehaviour
         canGrandSmash = true;
         blockLoop = false;
     }
+    #endregion
 
-
+    #region 차지힐 코루틴
     IEnumerator ChargeHeal()
     {
         float curTime = 0f;
@@ -123,16 +138,18 @@ public class PlayerSkill : MonoBehaviour
 
         anim.SetBool("isChargeHeal", true);
 
-        print("StartHeal");
-
         while (true)
         {
             curTime += Time.deltaTime;
 
             if (curTime > 1f)
             {
-                if (/*player.CurHp == player.MaxHp || */player.CurMp < 20)
+                if (player.CurHp == player.MaxHp || player.CurMp < healMp)
                 {
+                    anim.SetBool("isChargeHeal", false);
+                    player.SetCurState(PlayerState.Idle);
+                    StopCoroutine(chargeHealCoroutine);
+                    chargeHealCoroutine = null;
                     break;
                 }
                 else
@@ -140,11 +157,11 @@ public class PlayerSkill : MonoBehaviour
                     curTime = .2f;
                 }
 
-                print("Heal");
-                player.UseMp(30);
-                player.Heal(20);
+                player.UseMp(healMp);
+                player.Heal(1);
             }
             yield return null;
         }
     }
+    #endregion
 }

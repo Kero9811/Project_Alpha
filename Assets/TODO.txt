@@ -1,7 +1,9 @@
 TODO:
 
-- player effect
-- mp, temp_Enemy, Basic UI
+- 어택(양쪽 + 위,아래) 판정 및 효과 생성 (적 타격 시 마나 충전)
+- 특정 물체 위에서 타격 하면 공중으로 올라감
+
+- 대쉬 후 애니메이션 고장남 (LookUp 때문인가)
 
 
 

@@ -8,11 +8,11 @@ public enum PlayerState
 {
     Idle,
     Move,
+    LookAt,
     Dash,
     Jump,
     WallSlide,
     WallJump,
-    Attack,
     Hit,
     GroundSmash,
     ChargeHeal,
@@ -22,7 +22,7 @@ public enum PlayerState
 public class Player : MonoBehaviour
 {
     #region 플레이어 스탯 및 상태
-    private int maxHp = 100;
+    private int maxHp = 3; // 최종 수치 : 10HP
     private int curHp;
     private int maxMp = 100;
     private int curMp;
@@ -59,12 +59,13 @@ public class Player : MonoBehaviour
 
         // 추후 세이브 데이터에서 가져오는걸로 변경
         curHp = maxHp;
-        curMp = maxMp;
+        curMp = 0;
     }
 
     public void TakeDamage(int damage)
     {
         curHp -= damage;
+        UIManager.Instance.h_Handler.OnChangeHp();
 
         if (curHp <= 0)
         {
@@ -90,15 +91,48 @@ public class Player : MonoBehaviour
     {
         curHp += value;
 
-        if (curHp >= maxHp)
+        if (curHp > maxHp)
         {
             curHp = maxHp;
+            return;
         }
+
+        UIManager.Instance.h_Handler.OnChangeHp();
+    }
+
+    public void GetMp(int value)
+    {
+        curMp += value;
+
+        if (curMp > maxMp)
+        {
+            curMp = maxMp;
+            return;
+        }
+
+        UIManager.Instance.m_Handler.OnChangeMp();
+    }
+
+    public void GetMaxHp(int maxValue)
+    {
+        maxHp += maxValue;
+        curHp += maxValue;
+        UIManager.Instance.h_Handler.OnChangeMaxHp();
+        UIManager.Instance.h_Handler.OnChangeHp();
+    }
+
+    public void GetMaxMp(int maxValue)
+    {
+        maxMp += maxValue;
+        curMp += maxValue;
+        UIManager.Instance.m_Handler.OnChangeMaxMp();
+        UIManager.Instance.m_Handler.OnChangeMp();
     }
 
     private void Die()
     {
         anim.SetTrigger("Dead");
+        SetCurState(PlayerState.Dead);
     }
 
     public void SetCurState(PlayerState state)
