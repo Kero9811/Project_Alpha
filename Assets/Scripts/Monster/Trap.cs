@@ -12,12 +12,16 @@ public class Trap : Monster
         }
     }
 
-    public override void TakeDamage(int damage)
+    public override void TakeDamage(int damage, Transform playerTf)
     {
         // 데미지는 받지 않고 소리가 나게 하려면 추가
+        // playerTf.position.y 비교해서 플레이어가 더 위면 플레이어의 함수 실행 (위로 이동)
     }
 
     #region 사용하지 않는 메서드
+    public override void TakeDamage(int damage)
+    {
+    }
     public override void Attack(int damage)
     {
     }

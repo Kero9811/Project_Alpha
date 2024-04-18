@@ -8,12 +8,11 @@ public enum PlayerState
 {
     Idle,
     Move,
-    LookAt,
     Dash,
-    Jump,
+    Jump, // 여기까지 순서 고정 (애니메이션 때문에)
+    LookAt,
     WallSlide,
     WallJump,
-    Hit,
     GroundSmash,
     ChargeHeal,
     Dead
@@ -48,6 +47,11 @@ public class Player : MonoBehaviour
     #endregion
 
     Animator anim;
+    SpriteRenderer render;
+
+    Coroutine blinkCoroutine;
+    private float blinkDuration = 2f;
+    private float blinkInterval = 0.2f;
 
     private void Awake()
     {
@@ -56,6 +60,7 @@ public class Player : MonoBehaviour
         p_Skill = GetComponent<PlayerSkill>();
 
         anim = transform.Find("Renderer").GetComponent<Animator>();
+        render = transform.Find("Renderer").GetComponent<SpriteRenderer>();
 
         // 추후 세이브 데이터에서 가져오는걸로 변경
         curHp = maxHp;
@@ -66,12 +71,39 @@ public class Player : MonoBehaviour
     {
         curHp -= damage;
         UIManager.Instance.h_Handler.OnChangeHp();
-
         if (curHp <= 0)
         {
             curHp = 0;
             Die();
+            return;
         }
+        OnDamaged();
+    }
+
+    private void OnDamaged()
+    {
+        gameObject.layer = 8;
+        blinkCoroutine = StartCoroutine(OnDamagedCoroutine());
+    }
+
+    IEnumerator OnDamagedCoroutine()
+    {
+        if (blinkCoroutine != null)
+        {
+            StopCoroutine(blinkCoroutine);
+            blinkCoroutine = null;
+        }
+
+        float startTime = Time.time;
+        while (Time.time - startTime < blinkDuration)
+        {
+            float alpha = Mathf.PingPong(Time.time / blinkInterval, 1f);
+            render.color = new Color(render.color.r, render.color.g, render.color.b, alpha);
+            yield return null;
+        }
+        gameObject.layer = 7;
+        render.color = new Color(render.color.r, render.color.g, render.color.b, 1f); // 알파값을 초기화합니다.
+        yield return null;
     }
 
     public bool UseMp(int cost)
@@ -132,6 +164,12 @@ public class Player : MonoBehaviour
     private void Die()
     {
         anim.SetTrigger("Dead");
+        if (blinkCoroutine != null)
+        {
+            StopCoroutine(blinkCoroutine);
+            blinkCoroutine = null;
+        }
+        render.color = new Color(1, 1, 1, 1);
         SetCurState(PlayerState.Dead);
     }
 

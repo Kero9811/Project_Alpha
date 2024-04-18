@@ -1,3 +1,4 @@
+using Lean.Pool;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,6 +35,8 @@ public class PlayerMove : MonoBehaviour
     private Player player;
     private Animator anim;
 
+    [SerializeField] private GameObject dashEffectPrefab;
+
     private void Awake()
     {
         player = GetComponent<Player>();
@@ -58,7 +61,6 @@ public class PlayerMove : MonoBehaviour
         rb.velocity = moveVelocity;
 
         anim.SetInteger("Move", (int)player.CurState);
-        print((int)player.CurState);
     }
 
     private void Move(InputAction.CallbackContext context)
@@ -177,6 +179,10 @@ public class PlayerMove : MonoBehaviour
         player.SetCurState(PlayerState.Dash);
         float originGravity = rb.gravityScale;
         rb.gravityScale = 0f;
+
+        // Dash Effect
+        LeanPool.Spawn(dashEffectPrefab, footTf, false);
+
         rb.velocity = new Vector2(transform.localScale.x * dashPower, 0f);
         yield return new WaitForSeconds(dashingTime);
         player.SetCurState(state);

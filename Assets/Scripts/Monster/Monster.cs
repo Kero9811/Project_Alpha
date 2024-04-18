@@ -36,6 +36,7 @@ public abstract class Monster : MonoBehaviour
     }
 
     public abstract void TakeDamage(int damage);
+    public abstract void TakeDamage(int damage, Transform playerTf);
     public abstract void Attack(int damage);
     public abstract void Move();
 }
