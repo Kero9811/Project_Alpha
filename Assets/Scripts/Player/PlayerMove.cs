@@ -1,3 +1,4 @@
+using Cinemachine;
 using Lean.Pool;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ public class PlayerMove : MonoBehaviour
     private Vector2 inputVec;
     private Transform footTf;
     private Transform frontTf;
+    private Transform upTf;
+    private Transform downTf;
 
     [HideInInspector] public bool isGround;
     private bool isWall;
@@ -34,8 +37,13 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody2D rb;
     private Player player;
     private Animator anim;
+    [SerializeField] private CinemachineVirtualCamera vcam;
 
+    #region ¿Ã∆Â∆Æ «¡∏Æ∆’
     [SerializeField] private GameObject dashEffectPrefab;
+    [SerializeField] private GameObject jumpEffectPrefab;
+    [SerializeField] private GameObject doubleJumpEffectPrefab;
+    #endregion
 
     private void Awake()
     {
@@ -46,6 +54,8 @@ public class PlayerMove : MonoBehaviour
         groundMask = LayerMask.GetMask("Ground");
         footTf = transform.Find("Foot").GetComponent<Transform>();
         frontTf = transform.Find("Front").GetComponent<Transform>();
+        upTf = transform.Find("Up").GetComponent<Transform>();
+        downTf = transform.Find("Down").GetComponent<Transform>();
     }
 
     private void FixedUpdate()
@@ -126,6 +136,10 @@ public class PlayerMove : MonoBehaviour
         {
             canDoubleJump = true;
             player.SetCurState(PlayerState.Jump);
+
+            // Jump Effect
+            LeanPool.Spawn(jumpEffectPrefab, footTf.position, Quaternion.identity);
+
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             anim.SetTrigger("Jump");
         }
@@ -134,6 +148,10 @@ public class PlayerMove : MonoBehaviour
             canDoubleJump = false;
             rb.velocity = new Vector2(rb.velocity.x, 0);
             player.SetCurState(PlayerState.Jump);
+
+            // DoubleJump Effect
+            LeanPool.Spawn(doubleJumpEffectPrefab, footTf.position, Quaternion.identity);
+
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             anim.SetTrigger("DoubleJump");
         }
@@ -150,11 +168,41 @@ public class PlayerMove : MonoBehaviour
         {
             player.SetCurState(PlayerState.LookAt);
             anim.SetBool("isLookUp", true);
+            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
+            vcam.Follow = upTf;
         }
         else if (context.duration > 1f && context.canceled)
         {
             player.SetCurState(PlayerState.Idle);
             anim.SetBool("isLookUp", false);
+            //Vector2 targetPosition = transform.position;
+            //vcam.transform.position = targetPosition;
+            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
+            vcam.Follow = transform;
+        }
+    }
+
+    private void LookDown(InputAction.CallbackContext context)
+    {
+        if (player.CurState != PlayerState.Idle &&
+            player.CurState != PlayerState.LookAt) { return; }
+
+        Vector2 targetPosition = vcam.transform.position;
+
+        if (context.duration > 1f && context.performed)
+        {
+            player.SetCurState(PlayerState.LookAt);
+            anim.SetBool("isLookDown", true);
+            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
+            vcam.Follow = downTf;
+        }
+        else if (context.duration > 1f && context.canceled)
+        {
+            player.SetCurState(PlayerState.Idle);
+            anim.SetBool("isLookDown", false);
+            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
+            vcam.Follow = transform;
+            //vcam.ForceCameraPosition(targetPosition, Quaternion.identity);
         }
     }
 
@@ -191,6 +239,14 @@ public class PlayerMove : MonoBehaviour
         anim.SetBool("isDashing", false);
         yield return new WaitForSeconds(dashCD);
         canDash = true;
+    }
+
+    public void DownAttackJump()
+    {
+        player.SetCurState(PlayerState.Jump);
+
+        rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        //anim.SetTrigger("Jump");
     }
 
     private void CheckGround()

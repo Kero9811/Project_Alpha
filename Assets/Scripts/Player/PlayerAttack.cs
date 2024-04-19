@@ -18,6 +18,7 @@ public class PlayerAttack : MonoBehaviour
     [Space(20)]
 
     private Transform attackTf;
+    private Transform downAttackTf;
     private Vector2 attackSize = new Vector2(1, 1);
 
     Player player;
@@ -26,6 +27,7 @@ public class PlayerAttack : MonoBehaviour
     private void Awake()
     {
         attackTf = transform.Find("AttackPoint").transform;
+        downAttackTf = transform.Find("Foot").transform;
         player = GetComponent<Player>();
         anim = transform.Find("Renderer").GetComponent<Animator>();
     }
@@ -60,9 +62,43 @@ public class PlayerAttack : MonoBehaviour
                 {
                     Debug.Log(monster.name);
                     // 레이어 비교 or 태그 비교 해서 함정과 몬스터를 구분 => TakeDamage 함수 호출 구분위해
-                    monster.TakeDamage(damage);
+                    monster.TakeDamage(damage, transform, false);
                     player.GetMp(5);
-                    UIManager.Instance.m_Handler.OnChangeMp();
+                    GameManager.Instance.UI.m_Handler.OnChangeMp();
+                }
+            }
+        }
+    }
+
+    public void DownAttack(InputAction.CallbackContext context)
+    {
+        if (player.CurState == PlayerState.Dead ||
+            player.CurState == PlayerState.ChargeHeal ||
+            player.CurState == PlayerState.Dash ||
+            player.CurState == PlayerState.LookAt ||
+            player.CurState == PlayerState.GroundSmash) { return; }
+
+        // 어택 판정 생성
+        if (context.started && attackCD <= 0)
+        {
+            attackCD = delay;
+            //if (player.CurState == PlayerState.Idle)
+            //{
+            //    anim.SetTrigger("Attack");
+            //}
+            Debug.Log("Down Attack");
+            Collider2D[] attackCols = Physics2D.OverlapBoxAll(downAttackTf.position, attackSize, 0);
+
+            for (int i = 0; i < attackCols.Length; i++)
+            {
+                if (attackCols[i].TryGetComponent(out Monster monster))
+                {
+                    Debug.Log("Down Attack");
+                    Debug.Log(monster.name);
+                    // 레이어 비교 or 태그 비교 해서 함정과 몬스터를 구분 => TakeDamage 함수 호출 구분위해
+                    monster.TakeDamage(damage, transform, true);
+                    player.GetMp(5);
+                    GameManager.Instance.UI.m_Handler.OnChangeMp();
                 }
             }
         }
@@ -70,7 +106,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawWireCube(attackTf.position, attackSize);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(downAttackTf.position, attackSize);
     }
 }

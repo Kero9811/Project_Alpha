@@ -32,7 +32,6 @@ public class HpUIHandler : MonoBehaviour
     public void OnChangeHp()
     {
         int curHpCount = player.CurHp;
-        activeCount = player.MaxHp;
 
         for (int i = 0; i < curHpCount; i++)
         {
@@ -47,6 +46,8 @@ public class HpUIHandler : MonoBehaviour
 
     public void OnChangeMaxHp()
     {
+        activeCount = player.MaxHp;
+
         for (int i = 0; i < activeCount; i++)
         {
             hpImagesObj[i].SetActive(true);

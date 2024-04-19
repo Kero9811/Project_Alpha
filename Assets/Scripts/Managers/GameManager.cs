@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
 
     #region ¸Å´ÏÀú
 
-    UIManager uiManager;
+    private UIManager uiManager;
+    public UIManager UI => uiManager;
 
     #endregion
 
@@ -19,10 +20,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         DontDestroyOnLoad(gameObject);
-    }
 
-    private void Start()
-    {
         InitManagers();
     }
 
@@ -31,7 +29,7 @@ public class GameManager : MonoBehaviour
         GameObject uiObj = new GameObject();
         uiObj.name = "UIManager";
         uiObj.transform.parent = transform.parent;
-        uiObj.AddComponent<UIManager>();
+        uiManager = uiObj.AddComponent<UIManager>();
     }
 
     public bool CheckIsGameScene()

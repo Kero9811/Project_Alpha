@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         curHp -= damage;
-        UIManager.Instance.h_Handler.OnChangeHp();
+        GameManager.Instance.UI.h_Handler.OnChangeHp();
         if (curHp <= 0)
         {
             curHp = 0;
@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
         }
 
         curMp -= cost;
-        UIManager.Instance.m_Handler.OnChangeMp();
+        GameManager.Instance.UI.m_Handler.OnChangeMp();
         return true;
     }
 
@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        UIManager.Instance.h_Handler.OnChangeHp();
+        GameManager.Instance.UI.h_Handler.OnChangeHp();
     }
 
     public void GetMp(int value)
@@ -142,23 +142,38 @@ public class Player : MonoBehaviour
             return;
         }
 
-        UIManager.Instance.m_Handler.OnChangeMp();
+        GameManager.Instance.UI.m_Handler.OnChangeMp();
     }
 
     public void GetMaxHp(int maxValue)
     {
         maxHp += maxValue;
+
+        if (maxHp > 10) { maxHp = 10; return; }
+
         curHp += maxValue;
-        UIManager.Instance.h_Handler.OnChangeMaxHp();
-        UIManager.Instance.h_Handler.OnChangeHp();
+        GameManager.Instance.UI.h_Handler.OnChangeMaxHp();
+        GameManager.Instance.UI.h_Handler.OnChangeHp();
     }
 
     public void GetMaxMp(int maxValue)
     {
         maxMp += maxValue;
+
+        if(maxMp > 200) {  maxMp = 200; return; }
+
         curMp += maxValue;
-        UIManager.Instance.m_Handler.OnChangeMaxMp();
-        UIManager.Instance.m_Handler.OnChangeMp();
+        GameManager.Instance.UI.m_Handler.OnChangeMaxMp();
+        GameManager.Instance.UI.m_Handler.OnChangeMp();
+    }
+
+    public void GetGold(int value)
+    {
+        curGold += value;
+
+        if (curGold > 9999) { curGold = 9999; return; }
+
+        GameManager.Instance.UI.moneyHandler.OnChangeMoney();
     }
 
     private void Die()

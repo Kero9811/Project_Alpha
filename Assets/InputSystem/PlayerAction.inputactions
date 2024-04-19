@@ -42,6 +42,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "DownAttack",
+                    "type": "Button",
+                    "id": "8fa95677-a095-4437-a87c-8f6f0cafbe83",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "GroundSmash",
                     "type": "Button",
                     "id": "61aaa01e-6db5-4d09-8b40-c096dbfe8621",
@@ -63,6 +72,15 @@
                     "name": "LookUp",
                     "type": "Button",
                     "id": "d9d67110-8d93-4c63-9be3-2ea9c32bec7a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LookDown",
+                    "type": "Button",
+                    "id": "4b717687-ab7b-4aef-a77d-7d960f84fdfe",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold(duration=1)",
@@ -153,7 +171,7 @@
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "GroundSmash",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -164,7 +182,7 @@
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "PC",
                     "action": "GroundSmash",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -190,6 +208,50 @@
                     "action": "LookUp",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "68a5445d-ebf6-4b03-8578-35406f4736a5",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "LookDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "DownArrow + X",
+                    "id": "e4e3e498-81e4-4f46-ab4c-416725fd2063",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DownAttack",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "41066034-b532-4b52-bb34-a1cc18dece03",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "DownAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "de2efcae-b414-41e2-a8f0-fff4c2fa264a",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "DownAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
