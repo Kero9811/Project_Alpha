@@ -92,11 +92,11 @@ public class PlayerMove : MonoBehaviour
         // InputVec의 값에 따른 플레이어 방향 전환
         if (inputVec.x < 0)
         {
-            transform.localScale = new Vector2(-x, y);
+            transform.localScale = new Vector3(-x, y, 1);
         }
         else if (inputVec.x > 0)
         {
-            transform.localScale = new Vector2(x, y);
+            transform.localScale = new Vector3(x, y, 1);
         }
         else { }
 

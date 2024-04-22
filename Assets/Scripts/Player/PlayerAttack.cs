@@ -1,3 +1,4 @@
+using Lean.Pool;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -20,6 +21,7 @@ public class PlayerAttack : MonoBehaviour
     private Transform attackTf;
     private Transform downAttackTf;
     private Vector2 attackSize = new Vector2(1, 1);
+    [SerializeField] private GameObject attackEffect;
 
     Player player;
     Animator anim;
@@ -40,9 +42,9 @@ public class PlayerAttack : MonoBehaviour
     private void Attack(InputAction.CallbackContext context)
     {
         if (player.CurState == PlayerState.Dead ||
-            player.CurState == PlayerState.ChargeHeal || 
-            player.CurState == PlayerState.Dash || 
-            player.CurState == PlayerState.LookAt || 
+            player.CurState == PlayerState.ChargeHeal ||
+            player.CurState == PlayerState.Dash ||
+            player.CurState == PlayerState.LookAt ||
             player.CurState == PlayerState.GroundSmash) { return; }
 
         // 어택 판정 생성
@@ -53,10 +55,11 @@ public class PlayerAttack : MonoBehaviour
             //{
             //    anim.SetTrigger("Attack");
             //}
-
+            Debug.Log("Attack");
             Collider2D[] attackCols = Physics2D.OverlapBoxAll(attackTf.position, attackSize, 0);
+            LeanPool.Spawn(attackEffect, attackTf, false);
 
-            for (int i = 0;  i < attackCols.Length; i++)
+            for (int i = 0; i < attackCols.Length; i++)
             {
                 if (attackCols[i].TryGetComponent(out Monster monster))
                 {
@@ -70,7 +73,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    public void DownAttack(InputAction.CallbackContext context)
+    private void DownAttack(InputAction.CallbackContext context)
     {
         if (player.CurState == PlayerState.Dead ||
             player.CurState == PlayerState.ChargeHeal ||
@@ -104,9 +107,9 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(downAttackTf.position, attackSize);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireCube(downAttackTf.position, attackSize);
+    //}
 }
