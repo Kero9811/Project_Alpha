@@ -7,6 +7,9 @@ public class HpUIHandler : MonoBehaviour
 {
     private GameObject[] hpImagesObj;
 
+    [SerializeField] private Sprite fullImage;
+    [SerializeField] private Sprite emptyImage;
+
     private int activeCount;
 
     public Player player;
@@ -29,18 +32,27 @@ public class HpUIHandler : MonoBehaviour
         OnChangeHp();
     }
 
+    private void OnEnable()
+    {
+        OnChangeMaxHp();
+        OnChangeHp();
+    }
+
     public void OnChangeHp()
     {
         int curHpCount = player.CurHp;
 
         for (int i = 0; i < curHpCount; i++)
         {
-            hpImagesObj[i].GetComponent<Image>().color = Color.red;
+            //hpImagesObj[i].GetComponent<Image>().sprite = fullImage;
+            hpImagesObj[i].GetComponent<Animator>().SetBool("isFull", true);
+
         }
 
         for (int i = curHpCount; i < activeCount; i++)
         {
-            hpImagesObj[i].GetComponent<Image>().color = Color.white;
+            //hpImagesObj[i].GetComponent<Image>().sprite = emptyImage;
+            hpImagesObj[i].GetComponent<Animator>().SetBool("isFull", false);
         }
     }
 

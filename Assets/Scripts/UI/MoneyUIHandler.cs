@@ -11,6 +11,11 @@ public class MoneyUIHandler : MonoBehaviour
 
     public Player player;
 
+    private void OnEnable()
+    {
+        OnChangeMoney();
+    }
+
     public void OnChangeMoney()
     {
         moneyText.text = player.CurGold.ToString();

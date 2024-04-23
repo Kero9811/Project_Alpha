@@ -7,7 +7,7 @@ using Cinemachine;
 public class PlayerSkill : MonoBehaviour
 {
     #region 그라운드 스매쉬
-    private float fallSpeed = 45f;
+    private float fallSpeed = 14f;
     private bool canGrandSmash = true;
     private float smashCD = 1f;
     private bool blockLoop = false; // 스매싱 무한 루프 방지

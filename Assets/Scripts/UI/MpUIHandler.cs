@@ -19,6 +19,11 @@ public class MpUIHandler : MonoBehaviour
         OnChangeMp();
     }
 
+    private void OnEnable()
+    {
+        OnChangeMp();
+    }
+
     public void OnChangeMp()
     {
         mpImage.fillAmount = (float)player.CurMp / player.MaxMp;
