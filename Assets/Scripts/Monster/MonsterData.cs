@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Monster", menuName = "Create/Monster", order = 0)]
-public class SO_Monster : ScriptableObject
+public class MonsterData : ScriptableObject
 {
     [SerializeField] private Race race;
 

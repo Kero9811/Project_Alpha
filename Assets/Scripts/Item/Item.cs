@@ -5,18 +5,24 @@ using UnityEngine;
 public abstract class Item : MonoBehaviour
 {
     public string itemName;
+    public Sprite itemSprite;
     public int cost;
     public int id;
     public string desc;
 
-    public SO_Item info;
+    public ItemData Info;
 
     private void Awake()
     {
-        itemName = info.ItemName;
-        cost = info.Cost;
-        id = info.Id;
-        desc = info.Desc;
+        InitItemInfo();
+    }
+
+    public void InitItemInfo()
+    {
+        itemName = Info.ItemName;
+        cost = Info.Cost;
+        id = Info.Id;
+        desc = Info.Desc;
     }
 
     public abstract void Use();

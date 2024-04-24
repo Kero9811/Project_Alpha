@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     public UIManager UI => uiManager;
 
+    private InventoryManager inventoryManager;
+    public InventoryManager Inven => inventoryManager;
+
     #endregion
 
 
@@ -30,6 +33,11 @@ public class GameManager : MonoBehaviour
         uiObj.name = "UIManager";
         uiObj.transform.parent = transform.parent;
         uiManager = uiObj.AddComponent<UIManager>();
+
+        GameObject invenObj = new GameObject();
+        invenObj.name = "InventoryManager";
+        invenObj.transform.parent = transform.parent;
+        inventoryManager = invenObj.AddComponent<InventoryManager>();
     }
 
     public bool CheckIsGameScene()

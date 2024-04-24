@@ -22,7 +22,7 @@ public abstract class Monster : MonoBehaviour
     public float moveSpeed;
     public float attackDelay;
 
-    public SO_Monster info;
+    public MonsterData info;
 
     private void Awake()
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Create/Item", order = 1)]
-public class SO_Item : ScriptableObject
+public class ItemData : ScriptableObject
 {
     [SerializeField] private string itemName;
     [SerializeField] private int cost;
