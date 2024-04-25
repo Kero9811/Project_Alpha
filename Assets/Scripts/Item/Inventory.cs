@@ -6,58 +6,89 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private List<Item> items = new List<Item>();
-    private Slot[] slots;
+    [SerializeField] private List<Item> storyItems = new List<Item>(); // Dictionary가 좋을 수도 있음 (탐색을 위해)
+    [SerializeField] private List<Item> abilityItems = new List<Item>();
 
-    [SerializeField] private Transform slotParent;
+    private Slot[] storySlots;
+    private Slot[] abilitySlots;
+
+    [SerializeField] private Transform storySlotParent;
+    [SerializeField] private Transform abilitySlotParent;
     [SerializeField] private Transform descParent;
 
     private void Awake()
     {
-        slots = new Slot[slotParent.childCount];
-
-        for (int i = 0; i < slotParent.childCount; i++)
+        storySlots = new Slot[storySlotParent.childCount];
+        for (int i = 0; i < storySlotParent.childCount; i++)
         {
-            slots[i] = slotParent.GetChild(i).GetComponentInChildren<Slot>();
+            storySlots[i] = storySlotParent.GetChild(i).GetComponentInChildren<Slot>();
         }
 
-        UpdateSlot();
+        abilitySlots = new Slot[abilitySlotParent.childCount];
+        for (int i = 0; i < abilitySlotParent.childCount; i++)
+        {
+            abilitySlots[i] = abilitySlotParent.GetChild(i).GetComponentInChildren<Slot>();
+        }
+
+        UpdateInvenSlot();
     }
 
     private void OnEnable()
     {
         if (GameManager.Instance?.Inven != null)
         {
-            AddItemsFromQueue(GameManager.Instance.Inven.itemQueue);
+            AddStoryItemsFromQueue(GameManager.Instance.Inven.storyItemQueue);
+            AddAbilityItemsFromQueue(GameManager.Instance.Inven.abilityItemQueue);
         }
     }
 
-    public void UpdateSlot()
+    public void UpdateInvenSlot()
     {
+        // 스토리 아이템 업데이트
         int i = 0;
-        for (; i < items.Count && i < slots.Length; i++)
+        for (; i < storyItems.Count && i < storySlots.Length; i++)
         {
-            items[i].InitItemInfo();
-            slots[i].item = items[i];
-            slots[i].SetItem(items[i]);
+            storyItems[i].InitItemInfo();
+            storySlots[i].item = storyItems[i];
+            storySlots[i].SetItem(storyItems[i]);
         }
-        for (; i < slots.Length; i++)
+        for (; i < storySlots.Length; i++)
         {
-            slots[i].item = null;
-            slots[i].SetItem(null);
+            storySlots[i].item = null;
+            storySlots[i].SetItem(null);
+        }
+
+        // 능력 아이템 업데이트
+        int j = 0;
+        for (; j < abilityItems.Count && j < abilitySlots.Length; j++)
+        {
+            abilityItems[j].InitItemInfo();
+            abilitySlots[j].item = abilityItems[j];
+            abilitySlots[j].SetItem(abilityItems[j]);
+        }
+        for (; j < abilitySlots.Length; j++)
+        {
+            abilitySlots[j].item = null;
+            abilitySlots[j].SetItem(null);
         }
     }
 
-    public void AddItem(Item item)
+    public void AddItemToInven(Item item)
     {
-        if (items.Count < slots.Length)
+        if (storyItems.Count < storySlots.Length && abilityItems.Count < abilitySlots.Length)
         {
-            items.Add(item);
-            UpdateSlot();
+            if (item.id <= 100 && item.id >= 0)
+            {
+                storyItems.Add(item);
+            }
+            else if (item.id > 100 && item.id <= 200)
+            {
+                abilityItems.Add(item);
+            }
         }
         else
         {
-            // 게임 구조상 발생할 일 없음
+            // 게임 구조상 발생할 일 없음 (동일하다는 조건은 될 수도 있음)
             Debug.Log("Inventory is Full");
         }
     }
@@ -66,31 +97,68 @@ public class Inventory : MonoBehaviour
     {
         if (item != null)
         {
-            Item targetItem = items.Find(x => x.id ==  item.id);
-            Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
-            targetImage.sprite = targetItem.itemSprite;
-            targetImage.color = new Color(1, 1, 1, 1);
-            descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetItem.desc;
+            if (item.id >= 0 && item.id <= 100)
+            {
+                Item targetItem = storyItems.Find(x => x.id ==  item.id);
+                Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
+                targetImage.sprite = targetItem.itemSprite;
+                targetImage.color = new Color(1, 1, 1, 1);
+                descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetItem.itemName;
+                descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetItem.desc;
+            }
+            else if (item.id > 100 && item.id <= 200)
+            {
+                Item targetItem = abilityItems.Find(x => x.id == item.id);
+                Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
+                targetImage.sprite = targetItem.itemSprite;
+                targetImage.color = new Color(1, 1, 1, 1);
+                descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetItem.itemName;
+                descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetItem.desc;
+            }
         }
         else
         {
             Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
             targetImage.sprite = null;
             targetImage.color = new Color(1, 1, 1, 0);
+            descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = "";
             descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = "";
         }
     }
 
-    public void AddItemsFromQueue(Queue<Item> itemQueue)
+    public void AddStoryItemsFromQueue(Queue<Item> itemQueue)
     {
         if (itemQueue.Count > 0)
         {
-            for (int i = 0; i < itemQueue.Count; i++)
+            while (itemQueue.Count > 0)
             {
-                AddItem(itemQueue.Dequeue());
+                AddItemToInven(itemQueue.Dequeue());
             }
 
-            GameManager.Instance.Inven.itemQueue.Clear();
+            UpdateInvenSlot();
+
+            GameManager.Instance.Inven.storyItemQueue.Clear();
+
+            // test코드
+            GameManager.Instance.Inven.storyCount = GameManager.Instance.Inven.storyItemQueue.Count;
+        }
+    }
+
+    public void AddAbilityItemsFromQueue(Queue<Item> itemQueue)
+    {
+        if (itemQueue.Count > 0)
+        {
+            while (itemQueue.Count > 0)
+            {
+                AddItemToInven(itemQueue.Dequeue());
+            }
+
+            UpdateInvenSlot();
+
+            GameManager.Instance.Inven.abilityItemQueue.Clear();
+
+            // test코드
+            GameManager.Instance.Inven.abilityCount = GameManager.Instance.Inven.abilityItemQueue.Count;
         }
     }
 }

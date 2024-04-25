@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     private Animator invenPanelAnim;
 
     private bool isOpen = false; // 열려 있는 지 체크
-    private int curContentIdx = 0; // 현재 열려 있는 Content 번호
+    private int curContentIdx = 0; // 현재 열려 있는 Content 번호 ( Inventory를 열고 play해야 정상작동, 다르게 하고 싶을 경우 수정)
 
     private void Awake()
     {

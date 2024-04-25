@@ -6,9 +6,13 @@ public class InventoryManager : MonoBehaviour
 {
     //[SerializeField] private Inventory inventory;
 
-    public Queue<Item> itemQueue = new Queue<Item>();
+    public Queue<Item> storyItemQueue = new Queue<Item>();
+    public Queue<Item> abilityItemQueue = new Queue<Item>();
+    public Queue<RuneItem> runeItemQueue = new Queue<RuneItem>();
 
-    public int queueCount = 0;
+    public int storyCount = 0; // 테스트용 변수
+    public int abilityCount = 0; // 테스트용 변수
+    public int runeCount = 0; // 테스트용 변수
 
     private void Awake()
     {
@@ -19,11 +23,26 @@ public class InventoryManager : MonoBehaviour
         //inventory = uiCanvas.transform.Find("InventoryPanel").GetComponentInChildren<Inventory>();
     }
 
-    public void AddItemsToQueue(Item item)
+    public void AddItemsToStoryQueue(Item item)
     {
-        itemQueue.Enqueue(item);
-        queueCount++;
+        storyItemQueue.Enqueue(item);
+        storyCount++;
     }
 
-    
+    public void AddItemsToAbilityQueue(Item item)
+    {
+        abilityItemQueue.Enqueue(item);
+        abilityCount++;
+    }
+
+    public void AddRuneToSlotQueue(RuneItem runeItem)
+    {
+        runeItemQueue.Enqueue(runeItem);
+        runeCount++;
+    }
+
+    //public void AddRuneToEquipQueue(RuneItem runeItem)
+    //{
+
+    //}
 }

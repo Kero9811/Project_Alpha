@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7c3e1956bcbe1a4daa7b5ee038e7165, type: 3}
-  m_Name: FirstItem
+  m_Name: AbilityItem
   m_EditorClassIdentifier: 
-  itemName: Blue Fish
-  cost: 0
-  id: 1
-  desc: A Big Blue Fish. It looks delicious, but actually isn't delicious...
+  itemName: Ability Test Item
+  id: 101
+  desc: Testing Item for unlock ability.

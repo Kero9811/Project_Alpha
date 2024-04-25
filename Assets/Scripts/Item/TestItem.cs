@@ -13,8 +13,4 @@ public class TestItem : Item
             Destroy(gameObject);
         }
     }
-
-    public override void Use()
-    {
-    }
 }

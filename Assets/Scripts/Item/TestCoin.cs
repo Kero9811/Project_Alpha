@@ -8,12 +8,8 @@ public class TestCoin : Item
     {
         if (collision.collider.TryGetComponent(out Player player))
         {
-            player.GetGold(cost);
+            //player.GetGold(cost);
             Destroy(gameObject);
         }
-    }
-
-    public override void Use()
-    {
     }
 }
