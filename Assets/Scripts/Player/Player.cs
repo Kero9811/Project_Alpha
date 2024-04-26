@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lean.Pool;
 
 [Serializable]
 public enum PlayerState
@@ -52,6 +53,10 @@ public class Player : MonoBehaviour
     Coroutine blinkCoroutine;
     private float blinkDuration = 2f;
     private float blinkInterval = 0.2f;
+
+    #region ¿Ã∆Â∆Æ «¡∏Æ∆’
+    [SerializeField] private GameObject healEffectPrefab;
+    #endregion
 
     private void Awake()
     {
@@ -129,6 +134,7 @@ public class Player : MonoBehaviour
             return;
         }
 
+        LeanPool.Spawn(healEffectPrefab, P_Move.FootTf);
         GameManager.Instance.UI.h_Handler.OnChangeHp();
     }
 

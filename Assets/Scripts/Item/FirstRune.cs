@@ -8,7 +8,7 @@ public class FirstRune : RuneItem
     {
         if (other.TryGetComponent(out Player player))
         {
-            print("·é ¾ÆÀÌÅÛ È¹µæ!");
+            print("Ã¹¹øÂ° Å×½ºÆ®·é ¾ÆÀÌÅÛ È¹µæ!");
             GameManager.Instance.Inven.AddRuneToSlotQueue(this);
         }
     }

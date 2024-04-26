@@ -172,20 +172,26 @@ public class EquipInven : MonoBehaviour
             UpdateRunePage();
 
             GameManager.Instance.Inven.runeItemQueue.Clear();
-
-            // test코드
-            GameManager.Instance.Inven.runeCount = GameManager.Instance.Inven.runeItemQueue.Count;
         }
     }
 
     public void EquipRune(RuneItem runeItem)
     {
         RuneItem targetRune = runeItems.Find(x => x.id == runeItem.id);
-        targetRune.isEquipped = true;
-        equipItems.Add(targetRune);
-        usingCost += targetRune.cost;
-        runeItems.Remove(targetRune);
-        UpdateRunePage();
+
+        // cost가 10을 넘거나 장착 슬롯이 다 찼을 경우 장착 불가 (cost는 10으로 fix or 진행하면서 늘려가는 걸로 수정)
+        if(targetRune.cost + usingCost > 10 || equipSlots[equipSlots.Length - 1].runeItem != null)
+        {
+            Debug.Log("코스트 혹은 장착 가능한 칸이 부족합니다.");
+        }
+        else
+        {
+            targetRune.isEquipped = true;
+            equipItems.Add(targetRune);
+            usingCost += targetRune.cost;
+            runeItems.Remove(targetRune);
+            UpdateRunePage();
+        }
     }
 
     public void UnEquipRune(RuneItem runeItem)

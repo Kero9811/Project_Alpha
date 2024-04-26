@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     private InventoryManager inventoryManager;
     public InventoryManager Inven => inventoryManager;
 
+    private EncyclopediaManager encyclopediaManager;
+    public EncyclopediaManager Encyclopedia => encyclopediaManager;
+
     #endregion
 
 
@@ -38,6 +41,11 @@ public class GameManager : MonoBehaviour
         invenObj.name = "InventoryManager";
         invenObj.transform.parent = transform.parent;
         inventoryManager = invenObj.AddComponent<InventoryManager>();
+
+        GameObject encycObj = new GameObject();
+        encycObj.name = "EncyclopediaManager";
+        encycObj.transform.parent = transform.parent;
+        encyclopediaManager = encycObj.AddComponent<EncyclopediaManager>();
     }
 
     public bool CheckIsGameScene()

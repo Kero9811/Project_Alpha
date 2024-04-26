@@ -15,4 +15,5 @@ MonoBehaviour:
   itemName: Test Rune Item
   id: 201
   desc: Rune Item for Test.
-  cost: 2
+  cost: 5
+  isEquipped: 0

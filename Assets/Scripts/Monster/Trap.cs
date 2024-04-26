@@ -30,5 +30,9 @@ public class Trap : Monster
     public override void Move()
     {
     }
+
+    public override void TakeDamage(int damage)
+    {
+    }
     #endregion
 }

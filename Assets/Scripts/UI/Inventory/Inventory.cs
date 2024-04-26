@@ -138,9 +138,6 @@ public class Inventory : MonoBehaviour
             UpdateInvenSlot();
 
             GameManager.Instance.Inven.storyItemQueue.Clear();
-
-            // test코드
-            GameManager.Instance.Inven.storyCount = GameManager.Instance.Inven.storyItemQueue.Count;
         }
     }
 
@@ -156,9 +153,6 @@ public class Inventory : MonoBehaviour
             UpdateInvenSlot();
 
             GameManager.Instance.Inven.abilityItemQueue.Clear();
-
-            // test코드
-            GameManager.Instance.Inven.abilityCount = GameManager.Instance.Inven.abilityItemQueue.Count;
         }
     }
 }

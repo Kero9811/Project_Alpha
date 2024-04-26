@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyAttackEffect : MonoBehaviour
+public class DespawnParticle : MonoBehaviour
 {
     private ParticleSystem ps;
 

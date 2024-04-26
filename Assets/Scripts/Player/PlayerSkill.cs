@@ -38,6 +38,8 @@ public class PlayerSkill : MonoBehaviour
 
     private void GroundSmash(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState == PlayerState.Dash || 
             player.CurState == PlayerState.Dead) { return; }
 
@@ -50,6 +52,8 @@ public class PlayerSkill : MonoBehaviour
 
     private void SpellOrHeal(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         bool canUse = true;
 
         if (player.CurState == PlayerState.GroundSmash ||
@@ -93,7 +97,7 @@ public class PlayerSkill : MonoBehaviour
         }
         else
         {
-            // 나중에 하던 도중에 맞으면 차이 끊기고 상태 변경 Idle로 안되게 변경
+            // 나중에 하던 도중에 맞으면 차징이 끊기고 상태 변경 Idle로 안되게 변경
             anim.SetBool("isChargeHeal", false);
             player.SetCurState(PlayerState.Idle);
             StopCoroutine(chargeHealCoroutine);

@@ -14,10 +14,15 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float dashPower = 24f;
 
     private Vector2 inputVec;
+
+    #region 위치
     private Transform footTf;
     private Transform frontTf;
     private Transform upTf;
     private Transform downTf;
+
+    public Transform FootTf => footTf;
+    #endregion
 
     [HideInInspector] public bool isGround;
     private bool isWall;
@@ -63,18 +68,30 @@ public class PlayerMove : MonoBehaviour
         CheckGround();
         CheckWall();
 
+        // 인벤토리가 켜져있으면 이동 불가
+        if (GameManager.Instance.UI.isOpen)
+        {
+            inputVec.x = 0;
+            anim.SetInteger("Move", (int)player.CurState);
+            return;
+        }
+
         if (player.CurState == PlayerState.Dash ||
             player.CurState == PlayerState.GroundSmash ||
-            player.CurState == PlayerState.WallJump) { return; }
+            player.CurState == PlayerState.WallJump || 
+            player.CurState == PlayerState.Dead) { return; }
 
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
         rb.velocity = moveVelocity;
 
         anim.SetInteger("Move", (int)player.CurState);
+
     }
 
     private void Move(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState == PlayerState.Dash ||
             player.CurState == PlayerState.ChargeHeal ||
             player.CurState == PlayerState.GroundSmash ||
@@ -113,6 +130,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState == PlayerState.Dash ||
            player.CurState == PlayerState.LookAt ||
            player.CurState == PlayerState.GroundSmash ||
@@ -160,6 +179,8 @@ public class PlayerMove : MonoBehaviour
 
     private void LookUp(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState != PlayerState.Idle &&
             player.CurState != PlayerState.LookAt) { return; }
 
@@ -184,6 +205,8 @@ public class PlayerMove : MonoBehaviour
 
     private void LookDown(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState != PlayerState.Idle &&
             player.CurState != PlayerState.LookAt) { return; }
 
@@ -208,6 +231,8 @@ public class PlayerMove : MonoBehaviour
 
     private void Dash(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState == PlayerState.GroundSmash ||
             player.CurState == PlayerState.WallSlide ||
             player.CurState == PlayerState.LookAt ||

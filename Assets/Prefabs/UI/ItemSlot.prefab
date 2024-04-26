@@ -130,6 +130,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 3251375655461772696}
   item: {fileID: 0}
+  runeItem: {fileID: 0}
+  isEquipInvenSlot: 0
 --- !u!222 &540857842269248824
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -158,9 +160,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d5a67aafeb80e2740b1fd5833bd546ab, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

@@ -41,6 +41,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState == PlayerState.Dead ||
             player.CurState == PlayerState.ChargeHeal ||
             player.CurState == PlayerState.Dash ||
@@ -65,7 +67,8 @@ public class PlayerAttack : MonoBehaviour
                 {
                     Debug.Log(monster.name);
                     // 레이어 비교 or 태그 비교 해서 함정과 몬스터를 구분 => TakeDamage 함수 호출 구분위해
-                    monster.TakeDamage(damage, transform, false);
+                    //monster.TakeDamage(damage, transform, false);
+                    monster.TakeDamage(damage);
                     player.GetMp(5);
                     GameManager.Instance.UI.m_Handler.OnChangeMp();
                 }
@@ -75,6 +78,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void DownAttack(InputAction.CallbackContext context)
     {
+        if (GameManager.Instance.UI.isOpen) { return; }
+
         if (player.CurState == PlayerState.Dead ||
             player.CurState == PlayerState.ChargeHeal ||
             player.CurState == PlayerState.Dash ||

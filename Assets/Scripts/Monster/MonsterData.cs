@@ -6,8 +6,8 @@ using UnityEngine;
 public class MonsterData : ScriptableObject
 {
     [SerializeField] private Race race;
-
     [SerializeField] private string monsterName;
+    [SerializeField] private int monsterId;
     [SerializeField] private int maxHp;
     [SerializeField] private int damage;
     [SerializeField] private float moveSpeed;
@@ -15,6 +15,7 @@ public class MonsterData : ScriptableObject
 
     public Race Race => race;
     public string MonsterName => monsterName;
+    public int MonsterId => monsterId;
     public int MaxHp => maxHp;
     public int Damage => damage;
     public float MoveSpeed => moveSpeed;
