@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EncyclopediaPanel : MonoBehaviour
 {
@@ -27,8 +28,11 @@ public class EncyclopediaPanel : MonoBehaviour
         }
     }
 
-    private void UpdatePanel()
+    private void UpdatePanel(MonsterData monsterData)
     {
-
+        if (monsterData != null)
+        {
+            //monsterImageParent.GetComponent<Image>().
+        }
     }
 }

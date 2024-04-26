@@ -6,6 +6,8 @@ using UnityEngine;
 public class MonsterListData : ScriptableObject
 {
     [SerializeField] private string[] monsterNames;
+    [SerializeField] private MonsterData[] monsterDatas;
 
     public string[] MonsterNames => monsterNames;
+    public MonsterData[] MonsterDatas => monsterDatas;
 }
