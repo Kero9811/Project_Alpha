@@ -33,6 +33,7 @@ public class PlayerMove : MonoBehaviour
     private float dashingTime = .2f;
     private float dashCD = 1f;
 
+    private bool checkDoubleJump = false;
     private bool canDoubleJump = false;
 
     private bool canWallSlide = false;
@@ -153,7 +154,7 @@ public class PlayerMove : MonoBehaviour
 
         if (isGround && context.started)
         {
-            canDoubleJump = true;
+            checkDoubleJump = true;
             player.SetCurState(PlayerState.Jump);
 
             // Jump Effect
@@ -162,9 +163,9 @@ public class PlayerMove : MonoBehaviour
             rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
             anim.SetTrigger("Jump");
         }
-        else if (!isGround && canDoubleJump && context.started)
+        else if (!isGround && checkDoubleJump && context.started && canDoubleJump)
         {
-            canDoubleJump = false;
+            checkDoubleJump = false;
             rb.velocity = new Vector2(rb.velocity.x, 0);
             player.SetCurState(PlayerState.Jump);
 
@@ -349,6 +350,11 @@ public class PlayerMove : MonoBehaviour
     public void UnlockWallSlide()
     {
         canWallSlide = true;
+    }
+
+    public void UnlockDoubleJump()
+    {
+        canDoubleJump = true;
     }
 
     private void DebugLine()
