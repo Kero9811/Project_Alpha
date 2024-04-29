@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EncyclopediaManager : MonoBehaviour
 {
-    public Dictionary<int, int> monsterKillDictionary = new Dictionary<int, int>(); // <몬스터 id, 킬 수>
+    public Dictionary<int, int> monsterDictionary = new Dictionary<int, int>(); // <몬스터 id, 킬 수>
 
     // 몬스터 가짓수
     private int monsterRaceCount = 10;
@@ -13,15 +13,20 @@ public class EncyclopediaManager : MonoBehaviour
     {
         for (int i = 1; i <= monsterRaceCount; i++)
         {
-            monsterKillDictionary[i] = 0;
+            monsterDictionary[i] = 0;
         }
     }
 
-    public void AddKillCount(int monsterId)
+    public void AddKillCount(MonsterData monsterData)
     {
-        if (monsterKillDictionary[monsterId] >= 999) { return; }
-        monsterKillDictionary[monsterId]++;
-        Debug.Log($"monsterId : {monsterId}, killcount : {monsterKillDictionary[monsterId]}");
+        if (monsterDictionary[monsterData.MonsterId] >= 999) { return; }
+        monsterDictionary[monsterData.MonsterId]++;
+        Debug.Log($"monsterName : {monsterData.MonsterName}, killcount : {monsterDictionary[monsterData.MonsterId]}");
+    }
+
+    public void AddMonsterData(MonsterData monsterData)
+    {
+
     }
 
 }

@@ -12,6 +12,8 @@ public class MonsterData : ScriptableObject
     [SerializeField] private int damage;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float attackDelay;
+    [SerializeField] private string desc;
+    public Sprite monsterSprite;
 
     public Race Race => race;
     public string MonsterName => monsterName;
@@ -20,4 +22,5 @@ public class MonsterData : ScriptableObject
     public int Damage => damage;
     public float MoveSpeed => moveSpeed;
     public float AttackDelay => attackDelay;
+    public string Desc => desc;
 }

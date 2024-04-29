@@ -42,6 +42,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        ResetItemConfirmUI();
+    }
+
     public void UpdateInvenSlot()
     {
         // 스토리 아이템 업데이트
@@ -88,7 +93,7 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            // 게임 구조상 발생할 일 없음 (동일하다는 조건은 될 수도 있음)
+            // 만들 아이템 갯수가 모자라서 구조상 발생할 일 없음
             Debug.Log("Inventory is Full");
         }
     }
@@ -118,12 +123,17 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
-            targetImage.sprite = null;
-            targetImage.color = new Color(1, 1, 1, 0);
-            descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = "";
-            descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = "";
+            ResetItemConfirmUI();
         }
+    }
+
+    private void ResetItemConfirmUI()
+    {
+        Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
+        targetImage.sprite = null;
+        targetImage.color = new Color(1, 1, 1, 0);
+        descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = "";
+        descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = "";
     }
 
     public void AddStoryItemsFromQueue(Queue<Item> itemQueue)

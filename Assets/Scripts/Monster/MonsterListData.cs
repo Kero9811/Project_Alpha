@@ -7,7 +7,9 @@ public class MonsterListData : ScriptableObject
 {
     [SerializeField] private string[] monsterNames;
     [SerializeField] private MonsterData[] monsterDatas;
+    [SerializeField] private int[] monsterKillCounts;
 
     public string[] MonsterNames => monsterNames;
     public MonsterData[] MonsterDatas => monsterDatas;
+    public int[] MonsterKillCounts => monsterKillCounts;
 }

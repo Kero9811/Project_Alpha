@@ -97,7 +97,7 @@ public class PlayerSkill : MonoBehaviour
         }
         else
         {
-            // 나중에 하던 도중에 맞으면 차징이 끊기고 상태 변경 Idle로 안되게 변경
+            //TODO:나중에 하던 도중에 맞으면 차징이 끊기고 상태 변경 Idle로 안되게 변경
             anim.SetBool("isChargeHeal", false);
             player.SetCurState(PlayerState.Idle);
             StopCoroutine(chargeHealCoroutine);

@@ -23,28 +23,36 @@ public abstract class Monster : MonoBehaviour
     protected float moveSpeed;
     protected float attackDelay;
 
-    public MonsterData info;
+    public MonsterData monsterData;
 
     private void Awake()
     {
-        race = info.Race;
-        monsterName = info.MonsterName;
-        monsterId = info.MonsterId;
-        maxHp = info.MaxHp;
+        race = monsterData.Race;
+        monsterName = monsterData.MonsterName;
+        monsterId = monsterData.MonsterId;
+        maxHp = monsterData.MaxHp;
         curHp = maxHp;
-        damage = info.Damage;
-        moveSpeed = info.MoveSpeed;
-        attackDelay = info.AttackDelay;
+        damage = monsterData.Damage;
+        moveSpeed = monsterData.MoveSpeed;
+        attackDelay = monsterData.AttackDelay;
     }
 
-    // 몬스터
+    /// <summary>
+    /// 몬스터에게 데미지만 줄 경우
+    /// </summary>
+    /// <param name="damage">받을 데미지</param>
     public abstract void TakeDamage(int damage);
-    // 함정 (가시)
+    /// <summary>
+    /// 몬스터 혹은 공격 상호작용 객체에게 데미지와 플레이어 위치, 다운어택 여부 제공하는 함수
+    /// </summary>
+    /// <param name="damage">받을 데미지</param>
+    /// <param name="playerTf">플레이어의 Transform</param>
+    /// <param name="isDownAttack">다운어택 여부</param>
     public abstract void TakeDamage(int damage, Transform playerTf, bool isDownAttack);
     public abstract void Attack(int damage);
     public abstract void Move();
     public virtual void Die()
     {
-        GameManager.Instance.Encyclopedia.AddKillCount(monsterId);
+        GameManager.Instance.Encyclopedia.AddKillCount(monsterData);
     }
 }

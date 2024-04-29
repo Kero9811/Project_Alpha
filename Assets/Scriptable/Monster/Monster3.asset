@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6cfeaef46aaf946b8087cf6465910d, type: 3}
   m_Name: Monster3
   m_EditorClassIdentifier: 
-  race: 2
-  monsterName: Monster2
-  monsterId: 2
+  race: 3
+  monsterName: Monster3
+  monsterId: 3
   maxHp: 9
   damage: 1
   moveSpeed: 2
   attackDelay: 1
+  desc: It's Monster!
+  monsterSprite: {fileID: 21300000, guid: fa1ce9d41c63ce3428e0cf9db5ce5f74, type: 3}

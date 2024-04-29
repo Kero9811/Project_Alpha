@@ -55,6 +55,11 @@ public class EquipInven : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        ResetRuneConfirmUI();
+    }
+
     public void UpdateRunePage()
     {
         // 룬 업데이트
@@ -149,15 +154,20 @@ public class EquipInven : MonoBehaviour
         }
         else
         {
-            Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
-            targetImage.sprite = null;
-            targetImage.color = new Color(1, 1, 1, 0);
-            descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = "";
-            descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = "";
-
-            costDescParent.GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 0); // 코스트 이미지
-            costDescParent.GetChild(1).GetComponent<TextMeshProUGUI>().text = ""; // 코스트 텍스트
+            ResetRuneConfirmUI();
         }
+    }
+
+    private void ResetRuneConfirmUI()
+    {
+        Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
+        targetImage.sprite = null;
+        targetImage.color = new Color(1, 1, 1, 0);
+        descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = "";
+        descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = "";
+
+        costDescParent.GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 0); // 코스트 이미지
+        costDescParent.GetChild(1).GetComponent<TextMeshProUGUI>().text = ""; // 코스트 텍스트
     }
 
     public void AddRunesFromQueue(Queue<RuneItem> runeQueue)

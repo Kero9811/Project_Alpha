@@ -19,3 +19,5 @@ MonoBehaviour:
   damage: 1
   moveSpeed: 2
   attackDelay: 1
+  desc: This is Monster!
+  monsterSprite: {fileID: 21300000, guid: 5cc9e5ae78e4ccf48b9cf84c2d1958da, type: 3}

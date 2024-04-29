@@ -50,7 +50,7 @@ public class PlayerAttack : MonoBehaviour
             player.CurState == PlayerState.GroundSmash) { return; }
 
         // 어택 판정 생성
-        if (context.started && attackCD <= 0)
+        if (/*context.started && attackCD <= 0*/ context.duration < .2f && context.canceled && attackCD <= 0)
         {
             attackCD = delay;
             //if (player.CurState == PlayerState.Idle)
@@ -66,7 +66,6 @@ public class PlayerAttack : MonoBehaviour
                 if (attackCols[i].TryGetComponent(out Monster monster))
                 {
                     Debug.Log(monster.name);
-                    // 레이어 비교 or 태그 비교 해서 함정과 몬스터를 구분 => TakeDamage 함수 호출 구분위해
                     //monster.TakeDamage(damage, transform, false);
                     monster.TakeDamage(damage);
                     player.GetMp(5);
@@ -103,7 +102,6 @@ public class PlayerAttack : MonoBehaviour
                 {
                     Debug.Log("Down Attack");
                     Debug.Log(monster.name);
-                    // 레이어 비교 or 태그 비교 해서 함정과 몬스터를 구분 => TakeDamage 함수 호출 구분위해
                     monster.TakeDamage(damage, transform, true);
                     player.GetMp(5);
                     GameManager.Instance.UI.m_Handler.OnChangeMp();

@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
         anim = transform.Find("Renderer").GetComponent<Animator>();
         render = transform.Find("Renderer").GetComponent<SpriteRenderer>();
 
-        // 추후 세이브 데이터에서 가져오는걸로 변경
+        //TODO:추후 세이브 데이터에서 가져오는걸로 변경
         curHp = maxHp;
         curMp = 0;
     }
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
             yield return null;
         }
         gameObject.layer = 7;
-        render.color = new Color(render.color.r, render.color.g, render.color.b, 1f); // 알파값을 초기화합니다.
+        render.color = new Color(render.color.r, render.color.g, render.color.b, 1f);
         yield return null;
     }
 

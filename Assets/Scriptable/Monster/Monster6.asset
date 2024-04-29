@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e6cfeaef46aaf946b8087cf6465910d, type: 3}
-  m_Name: Skeleton
+  m_Name: Monster6
   m_EditorClassIdentifier: 
-  race: 1
-  monsterName: Solider Skeleton
-  monsterId: 1
+  race: 3
+  monsterName: Monster6
+  monsterId: 6
   maxHp: 9
   damage: 1
   moveSpeed: 2
   attackDelay: 1
-  desc: Skeleton is the weakest monster in this game!
-  monsterSprite: {fileID: 4723107735738678597, guid: 7706bf6a41767814ea894e39cd6f8485, type: 3}
+  desc: It's Monster 6
+  monsterSprite: {fileID: -2891457178946760647, guid: a243641d9946cc94091a49250ee68e89, type: 3}

@@ -5,8 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region 싱글톤
     private static GameManager instance;
     public static GameManager Instance => instance;
+    #endregion
 
     #region 매니저
 
@@ -48,6 +50,10 @@ public class GameManager : MonoBehaviour
         encyclopediaManager = encycObj.AddComponent<EncyclopediaManager>();
     }
 
+    /// <summary>
+    /// 이 씬이 게임씬이 맞는지 확인하는 함수
+    /// </summary>
+    /// <returns></returns>
     public bool CheckIsGameScene()
     {
         Scene curScene = SceneManager.GetActiveScene();
