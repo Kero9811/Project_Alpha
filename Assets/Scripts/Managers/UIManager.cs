@@ -129,4 +129,15 @@ public class UIManager : MonoBehaviour
             row.Value.SetActive(row.Key == panelName);
         }
     }
+
+    public void UpdateGameUI()
+    {
+        h_Handler.OnChangeMaxHp();
+        h_Handler.OnChangeHp();
+
+        m_Handler.OnChangeMaxMp();
+        m_Handler.OnChangeMp();
+
+        moneyHandler.OnChangeMoney();
+    }
 }

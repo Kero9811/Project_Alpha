@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Trap
   m_EditorClassIdentifier: 
   race: 0
-  monsterName: "\uC784\uC2DC \uD568\uC815"
+  monsterName: "\uD14C\uC2A4\uD2B8 \uD568\uC815"
+  monsterId: 101
   maxHp: 0
   damage: 1
   moveSpeed: 0
   attackDelay: 0
+  desc: "\uD568\uC815\uC774\uB2E4"
+  monsterSprite: {fileID: -8974354616272315058, guid: e53c461be9be70c48b2e0e7870387469, type: 3}

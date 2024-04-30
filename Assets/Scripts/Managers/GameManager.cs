@@ -13,13 +13,13 @@ public class GameManager : MonoBehaviour
     #region ¸Å´ÏÀú
 
     private UIManager uiManager;
-    public UIManager UI => uiManager;
-
     private InventoryManager inventoryManager;
-    public InventoryManager Inven => inventoryManager;
-
     private EncyclopediaManager encyclopediaManager;
+    private DataManager dataManager;
+    public UIManager UI => uiManager;
+    public InventoryManager Inven => inventoryManager;
     public EncyclopediaManager Encyclopedia => encyclopediaManager;
+    public DataManager Data => dataManager;
 
     #endregion
 
@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
         encycObj.name = "EncyclopediaManager";
         encycObj.transform.parent = transform.parent;
         encyclopediaManager = encycObj.AddComponent<EncyclopediaManager>();
+
+        GameObject dataObj = new GameObject();
+        dataObj.name = "DataManager";
+        dataObj.transform.parent = transform.parent;
+        dataManager = dataObj.AddComponent<DataManager>();
     }
 
     /// <summary>

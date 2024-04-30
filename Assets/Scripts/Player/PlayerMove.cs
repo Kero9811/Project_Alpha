@@ -11,6 +11,7 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpPower;
+    private float downAttackJumpPower = 4f;
     [SerializeField] private float dashPower = 24f;
 
     private Vector2 inputVec;
@@ -270,8 +271,8 @@ public class PlayerMove : MonoBehaviour
     public void DownAttackJump()
     {
         player.SetCurState(PlayerState.Jump);
-
-        rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        rb.velocity = new Vector2(rb.velocity.x, 0f);
+        rb.AddForce(Vector2.up * downAttackJumpPower, ForceMode2D.Impulse);
         //anim.SetTrigger("Jump");
     }
 

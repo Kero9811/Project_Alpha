@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lean.Pool;
+using System.Threading.Tasks;
+using System.Threading;
 
 [Serializable]
 public enum PlayerState
@@ -22,9 +24,9 @@ public enum PlayerState
 public class Player : MonoBehaviour
 {
     #region 플레이어 스탯 및 상태
-    private int maxHp = 3; // 최종 수치 : 10HP
+    private int maxHp; // 최종 수치 : 10HP
     private int curHp;
-    private int maxMp = 100;
+    private int maxMp;
     private int curMp;
     private int curGold;
     private int maxGold;
@@ -66,10 +68,30 @@ public class Player : MonoBehaviour
 
         anim = transform.Find("Renderer").GetComponent<Animator>();
         render = transform.Find("Renderer").GetComponent<SpriteRenderer>();
+    }
 
-        //TODO:추후 세이브 데이터에서 가져오는걸로 변경
-        curHp = maxHp;
-        curMp = 0;
+    private async void Start()
+    {
+        await Task.Run(() =>
+        {
+            while(GameManager.Instance.Data == null)
+            {
+                Thread.Sleep(10);
+            }
+        });
+
+        GameManager.Instance.Data.LoadPlayerData(this);
+        GameManager.Instance.UI.UpdateGameUI();
+        Debug.Log("플레이어 데이터 불러오기 완료");
+    }
+
+    public void SetPlayerStat(PlayerStatus playerStat)
+    {
+        maxHp = playerStat.maxHp;
+        curHp = playerStat.curHp;
+        maxMp = playerStat.maxMp;
+        curMp = playerStat.curMp;
+        curGold = playerStat.curGold;
     }
 
     public void TakeDamage(int damage)

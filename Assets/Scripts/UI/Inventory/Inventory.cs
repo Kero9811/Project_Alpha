@@ -33,6 +33,11 @@ public class Inventory : MonoBehaviour
         UpdateInvenSlot();
     }
 
+    private void Start()
+    {
+        GameManager.Instance.Data.LoadInvenItem(storyItems, abilityItems);
+    }
+
     private void OnEnable()
     {
         if (GameManager.Instance?.Inven != null)

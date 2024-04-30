@@ -51,6 +51,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "UpAttack",
+                    "type": "Button",
+                    "id": "9a4a0af9-1574-49a6-bb68-d30eb7835ab2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "GroundSmash",
                     "type": "Button",
                     "id": "61aaa01e-6db5-4d09-8b40-c096dbfe8621",
@@ -250,6 +259,39 @@
                     "processors": "",
                     "groups": "PC",
                     "action": "DownAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "UpArrow + X",
+                    "id": "46885748-8c65-4476-92d3-20dd3bd53886",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UpAttack",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "6fcdc9ed-d85d-4e82-a4a0-f5ca77e51566",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "UpAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "d0dd6fc8-bd4c-4f8a-a236-d028dac56be9",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "UpAttack",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
