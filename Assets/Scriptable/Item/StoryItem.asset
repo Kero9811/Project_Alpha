@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: StoryItem
   m_EditorClassIdentifier: 
   itemName: Blue Fish
-  cost: 0
   id: 1
+  image: {fileID: -5312199849988608086, guid: 74df7df398475f74aa180e9d3bf6b6ec, type: 3}
   desc: A Big Blue Fish. It looks delicious, but actually isn't delicious...

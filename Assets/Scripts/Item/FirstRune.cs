@@ -8,7 +8,7 @@ public class FirstRune : RuneItem
     {
         if (other.TryGetComponent(out Player player))
         {
-            print("첫번째 테스트룬 아이템 획득!");
+            Debug.Log("첫번째 테스트룬 아이템 획득!");
             GameManager.Instance.Inven.AddRuneToSlotQueue(this);
         }
     }

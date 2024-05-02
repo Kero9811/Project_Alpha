@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Ability Test Item
   id: 101
+  image: {fileID: 21300000, guid: ac95a4fac37ec8a4d8f6fc7dcb0aea09, type: 3}
   desc: Testing Item for unlock ability.

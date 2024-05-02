@@ -8,8 +8,8 @@ public class FirstItem : Item
     {
         if (other.TryGetComponent(out Player player))
         {
-            print("Ω∫≈‰∏Æ æ∆¿Ã≈€ »πµÊ!");
-            GameManager.Instance.Inven.AddItemsToStoryQueue(this);
+            Debug.Log("Ω∫≈‰∏Æ æ∆¿Ã≈€ »πµÊ!");
+            GameManager.Instance.Inven.AddItemsToStoryQueue(this.data);
         }
     }
 }

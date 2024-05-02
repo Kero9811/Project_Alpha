@@ -8,8 +8,8 @@ public class FirstAbility : Item
     {
         if (other.TryGetComponent(out Player player))
         {
-            print("¥…∑¬ æ∆¿Ã≈€ »πµÊ!");
-            GameManager.Instance.Inven.AddItemsToAbilityQueue(this);
+            Debug.Log("¥…∑¬ æ∆¿Ã≈€ »πµÊ!");
+            GameManager.Instance.Inven.AddItemsToAbilityQueue(this.data);
         }
     }
 }

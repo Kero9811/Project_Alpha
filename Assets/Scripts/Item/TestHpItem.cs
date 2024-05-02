@@ -10,7 +10,6 @@ public class TestHpItem : Item
         {
             player.GetMaxHp(1);
             Debug.Log("MaxHp Up!");
-            Destroy(gameObject);
         }
     }
 }

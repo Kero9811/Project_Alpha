@@ -9,7 +9,6 @@ public class TestCoin : Item
         if (collision.collider.TryGetComponent(out Player player))
         {
             //player.GetGold(cost);
-            Destroy(gameObject);
         }
     }
 }

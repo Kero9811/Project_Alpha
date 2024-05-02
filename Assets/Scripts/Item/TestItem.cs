@@ -10,7 +10,6 @@ public class TestItem : Item
         {
             player.P_Move.UnlockWallSlide();
             Debug.Log("WallSlide is Unlocked!");
-            Destroy(gameObject);
         }
     }
 }

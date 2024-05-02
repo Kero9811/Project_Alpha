@@ -9,6 +9,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     [SerializeField] Image image;
 
     public Item item;
+
+    public ObjData itemData;
+
     public RuneItem runeItem;
 
     public bool isEquipInvenSlot = false;
@@ -26,6 +29,28 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         {
             itemName = item.itemName;
             itemSprite = item.itemSprite;
+            id = item.id;
+            desc = item.desc;
+            image.color = new Color(1, 1, 1, 1);
+            image.sprite = itemSprite;
+        }
+        else
+        {
+            itemName = null;
+            itemSprite = null;
+            id = 0;
+            desc = null;
+            image.color = new Color(1, 1, 1, 0);
+            image.sprite = null;
+        }
+    }
+
+    public void SetItemData(ObjData item)
+    {
+        if (item != null)
+        {
+            itemName = item.itemName;
+            itemSprite = SpriteDeserializer.LoadSpriteFromImage(item.imagePath);
             id = item.id;
             desc = item.desc;
             image.color = new Color(1, 1, 1, 1);
@@ -88,7 +113,8 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     {
         if (false == isEquipInvenSlot)
         {
-            GetComponentInParent<Inventory>().ConfirmItemInfo(item);
+            //GetComponentInParent<Inventory>().ConfirmItemInfo(item);
+            GetComponentInParent<Inventory>().ConfirmItemInfo(itemData);
         }
         else if (true == isEquipInvenSlot)
         {
