@@ -54,5 +54,6 @@ public abstract class Monster : MonoBehaviour
     public virtual void Die()
     {
         GameManager.Instance.Encyclopedia.AddKillCount(monsterData);
+        GameManager.Instance.Data.SaveEncyclopedia(monsterData);
     }
 }

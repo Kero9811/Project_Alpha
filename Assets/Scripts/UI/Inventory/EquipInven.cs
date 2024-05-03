@@ -7,12 +7,14 @@ using UnityEngine.UI;
 
 public class EquipInven : MonoBehaviour
 {
-    [SerializeField] private List<RuneItem> runeItems = new List<RuneItem>(); // Dictionary가 좋을 수도 있음 (탐색을 위해)
-    [SerializeField] private List<RuneItem> equipItems = new List<RuneItem>();
+    [SerializeField] private List<RuneItemData> runeItems = new List<RuneItemData>(); // Dictionary가 좋을 수도 있음 (탐색을 위해)
+    [SerializeField] private List<RuneItemData> equipItems = new List<RuneItemData>();
 
     private Slot[] runeSlots;
     private Slot[] equipSlots;
     private CostSlot[] costSlots;
+
+    public RuneItemData[] runeItemDatas;
 
     private int usingCost;
 
@@ -47,6 +49,13 @@ public class EquipInven : MonoBehaviour
         UpdateRunePage();
     }
 
+    private void Start()
+    {
+        GameManager.Instance.Data.LoadRuneItem(equipItems, runeItems, runeItemDatas);
+
+        UpdateRunePage();  
+    }
+
     private void OnEnable()
     {
         if (GameManager.Instance?.Inven != null)
@@ -67,12 +76,12 @@ public class EquipInven : MonoBehaviour
         for (; i < runeItems.Count && i < runeSlots.Length; i++)
         {
             //runeItems[i].InitItemInfo();
-            runeSlots[i].runeItem = runeItems[i];
+            runeSlots[i].runeItemData = runeItems[i];
             runeSlots[i].SetItem(runeItems[i]);
         }
         for (; i < runeSlots.Length; i++)
         {
-            runeSlots[i].runeItem = null;
+            runeSlots[i].runeItemData = null;
             runeSlots[i].SetItem(null);
         }
 
@@ -82,13 +91,22 @@ public class EquipInven : MonoBehaviour
         {
             // 주석 풀었을때 isEquipped가 안 바뀐다면 runeitemdata가 안 바뀌는거
             //equipItems[j].InitItemInfo();
-            equipSlots[j].runeItem = equipItems[j];
+            equipSlots[j].runeItemData = equipItems[j];
             equipSlots[j].SetItem(equipItems[j]);
         }
         for (; j < equipSlots.Length; j++)
         {
-            equipSlots[j].runeItem = null;
+            equipSlots[j].runeItemData = null;
             equipSlots[j].SetItem(null);
+        }
+
+        // 아무것도 장착 하지 않았을 경우와 종료 후 다시 시작했을 경우
+        if (usingCost == 0)
+        {
+            for (int p = 0; p < equipItems.Count; p++)
+            {
+                usingCost += equipItems[p].Cost;
+            }
         }
 
         // 코스트 업데이트
@@ -103,7 +121,7 @@ public class EquipInven : MonoBehaviour
         }
     }
 
-    public void AddRuneToPage(RuneItem runeItem)
+    public void AddRuneToPage(RuneItemData runeItem)
     {
         if (runeItems.Count < runeSlots.Length && equipItems.Count < equipSlots.Length)
         {
@@ -123,33 +141,33 @@ public class EquipInven : MonoBehaviour
         }
     }
 
-    public void ConfirmItemInfo(RuneItem runeItem)
+    public void ConfirmItemInfo(RuneItemData runeItem)
     {
         if (runeItem != null)
         {
             if (false == runeItem.isEquipped)
             {
-                RuneItem targetRune= runeItems.Find(x => x.id == runeItem.id);
+                RuneItemData targetRune= runeItems.Find(x => x.Id == runeItem.Id);
                 Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
-                targetImage.sprite = targetRune.itemSprite;
+                targetImage.sprite = targetRune.Image;
                 targetImage.color = new Color(1, 1, 1, 1);
-                descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetRune.itemName;
-                descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetRune.desc;
+                descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetRune.ItemName;
+                descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetRune.Desc;
 
                 costDescParent.GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1); // 코스트 이미지
-                costDescParent.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"x {runeItem.cost}"; // 코스트 텍스트
+                costDescParent.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"x {runeItem.Cost}"; // 코스트 텍스트
             }
             else if (true == runeItem.isEquipped)
             {
-                RuneItem targetRune = equipItems.Find(x => x.id == runeItem.id);
+                RuneItemData targetRune = equipItems.Find(x => x.Id == runeItem.Id);
                 Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
-                targetImage.sprite = targetRune.itemSprite;
+                targetImage.sprite = targetRune.Image;
                 targetImage.color = new Color(1, 1, 1, 1);
-                descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetRune.itemName;
-                descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetRune.desc;
+                descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetRune.ItemName;
+                descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetRune.Desc;
 
                 costDescParent.GetChild(0).GetComponent<Image>().color = new Color(1, 1, 1, 1); // 코스트 이미지
-                costDescParent.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"x {runeItem.cost}"; // 코스트 텍스트
+                costDescParent.GetChild(1).GetComponent<TextMeshProUGUI>().text = $"x {runeItem.Cost}"; // 코스트 텍스트
             }
         }
         else
@@ -170,7 +188,7 @@ public class EquipInven : MonoBehaviour
         costDescParent.GetChild(1).GetComponent<TextMeshProUGUI>().text = ""; // 코스트 텍스트
     }
 
-    public void AddRunesFromQueue(Queue<RuneItem> runeQueue)
+    public void AddRunesFromQueue(Queue<RuneItemData> runeQueue)
     {
         if (runeQueue.Count > 0)
         {
@@ -182,15 +200,17 @@ public class EquipInven : MonoBehaviour
             UpdateRunePage();
 
             GameManager.Instance.Inven.runeItemQueue.Clear();
+
+            GameManager.Instance.Data.SaveRuneItem(null, runeItems);
         }
     }
 
-    public void EquipRune(RuneItem runeItem)
+    public void EquipRune(RuneItemData runeItem)
     {
-        RuneItem targetRune = runeItems.Find(x => x.id == runeItem.id);
+        RuneItemData targetRune = runeItems.Find(x => x.Id == runeItem.Id);
 
         // cost가 10을 넘거나 장착 슬롯이 다 찼을 경우 장착 불가 (cost는 10으로 fix or 진행하면서 늘려가는 걸로 수정)
-        if(targetRune.cost + usingCost > 10 || equipSlots[equipSlots.Length - 1].runeItem != null)
+        if(targetRune.Cost + usingCost > 10 || equipSlots[equipSlots.Length - 1].runeItemData != null)
         {
             Debug.Log("코스트 혹은 장착 가능한 칸이 부족합니다.");
         }
@@ -198,19 +218,23 @@ public class EquipInven : MonoBehaviour
         {
             targetRune.isEquipped = true;
             equipItems.Add(targetRune);
-            usingCost += targetRune.cost;
+            usingCost += targetRune.Cost;
             runeItems.Remove(targetRune);
             UpdateRunePage();
+
+            GameManager.Instance.Data.SaveRuneItem(equipItems, runeItems);
         }
     }
 
-    public void UnEquipRune(RuneItem runeItem)
+    public void UnEquipRune(RuneItemData runeItem)
     {
-        RuneItem targetRune = equipItems.Find(x => x.id == runeItem.id);
+        RuneItemData targetRune = equipItems.Find(x => x.Id == runeItem.Id);
         targetRune.isEquipped = false;
         runeItems.Add(targetRune);
         equipItems.Remove(targetRune);
-        usingCost -= targetRune.cost;
+        usingCost -= targetRune.Cost;
         UpdateRunePage();
+
+        GameManager.Instance.Data.SaveRuneItem(equipItems, runeItems);
     }
 }

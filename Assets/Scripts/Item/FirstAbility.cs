@@ -9,7 +9,7 @@ public class FirstAbility : Item
         if (other.TryGetComponent(out Player player))
         {
             Debug.Log("¥…∑¬ æ∆¿Ã≈€ »πµÊ!");
-            GameManager.Instance.Inven.AddItemsToAbilityQueue(this.data);
+            GameManager.Instance.Inven.AddItemsToAbilityQueue(this.Info);
         }
     }
 }

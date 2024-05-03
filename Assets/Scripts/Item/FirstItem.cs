@@ -9,7 +9,7 @@ public class FirstItem : Item
         if (other.TryGetComponent(out Player player))
         {
             Debug.Log("Ω∫≈‰∏Æ æ∆¿Ã≈€ »πµÊ!");
-            GameManager.Instance.Inven.AddItemsToStoryQueue(this.data);
+            GameManager.Instance.Inven.AddItemsToStoryQueue(this.Info);
         }
     }
 }

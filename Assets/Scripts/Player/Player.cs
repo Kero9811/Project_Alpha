@@ -92,6 +92,7 @@ public class Player : MonoBehaviour
         maxMp = playerStat.maxMp;
         curMp = playerStat.curMp;
         curGold = playerStat.curGold;
+        maxGold = playerStat.maxGold;
     }
 
     public void TakeDamage(int damage)

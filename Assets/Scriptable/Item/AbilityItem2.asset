@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7c3e1956bcbe1a4daa7b5ee038e7165, type: 3}
-  m_Name: Test Item
+  m_Name: AbilityItem2
   m_EditorClassIdentifier: 
-  itemName: "\uD14C\uC2A4\uD2B8\uC6A9 \uC544\uC774\uD15C"
-  cost: 0
-  id: 101
-  desc: "\uD14C\uC2A4\uD2B8\uC6A9 \uC544\uC774\uD15C\uBCBD\uD0C0\uAE30\uC640 \uBCBD\uC810\uD504\uB97C
-    \uD574\uAE08\uD55C\uB2E4."
+  itemName: Ability Item 2
+  id: 102
+  image: {fileID: 21300000, guid: 7e2707318ac3dc44bbdeff8a18996f5b, type: 3}
+  desc: Ability Item for Test ver.2

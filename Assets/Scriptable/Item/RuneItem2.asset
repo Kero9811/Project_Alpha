@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85d3085b424d3a544a4f2f0444a131c2, type: 3}
-  m_Name: RuneItem 2
+  m_Name: RuneItem2
   m_EditorClassIdentifier: 
   itemName: Second Test Rune Item
   id: 202
+  image: {fileID: 21300000, guid: b4b812c88ebb62f43a51b8077d0d95aa, type: 3}
   desc: Second Rune Item for Test.
   cost: 6
   isEquipped: 0

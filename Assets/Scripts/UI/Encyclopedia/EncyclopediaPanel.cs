@@ -17,6 +17,7 @@ public class EncyclopediaPanel : MonoBehaviour
     private void Awake()
     {
         monsterListSlots = monsterListParent.GetComponentsInChildren<MonsterListSlot>();
+        GameManager.Instance.Data.LoadEncyclopedia(monsterListData);
     }
 
     private void OnEnable()

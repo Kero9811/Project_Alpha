@@ -9,7 +9,7 @@ public class SecondRune : RuneItem
         if (other.TryGetComponent(out Player player))
         {
             Debug.Log("µÎ¹øÂ° Å×½ºÆ®·é ¾ÆÀÌÅÛ È¹µæ!");
-            GameManager.Instance.Inven.AddRuneToSlotQueue(this);
+            GameManager.Instance.Inven.AddRuneToSlotQueue(this.runeInfo);
         }
     }
 }

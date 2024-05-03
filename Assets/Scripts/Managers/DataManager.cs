@@ -3,39 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEditor;
 
 [System.Serializable]
 public class PlayerStatus //TODO: 능력 해금 여부도 저장해야함
 {
-    public int maxHp;
-    public int curHp;
-    public int maxMp;
+    public int maxHp = 3;
+    public int curHp = 3;
+    public int maxMp = 100;
     public int curMp;
 
-    public int damage;
-    public int magicDamage;
+    public int damage = 2;
+    public int magicDamage = 4;
 
     public int curGold;
+    public int maxGold;
 }
 
 [System.Serializable]
 public class InventoryItem
 {
-    //public List<Item> storyItemList;
-    //public List<Item> abilityItemList;
+    public List<int> storyItemIdList;
+    public List<int> abilityItemIdList;
+    public List<int> ownRuneItemIdList;
+    public List<int> equipRuneItemIdList;
+}
 
-    public List<ObjData> storyItemDataList;
-    public List<ObjData> abilityItemDataList;
+[System.Serializable]
+public class EncyclopediaKillCount
+{
+    public Dictionary<int, int> encyclopediaDataDict;
 }
 
 public class DataManager : MonoBehaviour
 {
     private PlayerStatus playerData = new PlayerStatus();
     private InventoryItem inventoryItem = new InventoryItem();
+    private EncyclopediaKillCount encycData = new EncyclopediaKillCount();
     private string path;
     private string playerDataFileName = "PlayerStatusData";
     private string storyItemFileName = "StoryItemData";
     private string abilityItemFileName = "AbilityItemData";
+    private string ownRuneItemFileName = "OwnRuneItemData";
+    private string equipRuneItemFileName = "EquipRuneItemData";
+    private string encyclopediaDataFileName = "EncyclopediaCountData";
 
     private bool checkData = false;
 
@@ -55,37 +66,22 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    // 오버로딩 이용해서 분할하는 것도 괜찮아보임
     public void SaveData()
     {
         string data = JsonUtility.ToJson(playerData, true);
-
-        //string storyItemData = JsonConvert.SerializeObject(inventoryItem.storyItemList, Formatting.Indented,
-        //    new JsonSerializerSettings
-        //    {
-        //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        //    });
-
-        string storyItemData = JsonConvert.SerializeObject(inventoryItem.storyItemDataList, Formatting.Indented,
-            new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-
-        //string abilityItemData = JsonConvert.SerializeObject(inventoryItem.abilityItemList, Formatting.Indented,
-        //    new JsonSerializerSettings
-        //    {
-        //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        //    });
-
-        string abilityItemData = JsonConvert.SerializeObject(inventoryItem.abilityItemDataList, Formatting.Indented,
-            new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+        string storyItemIdData = JsonConvert.SerializeObject(inventoryItem.storyItemIdList);
+        string abilityItemIdData = JsonConvert.SerializeObject(inventoryItem.abilityItemIdList);
+        string ownRuneItemIdData = JsonConvert.SerializeObject(inventoryItem.ownRuneItemIdList);
+        string equipRuneItemIdData = JsonConvert.SerializeObject(inventoryItem.equipRuneItemIdList);
+        string encyclopediaData = JsonConvert.SerializeObject(encycData.encyclopediaDataDict);
 
         File.WriteAllText(path + playerDataFileName, data);
-        File.WriteAllText(path + storyItemFileName, storyItemData);
-        File.WriteAllText(path + abilityItemFileName, abilityItemData);
+        File.WriteAllText(path + storyItemFileName, storyItemIdData);
+        File.WriteAllText(path + abilityItemFileName, abilityItemIdData);
+        File.WriteAllText(path + ownRuneItemFileName, ownRuneItemIdData);
+        File.WriteAllText(path + equipRuneItemFileName, equipRuneItemIdData);
+        File.WriteAllText(path + encyclopediaDataFileName, encyclopediaData);
     }
 
     public void LoadData()
@@ -93,10 +89,16 @@ public class DataManager : MonoBehaviour
         string playerDataPath = path + playerDataFileName;
         string storyItemDataPath = path + storyItemFileName;
         string abilityItemDataPath = path + abilityItemFileName;
+        string ownRuneItemDataPath = path + ownRuneItemFileName;
+        string equipRuneItemDataPath = path + equipRuneItemFileName;
+        string encyclopediaDataPath = path + encyclopediaDataFileName;
 
         if (false == File.Exists(playerDataPath) ||
             false == File.Exists(storyItemDataPath) ||
-            false == File.Exists(abilityItemDataPath))
+            false == File.Exists(abilityItemDataPath) ||
+            false == File.Exists(ownRuneItemDataPath) ||
+            false == File.Exists(equipRuneItemDataPath) ||
+            false == File.Exists(encyclopediaDataPath))
         {
             checkData = false;
             return;
@@ -108,13 +110,16 @@ public class DataManager : MonoBehaviour
             string data = File.ReadAllText(playerDataPath);
             string storyItemData = File.ReadAllText(storyItemDataPath);
             string abilityItemData = File.ReadAllText(abilityItemDataPath);
+            string ownRuneItemData = File.ReadAllText(ownRuneItemDataPath);
+            string equipRuneItemData = File.ReadAllText(equipRuneItemDataPath);
+            string encyclopediaData = File.ReadAllText(encyclopediaDataPath);
 
             playerData = JsonUtility.FromJson<PlayerStatus>(data);
-            //inventoryItem.storyItemList = JsonConvert.DeserializeObject<List<Item>>(storyItemData);
-            //inventoryItem.abilityItemList = JsonConvert.DeserializeObject<List<Item>>(abilityItemData);
-
-            inventoryItem.storyItemDataList = JsonConvert.DeserializeObject<List<ObjData>>(storyItemData);
-            inventoryItem.abilityItemDataList = JsonConvert.DeserializeObject<List<ObjData>>(abilityItemData);
+            inventoryItem.storyItemIdList = JsonConvert.DeserializeObject<List<int>>(storyItemData);
+            inventoryItem.abilityItemIdList = JsonConvert.DeserializeObject<List<int>>(abilityItemData);
+            inventoryItem.ownRuneItemIdList = JsonConvert.DeserializeObject<List<int>>(ownRuneItemData);
+            inventoryItem.equipRuneItemIdList = JsonConvert.DeserializeObject<List<int>>(equipRuneItemData);
+            encycData.encyclopediaDataDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(encyclopediaData);
         }
 
     }
@@ -130,6 +135,7 @@ public class DataManager : MonoBehaviour
         playerData.magicDamage = player.P_Attack.MagicDamage;
 
         playerData.curGold = player.CurGold;
+        playerData.maxGold = player.MaxGold;
     }
 
     public void LoadPlayerData(Player player)
@@ -138,83 +144,36 @@ public class DataManager : MonoBehaviour
         player.P_Attack.SetPlayerDamage(playerData);
     }
 
-    // 일단 못 씀
-    //public void SaveInvenItem(List<Item> storyList, List<Item> abilityList)
-    //{
-    //    if (storyList != null)
-    //    {
-    //        if (inventoryItem.storyItemList == null)
-    //        {
-    //            inventoryItem.storyItemList = new List<Item>(storyList);
-    //        }
-    //        else
-    //        {
-    //            for (int i = 0; i < storyList.Count; i++)
-    //            {
-    //                if (!inventoryItem.storyItemList.Contains(storyList[i]))
-    //                {
-    //                    inventoryItem.storyItemList.Add(storyList[i]);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    if (abilityList != null)
-    //    {
-    //        if (inventoryItem.abilityItemList == null)
-    //        {
-    //            inventoryItem.abilityItemList = new List<Item>(abilityList);
-    //        }
-    //        else
-    //        {
-    //            for (int i = 0; i < abilityList.Count; i++)
-    //            {
-    //                if (!inventoryItem.abilityItemList.Contains(abilityList[i]))
-    //                {
-    //                    inventoryItem.abilityItemList.Add(abilityList[i]);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    SaveData();
-    //}
-
-    // 테스트용
-    public void SaveInvenItemData(List<ObjData> storyList, List<ObjData> abilityList)
+    public void SaveInvenItem(List<ItemData> storyList, List<ItemData> abilityList)
     {
         if (storyList != null)
         {
+            if (inventoryItem.storyItemIdList == null)
+            {
+                inventoryItem.storyItemIdList = new List<int>();
+            }
+
             for (int i = 0; i < storyList.Count; i++)
             {
-                if (inventoryItem.storyItemDataList == null)
+                if (!inventoryItem.storyItemIdList.Contains(storyList[i].Id))
                 {
-                    inventoryItem.storyItemDataList = new List<ObjData>(storyList);
-                }
-                else
-                {
-                    if (!inventoryItem.storyItemDataList.Contains(storyList[i]))
-                    {
-                        inventoryItem.storyItemDataList.Add(storyList[i]);
-                    }
+                    inventoryItem.storyItemIdList.Add(storyList[i].Id);
                 }
             }
         }
 
         if (abilityList != null)
         {
+            if (inventoryItem.abilityItemIdList == null)
+            {
+                inventoryItem.abilityItemIdList = new List<int>();
+            }
+
             for (int i = 0; i < abilityList.Count; i++)
             {
-                if (inventoryItem.abilityItemDataList == null)
+                if (!inventoryItem.abilityItemIdList.Contains(abilityList[i].Id))
                 {
-                    inventoryItem.abilityItemDataList = new List<ObjData>(abilityList);
-                }
-                else
-                {
-                    if (!inventoryItem.abilityItemDataList.Contains(abilityList[i]))
-                    {
-                        inventoryItem.abilityItemDataList.Add(abilityList[i]);
-                    }
+                    inventoryItem.abilityItemIdList.Add(abilityList[i].Id);
                 }
             }
         }
@@ -222,74 +181,150 @@ public class DataManager : MonoBehaviour
         SaveData();
     }
 
-    // 일단 못 씀
+    public void SaveRuneItem(List<RuneItemData> equipRuneList, List<RuneItemData> ownRuneList)
+    {
+        if (equipRuneList != null)
+        {
+            //if (inventoryItem.equipRuneItemIdList == null)
+            //{
+            //    inventoryItem.equipRuneItemIdList = new List<int>();
+            //}
+
+            //for (int i = 0; i < equipRuneList.Count; i++)
+            //{
+            //    if (!inventoryItem.equipRuneItemIdList.Contains(equipRuneList[i].Id))
+            //    {
+            //        inventoryItem.equipRuneItemIdList.Add(equipRuneList[i].Id);
+            //    }
+            //}
+
+            List<int> runeList = new List<int>();
+
+            for (int i = 0; i < equipRuneList.Count; i++)
+            {
+                runeList.Add(equipRuneList[i].Id);
+            }
+
+            inventoryItem.equipRuneItemIdList = null;
+            inventoryItem.equipRuneItemIdList = runeList;
+        }
+
+        if (ownRuneList != null)
+        {
+            //if (inventoryItem.ownRuneItemIdList == null)
+            //{
+            //    inventoryItem.ownRuneItemIdList = new List<int>();
+            //}
+
+            //for (int i = 0; i < ownRuneList.Count; i++)
+            //{
+            //    if (!inventoryItem.ownRuneItemIdList.Contains(ownRuneList[i].Id))
+            //    {
+            //        inventoryItem.ownRuneItemIdList.Add(ownRuneList[i].Id);
+            //    }
+            //}
+
+            List<int> runeList = new List<int>();
+
+            for (int i = 0; i < ownRuneList.Count; i++)
+            {
+                runeList.Add(ownRuneList[i].Id);
+            }
+
+            inventoryItem.ownRuneItemIdList = null;
+            inventoryItem.ownRuneItemIdList = runeList;
+        }
+
+        SaveData();
+    }
+
+
     /// <summary>
-    /// 인벤 아이템 불러오는 메서드
+    /// 인벤 아이템 불러오는 메서드 (인벤 로드 최초 1회만 실행)
     /// </summary>
     /// <param name="storyList">스토리아이템</param>
     /// <param name="abilityList">능력해금아이템</param>
-    //public void LoadInvenItem(List<Item> storyList, List<Item> abilityList)
-    //{
-    //    if (inventoryItem.storyItemList != null)
-    //    {
-    //        if (storyList == null)
-    //        {
-    //            storyList = new List<Item>(inventoryItem.storyItemList);
-    //        }
-    //        else
-    //        {
-    //            for (int i = 0; i < inventoryItem.storyItemList.Count; i++)
-    //            {
-    //                if (!storyList.Contains(inventoryItem.storyItemList[i]))
-    //                {
-    //                    storyList.Add(inventoryItem.storyItemList[i]);
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    if (inventoryItem.abilityItemList != null)
-    //    {
-    //        if (abilityList == null)
-    //        {
-    //            abilityList = new List<Item>(inventoryItem.abilityItemList);
-    //        }
-    //        else
-    //        {
-    //            for (int i = 0; i < inventoryItem.abilityItemList.Count; i++)
-    //            {
-    //                if (!abilityList.Contains(inventoryItem.abilityItemList[i]))
-    //                {
-    //                    abilityList.Add(inventoryItem.abilityItemList[i]);
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
-    // 테스트중
-    public void LoadInvenItemData(List<ObjData> storyList, List<ObjData> abilityList)
+    public void LoadInvenItem(List<ItemData> storyList, List<ItemData> abilityList, ItemData[] itemDatas)
     {
-        if (inventoryItem.storyItemDataList != null)
+        if (inventoryItem.storyItemIdList != null)
         {
-            for (int i = 0; i < inventoryItem.storyItemDataList.Count; i++)
+            for (int i = 0; i < inventoryItem.storyItemIdList.Count; i++)
             {
-                if (!storyList.Contains(inventoryItem.storyItemDataList[i]))
-                {
-                    storyList.Add(inventoryItem.storyItemDataList[i]);
-                }
+                storyList.Add(FindItemWithId(inventoryItem.storyItemIdList[i], itemDatas));
             }
         }
 
-        if (inventoryItem.abilityItemDataList != null)
+        if (inventoryItem.abilityItemIdList != null)
         {
-            for (int i = 0; i < inventoryItem.abilityItemDataList.Count; i++)
+            for (int i = 0; i < inventoryItem.abilityItemIdList.Count; i++)
             {
-                if (!abilityList.Contains(inventoryItem.abilityItemDataList[i]))
-                {
-                    abilityList.Add(inventoryItem.abilityItemDataList[i]);
-                }
+                abilityList.Add(FindItemWithId(inventoryItem.abilityItemIdList[i], itemDatas));
             }
         }
+    }
+
+    public void LoadRuneItem(List<RuneItemData> equipRuneList, List<RuneItemData> ownRuneList, RuneItemData[] runeItemDatas)
+    {
+        if (inventoryItem.equipRuneItemIdList != null)
+        {
+            for (int i = 0; i < inventoryItem.equipRuneItemIdList.Count; i++)
+            {
+                equipRuneList.Add(FindItemWithId(inventoryItem.equipRuneItemIdList[i], runeItemDatas));
+            }
+        }
+
+        if (inventoryItem.ownRuneItemIdList != null)
+        {
+            for (int i = 0; i < inventoryItem.ownRuneItemIdList.Count; i++)
+            {
+                ownRuneList.Add(FindItemWithId(inventoryItem.ownRuneItemIdList[i], runeItemDatas));
+            }
+        }
+    }
+
+    private void InitEncyclopedia(MonsterListData monsterListData)
+    {
+        encycData.encyclopediaDataDict = new();
+
+        for (int i = 0; i < monsterListData.MonsterDatas.Length; i++)
+        {
+            encycData.encyclopediaDataDict.
+                Add(monsterListData.MonsterDatas[i].MonsterId, monsterListData.MonsterKillCounts[i]);
+        }
+    }
+
+    public void SaveEncyclopedia(MonsterData monsterData)
+    {
+        encycData.encyclopediaDataDict[monsterData.MonsterId]++;
+        SaveData();
+    }
+
+    public void LoadEncyclopedia(MonsterListData monsterListData)
+    {
+        if (encycData.encyclopediaDataDict == null)
+        {
+            InitEncyclopedia(monsterListData);
+            return;
+        }
+
+        for (int i = 0; i < monsterListData.MonsterDatas.Length; i++)
+        {
+            monsterListData.MonsterKillCounts[i] = encycData.encyclopediaDataDict[monsterListData.MonsterDatas[i].MonsterId];
+        }
+
+        GameManager.Instance.Encyclopedia.monsterDictionary = new Dictionary<int, int>(encycData.encyclopediaDataDict);
+    }
+
+    private T FindItemWithId<T>(int id, T[] itemDatas) where T : ItemData
+    {
+        for (int i = 0; i < itemDatas.Length; i++)
+        {
+            if (itemDatas[i].Id == id)
+            {
+                return itemDatas[i];
+            }
+        }
+
+        return null;
     }
 }

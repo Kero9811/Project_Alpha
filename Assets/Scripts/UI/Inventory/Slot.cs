@@ -10,9 +10,9 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public Item item;
 
-    public ObjData itemData;
+    public ItemData itemData;
 
-    public RuneItem runeItem;
+    public RuneItemData runeItemData;
 
     public bool isEquipInvenSlot = false;
 
@@ -23,14 +23,14 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     private string desc;
     private bool isEquipped;
 
-    public void SetItem(Item item)
+    public void SetItem(ItemData item)
     {
         if (item != null)
         {
-            itemName = item.itemName;
-            itemSprite = item.itemSprite;
-            id = item.id;
-            desc = item.desc;
+            itemName = item.ItemName;
+            itemSprite = item.Image;
+            id = item.Id;
+            desc = item.Desc;
             image.color = new Color(1, 1, 1, 1);
             image.sprite = itemSprite;
         }
@@ -50,7 +50,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (item != null)
         {
             itemName = item.itemName;
-            itemSprite = SpriteDeserializer.LoadSpriteFromImage(item.imagePath);
+            itemSprite = item.image;
             id = item.id;
             desc = item.desc;
             image.color = new Color(1, 1, 1, 1);
@@ -67,15 +67,15 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    public void SetItem(RuneItem runeItem)
+    public void SetItem(RuneItemData runeItem)
     {
         if (runeItem != null)
         {
-            itemName = runeItem.itemName;
-            itemSprite = runeItem.itemSprite;
-            cost = runeItem.cost;
-            id = runeItem.id;
-            desc = runeItem.desc;
+            itemName = runeItem.ItemName;
+            itemSprite = runeItem.Image;
+            cost = runeItem.Cost;
+            id = runeItem.Id;
+            desc = runeItem.Desc;
             isEquipped = runeItem.isEquipped;
             image.color = new Color(1, 1, 1, 1);
             image.sprite = itemSprite;
@@ -93,9 +93,35 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
+    //public void SetItem(RuneItem runeItemData)
+    //{
+    //    if (runeItemData != null)
+    //    {
+    //        itemName = runeItemData.itemName;
+    //        itemSprite = runeItemData.itemSprite;
+    //        cost = runeItemData.cost;
+    //        id = runeItemData.id;
+    //        desc = runeItemData.desc;
+    //        isEquipped = runeItemData.isEquipped;
+    //        image.color = new Color(1, 1, 1, 1);
+    //        image.sprite = itemSprite;
+    //    }
+    //    else
+    //    {
+    //        itemName = null;
+    //        itemSprite = null;
+    //        cost = 0;
+    //        id = 0;
+    //        desc = null;
+    //        isEquipped = false;
+    //        image.color = new Color(1, 1, 1, 0);
+    //        image.sprite = null;
+    //    }
+    //}
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (item != null || runeItem != null)
+        if (item != null || runeItemData != null)
         {
             print("¹ÝÂ¦!");
         }
@@ -103,7 +129,7 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (item != null || runeItem != null)
+        if (item != null || runeItemData != null)
         {
             print("¹ÝÂ¦ ²¨Áü!");
         }
@@ -113,20 +139,20 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
     {
         if (false == isEquipInvenSlot)
         {
-            //GetComponentInParent<Inventory>().ConfirmItemInfo(item);
             GetComponentInParent<Inventory>().ConfirmItemInfo(itemData);
+            //GetComponentInParent<Inventory>().ConfirmItemInfo(itemData);
         }
         else if (true == isEquipInvenSlot)
         {
-            GetComponentInParent<EquipInven>().ConfirmItemInfo(runeItem);
+            GetComponentInParent<EquipInven>().ConfirmItemInfo(runeItemData);
 
-            if (eventData.clickCount >= 2 && runeItem != null && !runeItem.isEquipped)
+            if (eventData.clickCount >= 2 && runeItemData != null && !runeItemData.isEquipped)
             {
-                GetComponentInParent<EquipInven>().EquipRune(runeItem);
+                GetComponentInParent<EquipInven>().EquipRune(runeItemData);
             }
-            else if (eventData.clickCount >= 2 && runeItem != null && runeItem.isEquipped)
+            else if (eventData.clickCount >= 2 && runeItemData != null && runeItemData.isEquipped)
             {
-                GetComponentInParent<EquipInven>().UnEquipRune(runeItem);
+                GetComponentInParent<EquipInven>().UnEquipRune(runeItemData);
             }
         }
     }

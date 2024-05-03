@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Test Rune Item
   id: 201
+  image: {fileID: 21300022, guid: ffd2eb7803e7fe6488a86ce9382c8b92, type: 3}
   desc: Rune Item for Test.
   cost: 5
   isEquipped: 0

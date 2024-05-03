@@ -4,34 +4,34 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
 {
-    //public Queue<Item> storyItemQueue = new Queue<Item>();
-    //public Queue<Item> abilityItemQueue = new Queue<Item>();
-    public Queue<ObjData> storyItemQueue = new Queue<ObjData>();
-    public Queue<ObjData> abilityItemQueue = new Queue<ObjData>();
+    public Queue<ItemData> storyItemQueue = new Queue<ItemData>();
+    public Queue<ItemData> abilityItemQueue = new Queue<ItemData>();
+    //public Queue<ObjData> storyItemQueue = new Queue<ObjData>();
+    //public Queue<ObjData> abilityItemQueue = new Queue<ObjData>();
 
-    public Queue<RuneItem> runeItemQueue = new Queue<RuneItem>();
+    public Queue<RuneItemData> runeItemQueue = new Queue<RuneItemData>();
 
-    //public void AddItemsToStoryQueue(Item item)
-    //{
-    //    storyItemQueue.Enqueue(item);
-    //}
-
-    public void AddItemsToStoryQueue(ObjData item)
+    public void AddItemsToStoryQueue(ItemData item)
     {
         storyItemQueue.Enqueue(item);
     }
 
-    //public void AddItemsToAbilityQueue(Item item)
+    //public void AddItemsToStoryQueue(ObjData item)
     //{
-    //    abilityItemQueue.Enqueue(item);
+    //    storyItemQueue.Enqueue(item);
     //}
 
-    public void AddItemsToAbilityQueue(ObjData item)
+    public void AddItemsToAbilityQueue(ItemData item)
     {
         abilityItemQueue.Enqueue(item);
     }
 
-    public void AddRuneToSlotQueue(RuneItem runeItem)
+    //public void AddItemsToAbilityQueue(ObjData item)
+    //{
+    //    abilityItemQueue.Enqueue(item);
+    //}
+
+    public void AddRuneToSlotQueue(RuneItemData runeItem)
     {
         runeItemQueue.Enqueue(runeItem);
     }
