@@ -238,6 +238,26 @@ public class DataManager : MonoBehaviour
         SaveData();
     }
 
+    public void SaveRuneItem(Queue<RuneItemData> runeItems)
+    {
+        if (runeItems != null)
+        {
+            Queue<RuneItemData> runeItemsCopy = new Queue<RuneItemData>(runeItems);
+
+            List<int> runeList = new List<int>();
+
+            while(runeItemsCopy.Count > 0)
+            {
+                runeList.Add(runeItemsCopy.Dequeue().Id);
+            }
+
+            inventoryItem.ownRuneItemIdList = null;
+            inventoryItem.ownRuneItemIdList = runeList;
+        }
+
+        SaveData();
+    }
+
 
     /// <summary>
     /// 인벤 아이템 불러오는 메서드 (인벤 로드 최초 1회만 실행)

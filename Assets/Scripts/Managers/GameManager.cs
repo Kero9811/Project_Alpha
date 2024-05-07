@@ -16,10 +16,12 @@ public class GameManager : MonoBehaviour
     private InventoryManager inventoryManager;
     private EncyclopediaManager encyclopediaManager;
     private DataManager dataManager;
+    private DialogueManager dialogueManager;
     public UIManager UI => uiManager;
     public InventoryManager Inven => inventoryManager;
     public EncyclopediaManager Encyclopedia => encyclopediaManager;
     public DataManager Data => dataManager;
+    public DialogueManager Dialogue => dialogueManager;
 
     #endregion
 
@@ -53,6 +55,11 @@ public class GameManager : MonoBehaviour
         dataObj.name = "DataManager";
         dataObj.transform.parent = transform.parent;
         dataManager = dataObj.AddComponent<DataManager>();
+
+        GameObject dialogueObj = new GameObject();
+        dialogueObj.name = "DialogueManager";
+        dialogueObj.transform.parent = transform.parent;
+        dialogueManager = dialogueObj.AddComponent<DialogueManager>();
     }
 
     /// <summary>
