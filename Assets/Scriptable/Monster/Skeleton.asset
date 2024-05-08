@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Skeleton
   m_EditorClassIdentifier: 
   race: 1
-  monsterName: Solider Skeleton
+  monsterName: "\uD574\uACE8 \uBCD1\uC0AC"
   monsterId: 1
   maxHp: 9
   damage: 1
   moveSpeed: 2
   attackDelay: 1
-  desc: Skeleton is the weakest monster in this game!
+  desc: "\uB0A1\uC740 \uC7A5\uBE44\uB97C \uBAB8\uC5D0 \uAC78\uCE58\uACE0 \uC788\uB294
+    \uD574\uACE8 \uBCD1\uC0AC. \uBCF4\uAE30\uBCF4\uB2E4 \uD798\uC774 \uC138\uB2E4."
   monsterSprite: {fileID: 4723107735738678597, guid: 7706bf6a41767814ea894e39cd6f8485, type: 3}

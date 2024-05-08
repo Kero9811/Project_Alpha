@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class UIManager : MonoBehaviour
 {
     private GameObject gamePanel;
     private GameObject invenPanel;
+    private GameObject talkPanel;
 
     Dictionary<string, GameObject> panelDic;
 
@@ -20,13 +22,16 @@ public class UIManager : MonoBehaviour
     private Transform invenPanelTf;
     private Transform contentListTf;
 
+    public TextMeshProUGUI talkText;
+
     private GameObject[] contentListObjs = new GameObject[4];
     private GameObject[] canvasPanels;
 
     private Animator gamePanelAnim;
     private Animator invenPanelAnim;
 
-    public bool isOpen = false; // 열려 있는 지 체크
+    public bool isInvenOpen = false; // 인벤 열려 있는 지 체크
+    public bool isTalkOpen = false; // 토크창 열려 있는 지 체크
     private int curContentIdx = 0; // 현재 열려 있는 Content 번호 ( Inventory를 열고 play해야 정상작동, 다르게 하고 싶을 경우 수정)
 
     private void Awake()
@@ -50,11 +55,15 @@ public class UIManager : MonoBehaviour
 
         gamePanel = gamePanelTf.gameObject;
         invenPanel = invenPanelTf.gameObject;
+        talkPanel = uiCanvas.transform.Find("TalkPanel").gameObject;
+
+        talkText = talkPanel.GetComponentInChildren<TextMeshProUGUI>();
 
         panelDic = new Dictionary<string, GameObject>()
         {
             {"Game", gamePanel},
             {"Inven", invenPanel},
+            {"Talk", talkPanel }
         };
 
         PanelOpen("Game");
@@ -62,9 +71,11 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
+        if (isTalkOpen) { return; }
+
         if (Input.GetKeyDown(KeyCode.I))
         {
-            if (!isOpen)
+            if (!isInvenOpen)
             {
                 PanelOpen("Inven");
 
@@ -73,24 +84,24 @@ public class UIManager : MonoBehaviour
                 //{
                 //    obj.SetActive(true);
                 //}
-                isOpen = true;
-                invenPanelAnim.SetBool("isOpen", isOpen);
+                isInvenOpen = true;
+                invenPanelAnim.SetBool("isOpen", true);
             }
             else
             {
-                isOpen = false;
-                invenPanelAnim.SetBool("isOpen", isOpen);
+                isInvenOpen = false;
+                invenPanelAnim.SetBool("isOpen", false);
                 //PanelOpen("Game");
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftBracket) && isOpen == true)
+        if (Input.GetKeyDown(KeyCode.LeftBracket) && isInvenOpen == true)
         {
             // UI 왼쪽 페이지로
             ChangeContentUIPage(curContentIdx - 1);
 
         }
-        else if (Input.GetKeyDown(KeyCode.RightBracket) && isOpen == true)
+        else if (Input.GetKeyDown(KeyCode.RightBracket) && isInvenOpen == true)
         {
             // UI 오른쪽 페이지로
             ChangeContentUIPage(curContentIdx + 1);
@@ -111,7 +122,7 @@ public class UIManager : MonoBehaviour
         {
             targetIdx = contentListObjs.Length - 1;
         }
-        else if(targetIdx >= contentListObjs.Length)
+        else if (targetIdx >= contentListObjs.Length)
         {
             targetIdx = 0;
         }

@@ -54,7 +54,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Attack(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState == PlayerState.Dead ||
             player.CurState == PlayerState.ChargeHeal ||
@@ -88,7 +88,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void UpAttack(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState == PlayerState.Dead ||
             player.CurState == PlayerState.ChargeHeal ||
@@ -123,7 +123,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void DownAttack(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState == PlayerState.Dead ||
             player.CurState == PlayerState.ChargeHeal ||

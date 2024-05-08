@@ -8,8 +8,6 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] private List<ItemData> storyItems = new List<ItemData>(); // Dictionary가 좋을 수도 있음 (탐색을 위해)
     [SerializeField] private List<ItemData> abilityItems = new List<ItemData>();
-    //[SerializeField] private List<ObjData> storyItems = new List<ObjData>(); // Dictionary가 좋을 수도 있음 (탐색을 위해)
-    //[SerializeField] private List<ObjData> abilityItems = new List<ObjData>();
 
     private Slot[] storySlots;
     private Slot[] abilitySlots;
@@ -40,7 +38,6 @@ public class Inventory : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.Data.LoadInvenItem(storyItems, abilityItems, itemDatas);
-        //GameManager.Instance.Data.LoadInvenItemData(storyItems, abilityItems);
         UpdateInvenSlot();
     }
 
@@ -66,18 +63,11 @@ public class Inventory : MonoBehaviour
         {
             storySlots[i].itemData = storyItems[i];
             storySlots[i].SetItem(storyItems[i]);
-
-            //storyItems[i].InitItemInfo();
-            //storySlots[i].itemData = storyItems[i];
-            //storySlots[i].SetItemData(storyItems[i]);
         }
         for (; i < storySlots.Length; i++)
         {
             storySlots[i].item = null;
             storySlots[i].SetItem(null);
-
-            //storySlots[i].itemData = null;
-            //storySlots[i].SetItemData(null);
         }
 
         // 능력 아이템 업데이트
@@ -86,18 +76,11 @@ public class Inventory : MonoBehaviour
         {
             abilitySlots[j].itemData = abilityItems[j];
             abilitySlots[j].SetItem(abilityItems[j]);
-
-            //abilityItems[j].InitItemInfo();
-            //abilitySlots[j].itemData = abilityItems[j];
-            //abilitySlots[j].SetItemData(abilityItems[j]);
         }
         for (; j < abilitySlots.Length; j++)
         {
             abilitySlots[j].item = null;
             abilitySlots[j].SetItem(null);
-
-            //abilitySlots[j].itemData = null;
-            //abilitySlots[j].SetItemData(null);
         }
     }
 
@@ -120,26 +103,6 @@ public class Inventory : MonoBehaviour
             Debug.Log("Inventory is Full");
         }
     }
-
-    //public void AddItemToInven(ObjData item)
-    //{
-    //    if (storyItems.Count < storySlots.Length && abilityItems.Count < abilitySlots.Length)
-    //    {
-    //        if (item.id <= 100 && item.id >= 0)
-    //        {
-    //            storyItems.Add(item);
-    //        }
-    //        else if (item.id > 100 && item.id <= 200)
-    //        {
-    //            abilityItems.Add(item);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        // 만들 아이템 갯수가 모자라서 구조상 발생할 일 없음
-    //        Debug.Log("Inventory is Full");
-    //    }
-    //}
 
     public void ConfirmItemInfo(ItemData item)
     {
@@ -170,37 +133,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    //public void ConfirmItemInfo(ObjData item)
-    //{
-    //    if (item != null)
-    //    {
-    //        if (item.id >= 0 && item.id <= 100)
-    //        {
-    //            ObjData targetItem = storyItems.Find(x => x.id == item.id);
-    //            Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
-    //            //targetImage.sprite = SpriteDeserializer.LoadSpriteFromImage(targetItem.imagePath);
-    //            targetImage.sprite = item.image;
-    //            targetImage.color = new Color(1, 1, 1, 1);
-    //            descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetItem.itemName;
-    //            descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetItem.desc;
-    //        }
-    //        else if (item.id > 100 && item.id <= 200)
-    //        {
-    //            ObjData targetItem = abilityItems.Find(x => x.id == item.id);
-    //            Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
-    //            //targetImage.sprite = SpriteDeserializer.LoadSpriteFromImage(targetItem.imagePath);
-    //            targetImage.sprite = item.image;
-    //            targetImage.color = new Color(1, 1, 1, 1);
-    //            descParent.Find("ItemNameText").GetComponent<TextMeshProUGUI>().text = targetItem.itemName;
-    //            descParent.Find("ItemDescText").GetComponent<TextMeshProUGUI>().text = targetItem.desc;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        ResetItemConfirmUI();
-    //    }
-    //}
-
     private void ResetItemConfirmUI()
     {
         Image targetImage = descParent.Find("ItemImage").GetComponent<Image>();
@@ -227,23 +159,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    //public void AddStoryItemsFromQueue(Queue<ObjData> itemQueue)
-    //{
-    //    if (itemQueue.Count > 0)
-    //    {
-    //        while (itemQueue.Count > 0)
-    //        {
-    //            AddItemToInven(itemQueue.Dequeue());
-    //        }
-
-    //        UpdateInvenSlot();
-
-    //        GameManager.Instance.Inven.storyItemQueue.Clear();
-
-    //        //GameManager.Instance.Data.SaveInvenItemData(storyItems, null);
-    //    }
-    //}
-
     public void AddAbilityItemsFromQueue(Queue<ItemData> itemQueue)
     {
         if (itemQueue.Count > 0)
@@ -260,21 +175,4 @@ public class Inventory : MonoBehaviour
             GameManager.Instance.Data.SaveInvenItem(null, abilityItems);
         }
     }
-
-    //public void AddAbilityItemsFromQueue(Queue<ObjData> itemQueue)
-    //{
-    //    if (itemQueue.Count > 0)
-    //    {
-    //        while (itemQueue.Count > 0)
-    //        {
-    //            AddItemToInven(itemQueue.Dequeue());
-    //        }
-
-    //        UpdateInvenSlot();
-
-    //        GameManager.Instance.Inven.abilityItemQueue.Clear();
-
-    //        //GameManager.Instance.Data.SaveInvenItemData(null, abilityItems);
-    //    }
-    //}
 }

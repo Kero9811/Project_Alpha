@@ -14,7 +14,7 @@ TODO:
 - 맵 제작
 - 저장 슬롯
 
-@@@@@ TODO : 도감저장, NPC @@@@@
+@@@@@ TODO : shopitemdata scriptable 만들어서 list에 넣기 @@@@@
 
 
 - 위 공격을 계속하려고 2초 이상 위키를 누르면서 공격키를 누르면 위를 바라봄

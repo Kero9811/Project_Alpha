@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 768d42b5f1ababf4595a4d4e10535207, type: 3}
+  m_Name: PlusMaxHp
+  m_EditorClassIdentifier: 
+  itemName: "\uC2E0\uBE44\uD55C \uC601\uC57D"
+  id: 301
+  image: {fileID: 3150369259081852752, guid: e06a218242bd70e42a93fd2b4fed52eb, type: 3}
+  desc: "\uAC89\uC73C\uB85C \uBCF4\uAE30\uC5D0\uB294 \uADF8\uC800 \uB3CC\uB9F9\uC774\uB85C
+    \uBCF4\uC774\uC9C0\uB9CC, \uBA39\uC744 \uC218 \uC788\uB294 \uC601\uC57D\uC774\uB2E4.
+    \uCD5C\uB300 \uCCB4\uB825\uC774 \uD55C \uCE78 \uB298\uC5B4\uB09C\uB2E4."
+  isSold: 0
+  price: 200

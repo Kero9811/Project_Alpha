@@ -71,7 +71,7 @@ public class PlayerMove : MonoBehaviour
         CheckWall();
 
         // 인벤토리가 켜져있으면 이동 불가
-        if (GameManager.Instance.UI.isOpen)
+        if (GameManager.Instance.UI.isInvenOpen)
         {
             inputVec.x = 0;
             anim.SetInteger("Move", (int)player.CurState);
@@ -92,7 +92,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Move(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState == PlayerState.Dash ||
             player.CurState == PlayerState.ChargeHeal ||
@@ -132,7 +132,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState == PlayerState.Dash ||
            player.CurState == PlayerState.LookAt ||
@@ -181,7 +181,7 @@ public class PlayerMove : MonoBehaviour
 
     private void LookUp(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState != PlayerState.Idle &&
             player.CurState != PlayerState.LookAt) { return; }
@@ -207,7 +207,7 @@ public class PlayerMove : MonoBehaviour
 
     private void LookDown(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState != PlayerState.Idle &&
             player.CurState != PlayerState.LookAt) { return; }
@@ -233,7 +233,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Dash(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState == PlayerState.GroundSmash ||
             player.CurState == PlayerState.WallSlide ||

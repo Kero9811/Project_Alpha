@@ -38,7 +38,7 @@ public class PlayerSkill : MonoBehaviour
 
     private void GroundSmash(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         if (player.CurState == PlayerState.Dash || 
             player.CurState == PlayerState.Dead) { return; }
@@ -52,7 +52,7 @@ public class PlayerSkill : MonoBehaviour
 
     private void SpellOrHeal(InputAction.CallbackContext context)
     {
-        if (GameManager.Instance.UI.isOpen) { return; }
+        if (GameManager.Instance.UI.isInvenOpen) { return; }
 
         bool canUse = true;
 
