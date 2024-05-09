@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public InventoryManager Inven => inventoryManager;
     public EncyclopediaManager Encyclopedia => encyclopediaManager;
     public DataManager Data => dataManager;
-    public TalkManager Dialogue => talkManager;
+    public TalkManager Talk => talkManager;
 
     #endregion
 

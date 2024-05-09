@@ -5,7 +5,7 @@ using UnityEngine;
 public class TalkTrigger : MonoBehaviour
 {
     private bool playerisIn;
-    [SerializeField] private GameObject interactionKey;
+    public GameObject interactionKey;
     TalkObj talkObj;
 
     private void Awake()
@@ -24,6 +24,7 @@ public class TalkTrigger : MonoBehaviour
         {
             if (playerisIn)
             {
+                interactionKey.SetActive(false);
                 talkObj.Talk();
             }
         }

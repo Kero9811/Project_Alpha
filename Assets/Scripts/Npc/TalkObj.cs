@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TalkObj : MonoBehaviour
 {
+    TalkTrigger talkTrigger;
+
     [SerializeField] private int objId;
     private int talkIndex;
     [SerializeField] private int startTalkIndex; // 대화 시작할 인덱스 (변경 가능)
@@ -11,6 +13,11 @@ public class TalkObj : MonoBehaviour
 
     [SerializeField] private bool isShop;
     public int ObjId => objId;
+
+    private void Awake()
+    {
+        talkTrigger = GetComponentInChildren<TalkTrigger>();
+    }
 
     // 특정 조건을 완료하면 startTalkIndex와 lastTalkIndex의 값을 변경하여 출력할 대화를 변경
     public void Talk()
@@ -24,10 +31,11 @@ public class TalkObj : MonoBehaviour
             {
                 // 상인이면 품목패널 띄우기
             }
+            talkTrigger.interactionKey.SetActive(true);
             return;
         }
 
-        string talkData = GameManager.Instance.Dialogue.GetTalk(objId, talkIndex);
+        string talkData = GameManager.Instance.Talk.GetTalk(objId, talkIndex);
         talkIndex++;
 
         if (false == GameManager.Instance.UI.isTalkOpen)
