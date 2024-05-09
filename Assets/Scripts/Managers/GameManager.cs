@@ -38,27 +38,27 @@ public class GameManager : MonoBehaviour
     {
         GameObject uiObj = new GameObject();
         uiObj.name = "UIManager";
-        uiObj.transform.parent = transform.parent;
+        uiObj.transform.parent = transform;
         uiManager = uiObj.AddComponent<UIManager>();
 
         GameObject invenObj = new GameObject();
         invenObj.name = "InventoryManager";
-        invenObj.transform.parent = transform.parent;
+        invenObj.transform.parent = transform;
         inventoryManager = invenObj.AddComponent<InventoryManager>();
 
         GameObject encycObj = new GameObject();
         encycObj.name = "EncyclopediaManager";
-        encycObj.transform.parent = transform.parent;
+        encycObj.transform.parent = transform;
         encyclopediaManager = encycObj.AddComponent<EncyclopediaManager>();
 
         GameObject dataObj = new GameObject();
         dataObj.name = "DataManager";
-        dataObj.transform.parent = transform.parent;
+        dataObj.transform.parent = transform;
         dataManager = dataObj.AddComponent<DataManager>();
 
         GameObject talkObj = new GameObject();
         talkObj.name = "TalkManager";
-        talkObj.transform.parent = transform.parent;
+        talkObj.transform.parent = transform;
         talkManager = talkObj.AddComponent<TalkManager>();
     }
 

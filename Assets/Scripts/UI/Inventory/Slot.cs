@@ -45,28 +45,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    public void SetItemData(ObjData item)
-    {
-        if (item != null)
-        {
-            itemName = item.itemName;
-            itemSprite = item.image;
-            id = item.id;
-            desc = item.desc;
-            image.color = new Color(1, 1, 1, 1);
-            image.sprite = itemSprite;
-        }
-        else
-        {
-            itemName = null;
-            itemSprite = null;
-            id = 0;
-            desc = null;
-            image.color = new Color(1, 1, 1, 0);
-            image.sprite = null;
-        }
-    }
-
     public void SetItem(RuneItemData runeItem)
     {
         if (runeItem != null)
@@ -93,32 +71,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         }
     }
 
-    //public void SetItem(RuneItem runeItemData)
-    //{
-    //    if (runeItemData != null)
-    //    {
-    //        itemName = runeItemData.itemName;
-    //        itemSprite = runeItemData.itemSprite;
-    //        cost = runeItemData.cost;
-    //        id = runeItemData.id;
-    //        desc = runeItemData.desc;
-    //        isEquipped = runeItemData.isEquipped;
-    //        image.color = new Color(1, 1, 1, 1);
-    //        image.sprite = itemSprite;
-    //    }
-    //    else
-    //    {
-    //        itemName = null;
-    //        itemSprite = null;
-    //        cost = 0;
-    //        id = 0;
-    //        desc = null;
-    //        isEquipped = false;
-    //        image.color = new Color(1, 1, 1, 0);
-    //        image.sprite = null;
-    //    }
-    //}
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (item != null || runeItemData != null)
@@ -140,7 +92,6 @@ public class Slot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IP
         if (false == isEquipInvenSlot)
         {
             GetComponentInParent<Inventory>().ConfirmItemInfo(itemData);
-            //GetComponentInParent<Inventory>().ConfirmItemInfo(itemData);
         }
         else if (true == isEquipInvenSlot)
         {

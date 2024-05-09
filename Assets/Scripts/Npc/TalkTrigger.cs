@@ -7,6 +7,7 @@ public class TalkTrigger : MonoBehaviour
     private bool playerisIn;
     public GameObject interactionKey;
     TalkObj talkObj;
+    Player player;
 
     private void Awake()
     {
@@ -20,12 +21,23 @@ public class TalkTrigger : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.UI.isShopOpen)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                GameManager.Instance.UI.shopPanelTf.gameObject.SetActive(false);
+                GameManager.Instance.UI.isShopOpen = false;
+            }
+
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (playerisIn)
             {
                 interactionKey.SetActive(false);
-                talkObj.Talk();
+                talkObj.Talk(player);
             }
         }
     }
@@ -35,6 +47,7 @@ public class TalkTrigger : MonoBehaviour
         if (collision.tag == "Player")
         {
             playerisIn = true;
+            player = collision.GetComponent<Player>();
             interactionKey.SetActive(true);
         }
     }

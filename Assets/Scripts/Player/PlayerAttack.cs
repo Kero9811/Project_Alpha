@@ -155,4 +155,18 @@ public class PlayerAttack : MonoBehaviour
             }
         }
     }
+
+    public void MeleeDmgUp(int value)
+    {
+        damage += value;
+
+        GameManager.Instance.Data.SavePlayerData(player);
+    }
+
+    public void MagicDmgUp(int value)
+    {
+        magicDamage += value;
+
+        GameManager.Instance.Data.SavePlayerData(player);
+    }
 }

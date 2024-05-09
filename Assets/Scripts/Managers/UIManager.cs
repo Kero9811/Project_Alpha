@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
 
     private Transform gamePanelTf;
     private Transform invenPanelTf;
+    public Transform shopPanelTf;
     private Transform contentListTf;
 
     public TextMeshProUGUI talkText;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
 
     public bool isInvenOpen = false; // 인벤 열려 있는 지 체크
     public bool isTalkOpen = false; // 토크창 열려 있는 지 체크
+    public bool isShopOpen = false; // 상점창 열려 있는 지 체크
     private int curContentIdx = 0; // 현재 열려 있는 Content 번호 ( Inventory를 열고 play해야 정상작동, 다르게 하고 싶을 경우 수정)
 
     private void Awake()
@@ -42,6 +44,7 @@ public class UIManager : MonoBehaviour
 
         gamePanelTf = uiCanvas.transform.Find("GamePanel");
         invenPanelTf = uiCanvas.transform.Find("InventoryPanel");
+        shopPanelTf = uiCanvas.transform.Find("ShopPanel");
 
         contentListTf = invenPanelTf.GetChild(0).GetChild(2).GetChild(1);
 

@@ -12,6 +12,8 @@ public class TalkObj : MonoBehaviour
     [SerializeField] private int lastTalkIndex; // 대화 종료할 인덱스 (변경 가능)
 
     [SerializeField] private bool isShop;
+
+    private GameObject shopPanel;
     public int ObjId => objId;
 
     private void Awake()
@@ -20,7 +22,7 @@ public class TalkObj : MonoBehaviour
     }
 
     // 특정 조건을 완료하면 startTalkIndex와 lastTalkIndex의 값을 변경하여 출력할 대화를 변경
-    public void Talk()
+    public void Talk(Player player)
     {
         if (talkIndex >= lastTalkIndex && GameManager.Instance.UI.isTalkOpen)
         {
@@ -30,6 +32,10 @@ public class TalkObj : MonoBehaviour
             if (isShop)
             {
                 // 상인이면 품목패널 띄우기
+                GameObject obj = GameManager.Instance.UI.shopPanelTf.gameObject;
+                obj.SetActive(true);
+                obj.GetComponentInChildren<ShopItemList>().player = player;
+                GameManager.Instance.UI.isShopOpen = true;
             }
             talkTrigger.interactionKey.SetActive(true);
             return;

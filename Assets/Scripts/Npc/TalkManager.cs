@@ -24,9 +24,10 @@ public class TalkManager : MonoBehaviour
         LoadTalkData();
     }
 
+    // 대사 작성 후에 한 번만 저장하고 이후 쓰지 않음
     private void SaveTalkData()
     {
-        talkData.talkData.Add(1000, new string[] { "문맥 1을 재생", "문맥 2을 재생", "문맥 3을 재생(3 ~ 4 반복 재생)", "문맥 4을 재생", "문맥 5을 재생" });
+        talkData.talkData.Add(1000, new string[] { "어서오세요, 저희의 상점에.", "당신의 여행길에 큰 도움을 줄 물건들을 팔고 있어요.", "무슨 아이템이 있는지 보시겠어요?", "이 이상은 구하기 힘들꺼예요.", "문맥 5을 재생" });
         talkData.talkData.Add(1001, new string[] { "NPC 2 1 재생", "NPC 2 2 재생" });
 
         string data = JsonConvert.SerializeObject(talkData.talkData);

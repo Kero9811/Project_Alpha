@@ -136,6 +136,8 @@ public class DataManager : MonoBehaviour
 
         playerData.curGold = player.CurGold;
         playerData.maxGold = player.MaxGold;
+
+        SaveData();
     }
 
     public void LoadPlayerData(Player player)

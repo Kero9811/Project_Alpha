@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 768d42b5f1ababf4595a4d4e10535207, type: 3}
-  m_Name: PlusMeleeDmg
+  m_Script: {fileID: 11500000, guid: 36dfc6945c014ce47a3e7d7a71d9aadd, type: 3}
+  m_Name: PlusMeleeDmgItem
   m_EditorClassIdentifier: 
   itemName: "\uADFC\uC811 \uB370\uBBF8\uC9C0 \uC0C1\uC2B9"
   id: 302
   image: {fileID: 8399011212269539787, guid: 42abc95d6cf7056498635fabfaafa350, type: 3}
   desc: "\uADFC\uC811 \uB370\uBBF8\uC9C0\uB97C 1\uB9CC\uD07C \uC62C\uB824\uC900\uB2E4."
-  isSold: 0
   price: 500
+  value: 1

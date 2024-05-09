@@ -6,16 +6,6 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Text;
 
-[System.Serializable]
-public class ObjData
-{
-    public string itemName;
-    public string desc;
-    public int id;
-    public string imagePath; // 이미지 저장경로
-    public Sprite image;
-}
-
 public class Item : MonoBehaviour
 {
     public string itemName;
@@ -24,12 +14,10 @@ public class Item : MonoBehaviour
     public string desc;
 
     public ItemData Info;
-    public ObjData data;
 
     public virtual void Awake()
     {
         InitItemInfo();
-        //InitData();
     }
 
     public virtual void InitItemInfo()
@@ -40,25 +28,5 @@ public class Item : MonoBehaviour
         desc = Info.Desc;
     }
 
-    public virtual void InitData() // 권한 없데
-    {
-        //StringBuilder sb = new StringBuilder();
-        //sb.Append(Application.persistentDataPath);
-        //sb.Append("/");
-        //sb.Append("Sprites");
-        //sb.Append("/");
-        //sb.Append(Info.Id);
-
-        data.itemName = Info.ItemName;
-        data.desc = Info.Desc;
-        data.id = Info.Id;
-        data.image = Info.Image;
-        //string imagePath = "Assets/SaveImages/";
-        //if (!Directory.Exists(imagePath))
-        //{
-        //    Directory.CreateDirectory(imagePath);
-        //}
-
-        //data.imagePath = imagePath;
-    }
+    public virtual void Use() { }
 }

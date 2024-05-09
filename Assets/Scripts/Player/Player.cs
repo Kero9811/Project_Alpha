@@ -181,8 +181,11 @@ public class Player : MonoBehaviour
         if (maxHp > 10) { maxHp = 10; return; }
 
         curHp += maxValue;
+
         GameManager.Instance.UI.h_Handler.OnChangeMaxHp();
         GameManager.Instance.UI.h_Handler.OnChangeHp();
+
+        GameManager.Instance.Data.SavePlayerData(this);
     }
 
     public void GetMaxMp(int maxValue)
@@ -201,6 +204,13 @@ public class Player : MonoBehaviour
         curGold += value;
 
         if (curGold > 9999) { curGold = 9999; return; }
+
+        GameManager.Instance.UI.moneyHandler.OnChangeMoney();
+    }
+
+    public void UseGold(int value)
+    {
+        curGold -= value;
 
         GameManager.Instance.UI.moneyHandler.OnChangeMoney();
     }
