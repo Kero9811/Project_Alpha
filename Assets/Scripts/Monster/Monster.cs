@@ -22,10 +22,16 @@ public abstract class Monster : MonoBehaviour
     protected int damage;
     protected float moveSpeed;
     protected float attackDelay;
+    protected float attackRange;
 
     public MonsterData monsterData;
 
-    private void Awake()
+    protected virtual void Awake()
+    {
+        InitStat();
+    }
+
+    protected virtual void InitStat()
     {
         race = monsterData.Race;
         monsterName = monsterData.MonsterName;
@@ -35,6 +41,7 @@ public abstract class Monster : MonoBehaviour
         damage = monsterData.Damage;
         moveSpeed = monsterData.MoveSpeed;
         attackDelay = monsterData.AttackDelay;
+        attackRange = monsterData.AttackRange;
     }
 
     /// <summary>
