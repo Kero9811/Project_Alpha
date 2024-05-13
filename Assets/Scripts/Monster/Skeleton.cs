@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum State
+{
+    Idle,
+    Move,
+    Attack,
+    Block,
+    Dead
+}
+
 public class Skeleton : Monster
 {
     Rigidbody2D rb;
     Player player;
     Animator anim;
+    State state;
 
     private bool playerIn;
     private bool isAction;
     private bool blocked;
 
-    private float blockTime = 2f;
+    private float blockTime = 4f;
 
     protected override void Awake()
     {
@@ -50,20 +60,27 @@ public class Skeleton : Monster
         {
             StopCoroutine(BlockCoroutine());
             // 2단 공격
+            anim.SetTrigger("Attack_2");
             blocked = false;
         }
         else
         {
             // 1단 공격
+            anim.SetTrigger("Attack_1");
         }
     }
 
     private IEnumerator BlockCoroutine()
     {
-        // 막기 설정
-        yield return new WaitForSeconds(blockTime);
+        while (isAction)
+        {
+            // 막기 설정
+            anim.SetBool("Shield", true);
+            yield return new WaitForSeconds(blockTime);
 
-        Attack(damage);
+            anim.SetBool("Shield", false);
+            Attack(damage);
+        }
     }
 
 
@@ -75,19 +92,25 @@ public class Skeleton : Monster
             {
                 if (isAction) { return; }
                 isAction = true;
+                rb.velocity = Vector3.zero;
+                anim.SetInteger("MoveSpeed", 0);
                 _ = StartCoroutine(BlockCoroutine());
                 return;
             }
             else
             {
                 isAction = false;
+                anim.SetBool("Shield", false);
             }
 
-            Vector3 dir = (player.transform.position - transform.position).normalized;
-            dir.y = 0;
-            rb.MovePosition(rb.transform.position + dir * moveSpeed * Time.fixedDeltaTime);
-            Debug.Log(rb.velocity.magnitude);
-            anim.SetFloat("MoveSpeed", dir.magnitude * moveSpeed);
+            float x = Mathf.Abs(transform.localScale.x);
+            float y = Mathf.Abs(transform.localScale.y);
+            int setDir = transform.position.x <= player.transform.position.x ? 1 : -1;
+
+            rb.velocity = new Vector3(setDir * moveSpeed, 0, 0);
+            transform.localScale = new Vector3(setDir * x, y, 1);
+            anim.SetInteger("MoveSpeed", (int)rb.velocity.x);
+            state = State.Move;
         }
     }
 
