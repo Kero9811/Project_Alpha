@@ -21,7 +21,6 @@ public class EncyclopediaManager : MonoBehaviour
     {
         if (monsterDictionary[monsterData.MonsterId] >= 999) { return; }
         monsterDictionary[monsterData.MonsterId]++;
-        Debug.Log($"monsterName : {monsterData.MonsterName}, killcount : {monsterDictionary[monsterData.MonsterId]}");
     }
 
     public void AddMonsterData(MonsterData monsterData)

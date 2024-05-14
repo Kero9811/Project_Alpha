@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e6cfeaef46aaf946b8087cf6465910d, type: 3}
-  m_Name: Monster2
+  m_Name: Goblin
   m_EditorClassIdentifier: 
   race: 2
-  monsterName: Monster2
+  monsterName: "\uACE0\uBE14\uB9B0"
   monsterId: 2
-  maxHp: 9
+  maxHp: 6
   damage: 1
-  moveSpeed: 2
-  attackDelay: 1
-  desc: This is Monster!
-  monsterSprite: {fileID: 21300000, guid: 5cc9e5ae78e4ccf48b9cf84c2d1958da, type: 3}
+  moveSpeed: 3
+  attackDelay: 3
+  attackRange: 1.5
+  desc: "\uB0A0\uB835\uD55C \uC6C0\uC9C1\uC784\uC744 \uAC00\uC9C0\uACE0 \uC788\uB294
+    \uACE0\uBE14\uB9B0\uC774\uB2E4."
+  monsterSprite: {fileID: 4723107735738678597, guid: d0c50adfe9ed44a4fa91fda48bae9a0d, type: 3}

@@ -21,7 +21,7 @@ public class Trap : Monster
     }
 
     #region 미사용 메서드
-    public override void Attack(int damage)
+    public override void Attack()
     {
     }
 

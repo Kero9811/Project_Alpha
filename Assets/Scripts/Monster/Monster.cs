@@ -7,9 +7,10 @@ public enum Race
     // 임시 적 종류
     Trap,
     Skeleton,
-    Type_B,
-    Type_C,
-    Type_D,
+    Goblin,
+    Mushroom,
+    Bat,
+    Boss
 }
 
 public abstract class Monster : MonoBehaviour
@@ -56,11 +57,15 @@ public abstract class Monster : MonoBehaviour
     /// <param name="playerTf">플레이어의 Transform</param>
     /// <param name="isDownAttack">다운어택 여부</param>
     public abstract void TakeDamage(int damage, Transform playerTf, bool isDownAttack);
-    public abstract void Attack(int damage);
+    public abstract void Attack();
     public abstract void Move();
     public virtual void Die()
     {
         GameManager.Instance.Encyclopedia.AddKillCount(monsterData);
         GameManager.Instance.Data.SaveEncyclopedia(monsterData);
+    }
+    protected void CleanMonster()
+    {
+        Destroy(gameObject);
     }
 }
