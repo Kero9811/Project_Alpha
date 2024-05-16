@@ -121,7 +121,10 @@ public class Goblin : Monster
 
     private void CheckInRange()
     {
-        isInRange = attackRange >= Mathf.Abs(transform.position.x - player.transform.position.x);
+        if (player != null)
+        {
+            isInRange = attackRange >= Mathf.Abs(transform.position.x - player.transform.position.x);
+        }
     }
 
     public override void TakeDamage(int damage)
