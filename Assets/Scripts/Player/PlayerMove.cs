@@ -15,6 +15,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float dashPower = 24f;
 
     private Vector2 inputVec;
+    [HideInInspector] public bool isRight = true;
 
     #region 위치
     private Transform footTf;
@@ -81,6 +82,7 @@ public class PlayerMove : MonoBehaviour
         if (player.CurState == PlayerState.Dash ||
             player.CurState == PlayerState.GroundSmash ||
             player.CurState == PlayerState.WallJump || 
+            player.CurState == PlayerState.Stun || 
             player.CurState == PlayerState.Dead) { return; }
 
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
@@ -112,10 +114,12 @@ public class PlayerMove : MonoBehaviour
         if (inputVec.x < 0)
         {
             transform.localScale = new Vector3(-x, y, 1);
+            isRight = false;
         }
         else if (inputVec.x > 0)
         {
             transform.localScale = new Vector3(x, y, 1);
+            isRight = true;
         }
         else { }
 
@@ -294,7 +298,7 @@ public class PlayerMove : MonoBehaviour
             {
                 player.SetCurState(PlayerState.Idle);
             }
-            else if (rb.velocity.y == 0 && inputVec != Vector2.zero)
+            else if (rb.velocity.y <= 2 && inputVec != Vector2.zero) // 경사로 때문에 2 근처로 설정
             {
                 player.SetCurState(PlayerState.Move);
             }

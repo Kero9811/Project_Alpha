@@ -71,7 +71,19 @@ public class PlayerAttack : MonoBehaviour
             //    anim.SetTrigger("Attack");
             //}
             Collider2D[] attackCols = Physics2D.OverlapBoxAll(attackTf.position, attackSize, 0);
-            LeanPool.Spawn(attackEffect, attackTf, false);
+            GameObject effect = LeanPool.Spawn(attackEffect, attackTf.position, Quaternion.identity, null);
+
+            float x = Mathf.Abs(effect.transform.localScale.x);
+            float y = Mathf.Abs(effect.transform.localScale.y);
+
+            if (player.P_Move.isRight)
+            {
+                effect.transform.localScale = new Vector3(x, y, 1);
+            }
+            else
+            {
+                effect.transform.localScale = new Vector3(-x, y, 1);
+            }
 
             for (int i = 0; i < attackCols.Length; i++)
             {
@@ -105,7 +117,20 @@ public class PlayerAttack : MonoBehaviour
             //    anim.SetTrigger("Attack");
             //}
             Collider2D[] attackCols = Physics2D.OverlapBoxAll(upAttackTf.position, attackSize, 0);
-            GameObject effect = LeanPool.Spawn(upAttackEffect, upAttackTf, false);
+            GameObject effect = LeanPool.Spawn(upAttackEffect, upAttackTf.position, Quaternion.identity, null);
+
+            float x = Mathf.Abs(effect.transform.localScale.x);
+            float y = Mathf.Abs(effect.transform.localScale.y);
+
+            if (player.P_Move.isRight)
+            {
+                effect.transform.localScale = new Vector3(x, y, 1);
+            }
+            else
+            {
+                effect.transform.localScale = new Vector3(-x, y, 1);
+            }
+
             effect.transform.localScale = new Vector3(.2f, .2f, .2f);
 
             for (int i = 0; i < attackCols.Length; i++)
@@ -140,7 +165,20 @@ public class PlayerAttack : MonoBehaviour
             //    anim.SetTrigger("Attack");
             //}
             Collider2D[] attackCols = Physics2D.OverlapBoxAll(downAttackTf.position, attackSize, 0);
-            GameObject effect = LeanPool.Spawn(upAttackEffect, downAttackTf, false);
+            GameObject effect = LeanPool.Spawn(upAttackEffect, downAttackTf.position, Quaternion.identity, null);
+
+            float x = Mathf.Abs(effect.transform.localScale.x);
+            float y = Mathf.Abs(effect.transform.localScale.y);
+
+            if (player.P_Move.isRight)
+            {
+                effect.transform.localScale = new Vector3(x, y, 1);
+            }
+            else
+            {
+                effect.transform.localScale = new Vector3(-x, y, 1);
+            }
+
             effect.transform.localScale = new Vector3(.2f, -.2f, .2f);
 
             for (int i = 0; i < attackCols.Length; i++)

@@ -8,7 +8,7 @@ public class Trap : Monster
     {
         if (collision.collider.TryGetComponent(out Player player))
         {
-            player.TakeDamage(damage);
+            player.TakeDamage(damage, transform);
         }
     }
 

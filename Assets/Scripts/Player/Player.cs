@@ -18,6 +18,7 @@ public enum PlayerState
     WallJump,
     GroundSmash,
     ChargeHeal,
+    Stun,
     Dead
 }
 
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
 
     Animator anim;
     SpriteRenderer render;
+    Rigidbody2D rb;
 
     Coroutine blinkCoroutine;
     private float blinkDuration = 2f;
@@ -68,6 +70,7 @@ public class Player : MonoBehaviour
 
         anim = transform.Find("Renderer").GetComponent<Animator>();
         render = transform.Find("Renderer").GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private async void Start()
@@ -95,9 +98,14 @@ public class Player : MonoBehaviour
         maxGold = playerStat.maxGold;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, Transform enemyTf)
     {
+        if (curState == PlayerState.Dead) { return; }
+
         curHp -= damage;
+        Knockback(enemyTf);
+        Time.timeScale = .4f;
+        Invoke("RestoreTimeScale", .2f);
         GameManager.Instance.UI.h_Handler.OnChangeHp();
         if (curHp <= 0)
         {
@@ -106,6 +114,19 @@ public class Player : MonoBehaviour
             return;
         }
         OnDamaged();
+    }
+
+    private void RestoreTimeScale()
+    {
+        Time.timeScale = 1f;
+    }
+
+    private void Knockback(Transform enemyTf)
+    {
+        curState = PlayerState.Stun;
+        rb.velocity = Vector3.zero;
+        Vector2 dir = (transform.position - enemyTf.position).normalized;
+        rb.AddForce((Vector2.up + dir) * 2f, ForceMode2D.Impulse);
     }
 
     private void OnDamaged()

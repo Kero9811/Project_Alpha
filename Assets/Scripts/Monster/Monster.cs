@@ -25,6 +25,8 @@ public abstract class Monster : MonoBehaviour
     protected float attackDelay;
     protected float attackRange;
 
+    public int Damage => damage;
+
     public MonsterData monsterData;
 
     protected virtual void Awake()

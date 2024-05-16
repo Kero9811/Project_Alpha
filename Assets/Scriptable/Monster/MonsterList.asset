@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsterNames:
   - "\uD574\uACE8 \uBCD1\uC0AC"
-  - "\uBAAC\uC2A4\uD1302"
+  - "\uACE0\uBE14\uB9B0"
   - "\uBAAC\uC2A4\uD1303"
   - "\uBAAC\uC2A4\uD1304"
   - "\uBAAC\uC2A4\uD1305"
@@ -22,7 +22,7 @@ MonoBehaviour:
   - "\uBAAC\uC2A4\uD1307"
   - "\uBAAC\uC2A4\uD1308"
   - "\uBAAC\uC2A4\uD1309"
-  - "\uBAAC\uC2A4\uD13010"
+  - "\uC8FD\uC74C\uC758 \uC218\uD655\uC790"
   monsterDatas:
   - {fileID: 11400000, guid: 908bad85c7b76f24b8d262dd3ab16b73, type: 2}
   - {fileID: 11400000, guid: 11aa316d29045514ebc159252cc9c6a2, type: 2}
@@ -34,4 +34,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a36bf4f1ad617645972484a9b6d1e96, type: 2}
   - {fileID: 11400000, guid: cb96ac5d4dbd1eb4091342b90ec99e13, type: 2}
   - {fileID: 11400000, guid: 8b31aeb22502b344f9a06d99520bd9ea, type: 2}
-  monsterKillCounts: 09000000000000000000000000000000000000000000000000000000000000000000000000000000
+  monsterKillCounts: 13000000030000000000000000000000000000000000000000000000000000000000000000000000
