@@ -85,7 +85,6 @@ public class Player : MonoBehaviour
 
         GameManager.Instance.Data.LoadPlayerData(this);
         GameManager.Instance.UI.UpdateGameUI();
-        Debug.Log("플레이어 데이터 불러오기 완료");
     }
 
     public void SetPlayerStat(PlayerStatus playerStat)
@@ -261,5 +260,4 @@ public class Player : MonoBehaviour
     {
         curState = state;
     }
-
 }

@@ -172,23 +172,24 @@ public class DataManager : MonoBehaviour
         SaveData();
     }
 
-    public void LoadTalkIndex(int talkIndex, bool isShop, bool isVilleger, bool isTalked)
+    public void LoadTalkIndex(ref int talkIndex, bool isShop, bool isVilleger, ref int curTalkIndex)
     {
         if (isShop)
         {
+            talkIndex = npcTalkIndex.shopNpcIndex;
+
             if (npcTalkIndex.shopNpcIndex != 0)
             {
-                isTalked = true;
+                curTalkIndex = talkIndex - 1;
             }
-            talkIndex = npcTalkIndex.shopNpcIndex;
         }
         else if (isVilleger)
         {
+            talkIndex = npcTalkIndex.villegerNpcIndex;
             if (npcTalkIndex.villegerNpcIndex != 0)
             {
-                isTalked = true;
+                curTalkIndex = talkIndex - 1;
             }
-            talkIndex = npcTalkIndex.villegerNpcIndex;
         }
     }
 

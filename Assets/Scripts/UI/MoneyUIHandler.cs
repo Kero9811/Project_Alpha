@@ -23,7 +23,12 @@ public class MoneyUIHandler : MonoBehaviour
 
     public void OnChangeMoney()
     {
-        if (player == null) { player = GameObject.FindWithTag("Player").GetComponent<Player>(); }
-        moneyText.text = player.CurGold.ToString();
+        if (player == null) { player = GameObject.FindWithTag("Player")?.GetComponent<Player>(); }
+        if (player == null)
+        {
+            moneyText.text = GameManager.Instance.Data.PlayerData.curGold.ToString();
+            return;
+        }
+        moneyText.text = player?.CurGold.ToString();
     }
 }

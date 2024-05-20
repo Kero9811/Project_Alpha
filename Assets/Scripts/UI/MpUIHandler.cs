@@ -25,7 +25,12 @@ public class MpUIHandler : MonoBehaviour
 
     public void OnChangeMp()
     {
-        if (player == null) { player = GameObject.FindWithTag("Player").GetComponent<Player>(); }
-        mpImage.fillAmount = (float)player.CurMp / player.MaxMp;
+        if (player == null) { player = GameObject.FindWithTag("Player")?.GetComponent<Player>(); }
+        if (player == null)
+        {
+            mpImage.fillAmount = (float)GameManager.Instance.Data.PlayerData.curMp / GameManager.Instance.Data.PlayerData.maxMp;
+            return;
+        }
+        mpImage.fillAmount = (float)player?.CurMp / player.MaxMp;
     }
 }

@@ -33,11 +33,14 @@ public class SceneLoader : MonoBehaviour
 
     public void StartSceneLoad(string sceneName)
     {
-        prevScene = nextScene;
+        prevScene = SceneManager.GetActiveScene().name;
         nextScene = sceneName;
 
-        Debug.Log(prevScene);
-        Debug.Log(nextScene);
+        if (prevScene == "" && nextScene == "")
+        {
+            prevScene = "TitleScene";
+            nextScene = "TownScene";
+        }
 
         if(nextScene == "TitleScene")
         {
@@ -58,6 +61,13 @@ public class SceneLoader : MonoBehaviour
             GameManager.Instance.Data.SavePlayerData(player);
         }
         loadingPanel.SetActive(true);
+
+        if (nextScene == "")
+        {
+            nextScene = "TownScene";
+            GameManager.Instance.Data.SaveSceneData(nextScene);
+        }
+
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
 
