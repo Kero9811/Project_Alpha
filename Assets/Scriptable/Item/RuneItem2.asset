@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d3085b424d3a544a4f2f0444a131c2, type: 3}
   m_Name: RuneItem2
   m_EditorClassIdentifier: 
-  itemName: Second Test Rune Item
+  itemName: "\uBBFC\uCCA9\uC131\uC758 \uB8EC"
   id: 202
-  image: {fileID: 21300000, guid: b4b812c88ebb62f43a51b8077d0d95aa, type: 3}
-  desc: Second Rune Item for Test.
+  image: {fileID: -8307396446648592910, guid: e293a83b8e0e20648b4367c5dee71d7f, type: 3}
+  desc: "\uB450 \uBC88\uC9F8\uB85C \uB9CC\uB4E4\uC5B4\uC9C4 \uB8EC\uC774\uB2E4."
   cost: 6
   isEquipped: 0

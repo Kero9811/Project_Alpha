@@ -17,21 +17,31 @@ public class GameManager : MonoBehaviour
     private EncyclopediaManager encyclopediaManager;
     private DataManager dataManager;
     private TalkManager talkManager;
+    private SceneLoader sceneLoader;
     public UIManager UI => uiManager;
     public InventoryManager Inven => inventoryManager;
     public EncyclopediaManager Encyclopedia => encyclopediaManager;
     public DataManager Data => dataManager;
     public TalkManager Talk => talkManager;
+    public SceneLoader Scene => sceneLoader;
 
     #endregion
 
 
     private void Awake()
     {
+        if (instance != null)
+        {
+            DestroyImmediate(this.gameObject);
+            return;
+        }
+
         instance = this;
         DontDestroyOnLoad(gameObject);
 
         InitManagers();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void InitManagers()
@@ -60,6 +70,17 @@ public class GameManager : MonoBehaviour
         talkObj.name = "TalkManager";
         talkObj.transform.parent = transform;
         talkManager = talkObj.AddComponent<TalkManager>();
+
+        GameObject sceneObj = new GameObject();
+        sceneObj.name = "SceneLoader";
+        sceneObj.transform.parent = transform;
+        sceneLoader = sceneObj.AddComponent<SceneLoader>();
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        uiManager.OnSceneChanged();
+        sceneLoader.OnSceneLoad();
     }
 
     /// <summary>

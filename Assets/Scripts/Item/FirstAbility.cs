@@ -8,8 +8,9 @@ public class FirstAbility : Item
     {
         if (other.TryGetComponent(out Player player))
         {
-            Debug.Log("¥…∑¬ æ∆¿Ã≈€ »πµÊ!");
+            player.P_Move.UnlockDoubleJump();
             GameManager.Instance.Inven.AddItemsToAbilityQueue(this.Info);
+            GameManager.Instance.Data.SavePlayerData(player);
         }
     }
 }

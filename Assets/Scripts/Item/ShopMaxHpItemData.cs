@@ -9,7 +9,6 @@ public class ShopMaxHpItemData : ShopItemData
 
     public override void Use(Player player)
     {
-        Debug.Log("1");
         player.GetMaxHp(value);
     }
 }

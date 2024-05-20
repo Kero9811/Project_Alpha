@@ -11,6 +11,11 @@ public class MoneyUIHandler : MonoBehaviour
 
     public Player player;
 
+    private void Start()
+    {
+        OnChangeMoney();
+    }
+
     private void OnEnable()
     {
         OnChangeMoney();
@@ -18,6 +23,7 @@ public class MoneyUIHandler : MonoBehaviour
 
     public void OnChangeMoney()
     {
+        if (player == null) { player = GameObject.FindWithTag("Player").GetComponent<Player>(); }
         moneyText.text = player.CurGold.ToString();
     }
 }

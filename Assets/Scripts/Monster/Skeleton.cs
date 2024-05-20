@@ -179,7 +179,6 @@ public class Skeleton : Monster
         if (state == SkulState.Dead) return;
 
         curHp -= damage;
-        Debug.Log("다운 어택에 의한 데미지!");
 
         if (curHp <= 0)
         {

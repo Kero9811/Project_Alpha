@@ -9,8 +9,8 @@ public class PlayerAttack : MonoBehaviour
 {
     [Header("Damage Stat")]
 
-    [SerializeField] private int damage;
-    [SerializeField] private int magicDamage; // 추후 추가
+    [SerializeField] private int damage = 2;
+    [SerializeField] private int magicDamage = 4; // 추후 추가
 
     public int Damage => damage;
     public int MagicDamage => magicDamage;
@@ -66,24 +66,8 @@ public class PlayerAttack : MonoBehaviour
         if (context.duration < .2f && context.canceled && attackCD <= 0)
         {
             attackCD = delay;
-            //if (player.CurState == PlayerState.Idle)
-            //{
-            //    anim.SetTrigger("Attack");
-            //}
             Collider2D[] attackCols = Physics2D.OverlapBoxAll(attackTf.position, attackSize, 0);
-            GameObject effect = LeanPool.Spawn(attackEffect, attackTf.position, Quaternion.identity, null);
-
-            float x = Mathf.Abs(effect.transform.localScale.x);
-            float y = Mathf.Abs(effect.transform.localScale.y);
-
-            if (player.P_Move.isRight)
-            {
-                effect.transform.localScale = new Vector3(x, y, 1);
-            }
-            else
-            {
-                effect.transform.localScale = new Vector3(-x, y, 1);
-            }
+            GameObject effect = LeanPool.Spawn(attackEffect, attackTf);
 
             for (int i = 0; i < attackCols.Length; i++)
             {
@@ -112,10 +96,6 @@ public class PlayerAttack : MonoBehaviour
         if (context.started && attackCD <= 0)
         {
             attackCD = delay;
-            //if (player.CurState == PlayerState.Idle)
-            //{
-            //    anim.SetTrigger("Attack");
-            //}
             Collider2D[] attackCols = Physics2D.OverlapBoxAll(upAttackTf.position, attackSize, 0);
             GameObject effect = LeanPool.Spawn(upAttackEffect, upAttackTf.position, Quaternion.identity, null);
 
@@ -160,10 +140,6 @@ public class PlayerAttack : MonoBehaviour
         if (context.started && attackCD <= 0)
         {
             attackCD = delay;
-            //if (player.CurState == PlayerState.Idle)
-            //{
-            //    anim.SetTrigger("Attack");
-            //}
             Collider2D[] attackCols = Physics2D.OverlapBoxAll(downAttackTf.position, attackSize, 0);
             GameObject effect = LeanPool.Spawn(upAttackEffect, downAttackTf.position, Quaternion.identity, null);
 

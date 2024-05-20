@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
     private GameObject gamePanel;
     private GameObject invenPanel;
     private GameObject talkPanel;
+    private GameObject pausePanel;
 
     Dictionary<string, GameObject> panelDic;
 
@@ -38,8 +38,44 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        if (!GameManager.Instance.CheckIsGameScene()) { return; }
+        if (SceneManager.GetActiveScene().name == "TitleScene") { return; }
 
+        GameObject uiCanvas = GameObject.FindWithTag("Canvas");
+
+        gamePanelTf = uiCanvas.transform.Find("GamePanel");
+        invenPanelTf = uiCanvas.transform.Find("InventoryPanel");
+        shopPanelTf = uiCanvas.transform.Find("ShopPanel");
+
+        contentListTf = invenPanelTf.GetChild(0).GetChild(2).GetChild(1);
+
+        InitContentList(); // contentListObjs √ ±‚»≠
+
+        h_Handler = gamePanelTf.GetComponentInChildren<HpUIHandler>();
+        m_Handler = gamePanelTf.GetComponentInChildren<MpUIHandler>();
+        moneyHandler = gamePanelTf.GetComponentInChildren<MoneyUIHandler>();
+
+        invenPanelAnim = invenPanelTf.gameObject.GetComponentInChildren<Animator>();
+
+        gamePanel = gamePanelTf.gameObject;
+        invenPanel = invenPanelTf.gameObject;
+        talkPanel = uiCanvas.transform.Find("TalkPanel").gameObject;
+        pausePanel = uiCanvas.transform.Find("PausePanel").gameObject;
+
+        talkText = talkPanel.GetComponentInChildren<TextMeshProUGUI>();
+
+        panelDic = new Dictionary<string, GameObject>()
+        {
+            {"Game", gamePanel},
+            {"Inven", invenPanel},
+            {"Talk", talkPanel }
+        };
+
+        PanelOpen("Game");
+    }
+
+    public void OnSceneChanged()
+    {
+        if(SceneManager.GetActiveScene().name == "TitleScene") { return; }
         GameObject uiCanvas = GameObject.FindWithTag("Canvas");
 
         gamePanelTf = uiCanvas.transform.Find("GamePanel");
@@ -76,7 +112,14 @@ public class UIManager : MonoBehaviour
     {
         if (isTalkOpen) { return; }
 
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pausePanel == null) { pausePanel = GameObject.FindWithTag("Canvas").transform.Find("PausePanel").gameObject; Debug.Log(pausePanel.name); }
+            pausePanel.SetActive(true);
+            Time.timeScale = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.I) && SceneManager.GetActiveScene().name != "TitleScene")
         {
             if (!isInvenOpen)
             {
@@ -149,7 +192,6 @@ public class UIManager : MonoBehaviour
         h_Handler.OnChangeMaxHp();
         h_Handler.OnChangeHp();
 
-        m_Handler.OnChangeMaxMp();
         m_Handler.OnChangeMp();
 
         moneyHandler.OnChangeMoney();

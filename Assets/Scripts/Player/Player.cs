@@ -25,12 +25,12 @@ public enum PlayerState
 public class Player : MonoBehaviour
 {
     #region 플레이어 스탯 및 상태
-    private int maxHp; // 최종 수치 : 10HP
-    private int curHp;
-    private int maxMp;
+    private int maxHp = 3; // 최종 수치 : 10HP
+    private int curHp = 3;
+    private int maxMp = 100;
     private int curMp;
-    private int curGold;
-    private int maxGold;
+    private int curGold = 999;
+    private int maxGold = 9999;
     private PlayerState curState;
     public int CurHp => curHp;
     public int MaxHp => maxHp;
@@ -216,7 +216,6 @@ public class Player : MonoBehaviour
         if(maxMp > 200) {  maxMp = 200; return; }
 
         curMp += maxValue;
-        GameManager.Instance.UI.m_Handler.OnChangeMaxMp();
         GameManager.Instance.UI.m_Handler.OnChangeMp();
     }
 
@@ -246,6 +245,16 @@ public class Player : MonoBehaviour
         }
         render.color = new Color(1, 1, 1, 1);
         SetCurState(PlayerState.Dead);
+        GameManager.Instance.Scene.isDead = true;
+
+        Invoke("Respawn", 2f);
+    }
+
+    private void Respawn()
+    {
+        curHp = maxHp;
+
+        GameManager.Instance.Scene.StartSceneLoad("TownScene");
     }
 
     public void SetCurState(PlayerState state)

@@ -14,9 +14,25 @@ public class HpUIHandler : MonoBehaviour
 
     public Player player;
 
-    private void Awake()
+    //private void Awake()
+    //{
+    //    if (player == null)
+    //    { player = GameObject.FindWithTag("Player").GetComponent<Player>(); }
+
+    //    activeCount = player.MaxHp;
+
+    //    hpImagesObj = new GameObject[transform.childCount];
+    //    for (int i = 0; i < transform.childCount; i++)
+    //    {
+    //        hpImagesObj[i] = transform.GetChild(i).gameObject;
+    //    }
+    //}
+
+    private void Start()
     {
-        // 데이터 받아와서 활성화 개수 조정
+        if (player == null)
+        { player = GameObject.FindWithTag("Player").GetComponent<Player>(); }
+
         activeCount = player.MaxHp;
 
         hpImagesObj = new GameObject[transform.childCount];
@@ -24,16 +40,15 @@ public class HpUIHandler : MonoBehaviour
         {
             hpImagesObj[i] = transform.GetChild(i).gameObject;
         }
-    }
 
-    private void Start()
-    {
         OnChangeMaxHp();
         OnChangeHp();
     }
 
     private void OnEnable()
     {
+        if(hpImagesObj == null) { return; }
+
         OnChangeMaxHp();
         OnChangeHp();
     }
@@ -44,20 +59,19 @@ public class HpUIHandler : MonoBehaviour
 
         for (int i = 0; i < curHpCount; i++)
         {
-            //hpImagesObj[i].GetComponent<Image>().sprite = fullImage;
             hpImagesObj[i].GetComponent<Animator>().SetBool("isFull", true);
 
         }
 
         for (int i = curHpCount; i < activeCount; i++)
         {
-            //hpImagesObj[i].GetComponent<Image>().sprite = emptyImage;
             hpImagesObj[i].GetComponent<Animator>().SetBool("isFull", false);
         }
     }
 
     public void OnChangeMaxHp()
     {
+        if (player == null) { player = GameObject.FindWithTag("Player").GetComponent<Player>(); }
         activeCount = player.MaxHp;
 
         for (int i = 0; i < activeCount; i++)

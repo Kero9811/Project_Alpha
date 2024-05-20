@@ -4,9 +4,10 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
-public class PlayerStatus //TODO: 능력 해금 여부도 저장해야함
+public class PlayerStatus
 {
     public int maxHp = 3;
     public int curHp = 3;
@@ -18,6 +19,9 @@ public class PlayerStatus //TODO: 능력 해금 여부도 저장해야함
 
     public int curGold;
     public int maxGold;
+
+    public bool canDoubleJump;
+    public bool canWallSlide;
 }
 
 [System.Serializable]
@@ -35,11 +39,27 @@ public class EncyclopediaKillCount
     public Dictionary<int, int> encyclopediaDataDict;
 }
 
+[System.Serializable]
+public class SceneName
+{
+    public string sceneName;
+}
+
+[System.Serializable]
+public class NpcTalkIndex
+{
+    public int shopNpcIndex;
+    public int villegerNpcIndex;
+}
+
 public class DataManager : MonoBehaviour
 {
     private PlayerStatus playerData = new PlayerStatus();
+    public PlayerStatus PlayerData => playerData;
     private InventoryItem inventoryItem = new InventoryItem();
     private EncyclopediaKillCount encycData = new EncyclopediaKillCount();
+    private SceneName sceneName = new SceneName();
+    private NpcTalkIndex npcTalkIndex = new NpcTalkIndex();
     private string path;
     private string playerDataFileName = "PlayerStatusData";
     private string storyItemFileName = "StoryItemData";
@@ -47,6 +67,8 @@ public class DataManager : MonoBehaviour
     private string ownRuneItemFileName = "OwnRuneItemData";
     private string equipRuneItemFileName = "EquipRuneItemData";
     private string encyclopediaDataFileName = "EncyclopediaCountData";
+    private string sceneFileName = "SceneData";
+    private string npcTalkIndexFileName = "TalkIndexData";
 
     private bool checkData = false;
 
@@ -66,7 +88,6 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    // 오버로딩 이용해서 분할하는 것도 괜찮아보임
     public void SaveData()
     {
         string data = JsonUtility.ToJson(playerData, true);
@@ -75,6 +96,8 @@ public class DataManager : MonoBehaviour
         string ownRuneItemIdData = JsonConvert.SerializeObject(inventoryItem.ownRuneItemIdList);
         string equipRuneItemIdData = JsonConvert.SerializeObject(inventoryItem.equipRuneItemIdList);
         string encyclopediaData = JsonConvert.SerializeObject(encycData.encyclopediaDataDict);
+        string sceneData = JsonUtility.ToJson(sceneName, true);
+        string talkData = JsonUtility.ToJson(npcTalkIndex, true);
 
         File.WriteAllText(path + playerDataFileName, data);
         File.WriteAllText(path + storyItemFileName, storyItemIdData);
@@ -82,6 +105,8 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(path + ownRuneItemFileName, ownRuneItemIdData);
         File.WriteAllText(path + equipRuneItemFileName, equipRuneItemIdData);
         File.WriteAllText(path + encyclopediaDataFileName, encyclopediaData);
+        File.WriteAllText(path + sceneFileName, sceneData);
+        File.WriteAllText(path + npcTalkIndexFileName, talkData);
     }
 
     public void LoadData()
@@ -92,13 +117,17 @@ public class DataManager : MonoBehaviour
         string ownRuneItemDataPath = path + ownRuneItemFileName;
         string equipRuneItemDataPath = path + equipRuneItemFileName;
         string encyclopediaDataPath = path + encyclopediaDataFileName;
+        string sceneDataPath = path + sceneFileName;
+        string npcTalkDataPath = path + npcTalkIndexFileName;
 
         if (false == File.Exists(playerDataPath) ||
             false == File.Exists(storyItemDataPath) ||
             false == File.Exists(abilityItemDataPath) ||
             false == File.Exists(ownRuneItemDataPath) ||
             false == File.Exists(equipRuneItemDataPath) ||
-            false == File.Exists(encyclopediaDataPath))
+            false == File.Exists(encyclopediaDataPath) || 
+            false == File.Exists(sceneDataPath) || 
+            false == File.Exists(npcTalkDataPath))
         {
             checkData = false;
             return;
@@ -113,6 +142,8 @@ public class DataManager : MonoBehaviour
             string ownRuneItemData = File.ReadAllText(ownRuneItemDataPath);
             string equipRuneItemData = File.ReadAllText(equipRuneItemDataPath);
             string encyclopediaData = File.ReadAllText(encyclopediaDataPath);
+            string sceneData = File.ReadAllText(sceneDataPath);
+            string talkData = File.ReadAllText(npcTalkDataPath);
 
             playerData = JsonUtility.FromJson<PlayerStatus>(data);
             inventoryItem.storyItemIdList = JsonConvert.DeserializeObject<List<int>>(storyItemData);
@@ -120,8 +151,59 @@ public class DataManager : MonoBehaviour
             inventoryItem.ownRuneItemIdList = JsonConvert.DeserializeObject<List<int>>(ownRuneItemData);
             inventoryItem.equipRuneItemIdList = JsonConvert.DeserializeObject<List<int>>(equipRuneItemData);
             encycData.encyclopediaDataDict = JsonConvert.DeserializeObject<Dictionary<int, int>>(encyclopediaData);
+            sceneName = JsonUtility.FromJson<SceneName>(sceneData);
+            npcTalkIndex = JsonUtility.FromJson<NpcTalkIndex>(talkData);
+            GameManager.Instance.Scene.SetSceneName(sceneName.sceneName);
         }
 
+    }
+
+    public void SaveTalkIndex(int talkIndex, bool isShop, bool isVilleger)
+    {
+        if (isShop)
+        {
+            npcTalkIndex.shopNpcIndex = talkIndex;
+        }
+        else if (isVilleger)
+        {
+            npcTalkIndex.villegerNpcIndex = talkIndex;
+        }
+
+        SaveData();
+    }
+
+    public void LoadTalkIndex(int talkIndex, bool isShop, bool isVilleger, bool isTalked)
+    {
+        if (isShop)
+        {
+            if (npcTalkIndex.shopNpcIndex != 0)
+            {
+                isTalked = true;
+            }
+            talkIndex = npcTalkIndex.shopNpcIndex;
+        }
+        else if (isVilleger)
+        {
+            if (npcTalkIndex.villegerNpcIndex != 0)
+            {
+                isTalked = true;
+            }
+            talkIndex = npcTalkIndex.villegerNpcIndex;
+        }
+    }
+
+    public void SaveSceneData(string curSceneName)
+    {
+        if (curSceneName == "TitleScene")
+        {
+            sceneName.sceneName = GameManager.Instance.Scene.prevScene;
+        }
+        else
+        {
+            sceneName.sceneName = curSceneName;
+        }
+
+        SaveData();
     }
 
     public void SavePlayerData(Player player)
@@ -137,6 +219,9 @@ public class DataManager : MonoBehaviour
         playerData.curGold = player.CurGold;
         playerData.maxGold = player.MaxGold;
 
+        playerData.canDoubleJump = player.P_Move.CanDoubleJump;
+        playerData.canWallSlide = player.P_Move.CanWallSlide;
+
         SaveData();
     }
 
@@ -144,6 +229,7 @@ public class DataManager : MonoBehaviour
     {
         player.SetPlayerStat(playerData);
         player.P_Attack.SetPlayerDamage(playerData);
+        player.P_Move.SetPlayerAbility(playerData);
     }
 
     public void SaveInvenItem(List<ItemData> storyList, List<ItemData> abilityList)
@@ -187,19 +273,6 @@ public class DataManager : MonoBehaviour
     {
         if (equipRuneList != null)
         {
-            //if (inventoryItem.equipRuneItemIdList == null)
-            //{
-            //    inventoryItem.equipRuneItemIdList = new List<int>();
-            //}
-
-            //for (int i = 0; i < equipRuneList.Count; i++)
-            //{
-            //    if (!inventoryItem.equipRuneItemIdList.Contains(equipRuneList[i].Id))
-            //    {
-            //        inventoryItem.equipRuneItemIdList.Add(equipRuneList[i].Id);
-            //    }
-            //}
-
             List<int> runeList = new List<int>();
 
             for (int i = 0; i < equipRuneList.Count; i++)
@@ -213,19 +286,6 @@ public class DataManager : MonoBehaviour
 
         if (ownRuneList != null)
         {
-            //if (inventoryItem.ownRuneItemIdList == null)
-            //{
-            //    inventoryItem.ownRuneItemIdList = new List<int>();
-            //}
-
-            //for (int i = 0; i < ownRuneList.Count; i++)
-            //{
-            //    if (!inventoryItem.ownRuneItemIdList.Contains(ownRuneList[i].Id))
-            //    {
-            //        inventoryItem.ownRuneItemIdList.Add(ownRuneList[i].Id);
-            //    }
-            //}
-
             List<int> runeList = new List<int>();
 
             for (int i = 0; i < ownRuneList.Count; i++)

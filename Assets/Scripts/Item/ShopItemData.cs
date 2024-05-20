@@ -7,5 +7,5 @@ public class ShopItemData : ItemData
 {
     public int price;
 
-    public virtual void Use(Player player) { Debug.Log("3"); }
+    public virtual void Use(Player player) {  }
 }

@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 8236060902261715568}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -48,7 +48,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: 
   itemSprite: {fileID: -5312199849988608086, guid: 74df7df398475f74aa180e9d3bf6b6ec, type: 3}
-  cost: 0
   id: 0
   desc: 
   Info: {fileID: 11400000, guid: 0860a2630d7ec80409ae938517cd3255, type: 2}

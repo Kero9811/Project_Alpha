@@ -37,8 +37,10 @@ public class PlayerMove : MonoBehaviour
 
     private bool checkDoubleJump = false;
     private bool canDoubleJump = false;
+    public bool CanDoubleJump => canDoubleJump;
 
     private bool canWallSlide = false;
+    public bool CanWallSlide => canWallSlide;
     private float wallSlideSpeed = 2f;
     private float wallJumpPower = 5f;
 
@@ -81,8 +83,8 @@ public class PlayerMove : MonoBehaviour
 
         if (player.CurState == PlayerState.Dash ||
             player.CurState == PlayerState.GroundSmash ||
-            player.CurState == PlayerState.WallJump || 
-            player.CurState == PlayerState.Stun || 
+            player.CurState == PlayerState.WallJump ||
+            player.CurState == PlayerState.Stun ||
             player.CurState == PlayerState.Dead) { return; }
 
         Vector2 moveVelocity = new Vector2(inputVec.x * moveSpeed, rb.velocity.y);
@@ -195,16 +197,12 @@ public class PlayerMove : MonoBehaviour
         {
             player.SetCurState(PlayerState.LookAt);
             anim.SetBool("isLookUp", true);
-            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
             vcam.Follow = upTf;
         }
         else if (context.duration > 1f && context.canceled)
         {
             player.SetCurState(PlayerState.Idle);
             anim.SetBool("isLookUp", false);
-            //Vector2 targetPosition = transform.position;
-            //vcam.transform.position = targetPosition;
-            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
             vcam.Follow = transform;
         }
     }
@@ -222,16 +220,13 @@ public class PlayerMove : MonoBehaviour
         {
             player.SetCurState(PlayerState.LookAt);
             anim.SetBool("isLookDown", true);
-            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
             vcam.Follow = downTf;
         }
         else if (context.duration > 1f && context.canceled)
         {
             player.SetCurState(PlayerState.Idle);
             anim.SetBool("isLookDown", false);
-            //vcam.GetCinemachineComponent<CinemachineFramingTransposer>().m_DeadZoneHeight = 0f;
             vcam.Follow = transform;
-            //vcam.ForceCameraPosition(targetPosition, Quaternion.identity);
         }
     }
 
@@ -278,6 +273,12 @@ public class PlayerMove : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, 0f);
         rb.AddForce(Vector2.up * downAttackJumpPower, ForceMode2D.Impulse);
         //anim.SetTrigger("Jump");
+    }
+
+    public void SetPlayerAbility(PlayerStatus playerStatus)
+    {
+        canDoubleJump = playerStatus.canDoubleJump;
+        canWallSlide = playerStatus.canWallSlide;
     }
 
     private void CheckGround()
