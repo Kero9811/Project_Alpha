@@ -60,6 +60,7 @@ public class PlayerMove : MonoBehaviour
         player = GetComponent<Player>();
         rb = GetComponent<Rigidbody2D>();
         anim = transform.Find("Renderer").GetComponent<Animator>();
+        vcam = GameObject.FindWithTag("Vcam").GetComponent<CinemachineVirtualCamera>();
 
         groundMask = LayerMask.GetMask("Ground");
         footTf = transform.Find("Foot").GetComponent<Transform>();
@@ -361,6 +362,11 @@ public class PlayerMove : MonoBehaviour
     public void UnlockDoubleJump()
     {
         canDoubleJump = true;
+    }
+
+    public void EquipSpeedRune()
+    {
+
     }
 
     private void DebugLine()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using Lean.Pool;
 
 public class PlayerSkill : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class PlayerSkill : MonoBehaviour
     CinemachineImpulseSource c_Source;
     #endregion
 
+    [SerializeField] private GameObject healChargeEffectPrefab;
+
+    private GameObject chargeObj;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -43,7 +48,6 @@ public class PlayerSkill : MonoBehaviour
         if (player.CurState == PlayerState.Dash || 
             player.CurState == PlayerState.Dead) { return; }
 
-        // TODO: 이 스킬을 해금하였다면 사용가능
         if (!playerMove.isGround && canGrandSmash && context.started)
         {
             StartCoroutine(Smash());
@@ -66,8 +70,7 @@ public class PlayerSkill : MonoBehaviour
 
         if (context.duration < .5f && context.canceled)
         {
-            print("Shot");
-            anim.SetTrigger("Shot"); // test용
+            anim.SetTrigger("Shot");
         }
         else if (context.duration > 1f && (context.performed || context.canceled) && canUse)
         {
@@ -88,17 +91,19 @@ public class PlayerSkill : MonoBehaviour
     {
         if (!canChargerHeal)
         {
+            LeanPool.Despawn(chargeObj);
             return;
         }
 
         if (chargeHealCoroutine == null)
         {
+            chargeObj = LeanPool.Spawn(healChargeEffectPrefab, player.P_Move.FootTf);
             chargeHealCoroutine = StartCoroutine(ChargeHeal());
         }
         else
         {
-            //TODO:나중에 하던 도중에 맞으면 차징이 끊기고 상태 변경 Idle로 안되게 변경
             anim.SetBool("isChargeHeal", false);
+            LeanPool.Despawn(chargeObj);
             player.SetCurState(PlayerState.Idle);
             StopCoroutine(chargeHealCoroutine);
             chargeHealCoroutine = null;
@@ -163,6 +168,7 @@ public class PlayerSkill : MonoBehaviour
 
                 player.UseMp(healMp);
                 player.Heal(1);
+                //LeanPool.Spawn(healEffectPrefab, player.P_Move.FootTf);
             }
             yield return null;
         }

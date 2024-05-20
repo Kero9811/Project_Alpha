@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class EquipInven : MonoBehaviour
 {
-    [SerializeField] private List<RuneItemData> runeItems = new List<RuneItemData>(); // Dictionary가 좋을 수도 있음 (탐색을 위해)
+    [SerializeField] private List<RuneItemData> runeItems = new List<RuneItemData>();
     [SerializeField] private List<RuneItemData> equipItems = new List<RuneItemData>();
 
     private Slot[] runeSlots;
@@ -75,7 +75,6 @@ public class EquipInven : MonoBehaviour
         int i = 0;
         for (; i < runeItems.Count && i < runeSlots.Length; i++)
         {
-            //runeItems[i].InitItemInfo();
             runeSlots[i].runeItemData = runeItems[i];
             runeSlots[i].SetItem(runeItems[i]);
         }
@@ -89,8 +88,6 @@ public class EquipInven : MonoBehaviour
         int j = 0;
         for (; j < equipItems.Count && j < equipSlots.Length; j++)
         {
-            // 주석 풀었을때 isEquipped가 안 바뀐다면 runeitemdata가 안 바뀌는거
-            //equipItems[j].InitItemInfo();
             equipSlots[j].runeItemData = equipItems[j];
             equipSlots[j].SetItem(equipItems[j]);
         }

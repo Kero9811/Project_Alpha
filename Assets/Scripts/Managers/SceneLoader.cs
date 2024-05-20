@@ -80,7 +80,5 @@ public class SceneLoader : MonoBehaviour
 
             yield return null;
         }
-
-        //loadingPanel.SetActive(false);
     }
 }

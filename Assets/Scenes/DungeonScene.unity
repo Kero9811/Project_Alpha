@@ -30559,7 +30559,7 @@ GameObject:
   - component: {fileID: 1539152886}
   m_Layer: 0
   m_Name: CM vcam1
-  m_TagString: Untagged
+  m_TagString: Vcam
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34812,6 +34812,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9209528046335000481, guid: 271cc7a87492ede4aadad1568fe5c4e1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209528046335000482, guid: 271cc7a87492ede4aadad1568fe5c4e1, type: 3}
+      propertyPath: m_BodyType
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

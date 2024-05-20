@@ -8,11 +8,11 @@ public class SecondAbility : Item
     {
         if (other.TryGetComponent(out Player player))
         {
+            GetComponent<Collider2D>().enabled = false;
+            GetComponent<SpriteRenderer>().enabled = false;
             player.P_Move.UnlockWallSlide();
             GameManager.Instance.Inven.AddItemsToAbilityQueue(this.Info);
             GameManager.Instance.Data.SavePlayerData(player);
-            GetComponent<Collider2D>().enabled = false;
-            GetComponent<SpriteRenderer>().enabled = false;
             Invoke("DestroyItem", 2f);
         }
     }

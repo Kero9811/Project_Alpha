@@ -8,9 +8,9 @@ public class FirstItem : Item
     {
         if (other.TryGetComponent(out Player player))
         {
-            GameManager.Instance.Inven.AddItemsToStoryQueue(this.Info);
             GetComponent<Collider2D>().enabled = false;
             GetComponent<SpriteRenderer>().enabled = false;
+            GameManager.Instance.Inven.AddItemsToStoryQueue(this.Info);
             Invoke("DestroyItem", 2f);
         }
     }

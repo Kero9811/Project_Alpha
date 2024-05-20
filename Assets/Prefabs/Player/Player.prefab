@@ -335,6 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71a45df3f68486f40b08ba7c9b49fae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healChargeEffectPrefab: {fileID: 6785772262510733928, guid: cd9980a03701fa144b683b7b1914e7c6, type: 3}
 --- !u!114 &7875084168552896472
 MonoBehaviour:
   m_ObjectHideFlags: 0

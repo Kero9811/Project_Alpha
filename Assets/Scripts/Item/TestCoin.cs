@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class TestCoin : Item
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.collider.TryGetComponent(out Player player))
+        if (other.TryGetComponent(out Player player))
         {
-            //player.GetGold(cost);
+            player.GetGold(999);
         }
     }
 }

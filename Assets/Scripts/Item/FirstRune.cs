@@ -8,9 +8,9 @@ public class FirstRune : RuneItem
     {
         if (other.TryGetComponent(out Player player))
         {
-            GameManager.Instance.Inven.AddRuneToSlotQueue(this.runeInfo);
             GetComponent<Collider2D>().enabled = false;
             GetComponent<SpriteRenderer>().enabled = false;
+            GameManager.Instance.Inven.AddRuneToSlotQueue(this.runeInfo);
             Invoke("DestroyItem", 2f);
         }
     }

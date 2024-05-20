@@ -180,15 +180,16 @@ public class DataManager : MonoBehaviour
 
             if (npcTalkIndex.shopNpcIndex != 0)
             {
-                curTalkIndex = talkIndex - 1;
+                curTalkIndex = talkIndex;
             }
         }
         else if (isVilleger)
         {
             talkIndex = npcTalkIndex.villegerNpcIndex;
+
             if (npcTalkIndex.villegerNpcIndex != 0)
             {
-                curTalkIndex = talkIndex - 1;
+                curTalkIndex = talkIndex;
             }
         }
     }

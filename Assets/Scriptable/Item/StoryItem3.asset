@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7c3e1956bcbe1a4daa7b5ee038e7165, type: 3}
-  m_Name: TestItem3
+  m_Name: StoryItem3
   m_EditorClassIdentifier: 
-  itemName: "\uD14C\uC2A4\uD2B8 \uC544\uC774\uD15C3"
-  cost: 1
-  id: 1
-  desc: "\uD14C\uC2A4\uD2B8\uC6A9 \uC544\uC774\uD15C. 1\uCF54\uC778"
+  itemName: "\uC791\uC740 \uC8FC\uBA38\uB2C8"
+  id: 3
+  image: {fileID: 21300130, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  desc: "\uB9C8\uC744 \uC8FC\uBBFC\uC73C\uB85C \uBC1B\uC740 \uC8FC\uBA38\uB2C8\uC774\uB2E4.
+    \uC548 \uCABD\uC5D0 \uC18C\uAC1C\uC7A5\uACFC \uC18C\uB7C9\uC758 \uC2DD\uB7C9\uC774
+    \uB4E4\uC5B4\uC788\uB2E4."

@@ -112,7 +112,7 @@ public class UIManager : MonoBehaviour
     {
         if (isTalkOpen) { return; }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !isShopOpen)
         {
             if (pausePanel == null) { pausePanel = GameObject.FindWithTag("Canvas").transform.Find("PausePanel").gameObject; Debug.Log(pausePanel.name); }
             pausePanel.SetActive(true);
