@@ -101,7 +101,7 @@ public class Goblin : Monster
 
             int setDir = transform.position.x <= player.transform.position.x ? 1 : -1;
 
-            rb.velocity = new Vector3(setDir * moveSpeed, 0, 0);
+            rb.velocity = new Vector3(setDir * moveSpeed, rb.velocity.y, 0);
             anim.SetInteger("MoveSpeed", (int)rb.velocity.x);
             state = GoblinState.Move;
         }

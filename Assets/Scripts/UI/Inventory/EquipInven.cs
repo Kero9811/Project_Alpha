@@ -88,6 +88,7 @@ public class EquipInven : MonoBehaviour
         int j = 0;
         for (; j < equipItems.Count && j < equipSlots.Length; j++)
         {
+            equipItems[j].isEquipped = true;
             equipSlots[j].runeItemData = equipItems[j];
             equipSlots[j].SetItem(equipItems[j]);
         }

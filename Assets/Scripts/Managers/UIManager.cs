@@ -105,6 +105,8 @@ public class UIManager : MonoBehaviour
             {"Talk", talkPanel }
         };
 
+        curContentIdx = 0;
+
         PanelOpen("Game");
     }
 

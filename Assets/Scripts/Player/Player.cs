@@ -12,7 +12,7 @@ public enum PlayerState
     Idle,
     Move,
     Dash,
-    Jump, // 여기까지 순서 고정 (애니메이션 때문에)
+    Jump,
     LookAt,
     WallSlide,
     WallJump,
@@ -25,7 +25,7 @@ public enum PlayerState
 public class Player : MonoBehaviour
 {
     #region 플레이어 스탯 및 상태
-    private int maxHp = 3; // 최종 수치 : 10HP
+    private int maxHp = 3;
     private int curHp = 3;
     private int maxMp = 100;
     private int curMp;
