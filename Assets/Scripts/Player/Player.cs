@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
     private int curHp = 3;
     private int maxMp = 100;
     private int curMp;
-    private int curGold = 999;
+    private int curGold;
     private int maxGold = 9999;
     private PlayerState curState;
     public int CurHp => curHp;
