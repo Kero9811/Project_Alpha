@@ -36,7 +36,19 @@ public class InventoryItem
 [System.Serializable]
 public class EncyclopediaKillCount
 {
-    public Dictionary<int, int> encyclopediaDataDict;
+    public Dictionary<int, int> encyclopediaDataDict = new Dictionary<int, int>()
+    {
+        {1, 0},
+        {2, 0},
+        {3, 0},
+        {4, 0},
+        {5, 0},
+        {6, 0},
+        {7, 0},
+        {8, 0},
+        {9, 0},
+        {10, 0},
+    };
 }
 
 [System.Serializable]
@@ -379,6 +391,7 @@ public class DataManager : MonoBehaviour
 
     public void SaveEncyclopedia(MonsterData monsterData)
     {
+        if (encycData.encyclopediaDataDict == null) { print("1"); }
         encycData.encyclopediaDataDict[monsterData.MonsterId]++;
         SaveData();
     }
