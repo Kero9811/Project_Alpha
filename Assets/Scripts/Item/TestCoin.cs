@@ -9,6 +9,8 @@ public class TestCoin : Item
         if (other.TryGetComponent(out Player player))
         {
             player.GetGold(999);
+            player.P_Attack.MeleeDmgUp(10);
+            player.GetMp(50);
         }
     }
 }

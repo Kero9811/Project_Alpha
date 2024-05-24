@@ -9,7 +9,7 @@ public class PlayerAttack : MonoBehaviour
 {
     [Header("Damage Stat")]
 
-    [SerializeField] private int damage = 2;
+    [SerializeField] private int damage = 100;
     [SerializeField] private int magicDamage = 4; // 추후 추가
 
     public int Damage => damage;
