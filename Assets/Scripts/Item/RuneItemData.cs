@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Rune", menuName = "Create/Rune", order = 2)]
 public class RuneItemData : ItemData
 {
-    [SerializeField] private int cost; // 장착 필요 코스트
-    public bool isEquipped; // 장착 여부
+    [SerializeField] private int cost;
+    public bool isEquipped;
 
     public int Cost => cost;
 }
